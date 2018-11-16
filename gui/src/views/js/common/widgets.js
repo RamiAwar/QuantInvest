@@ -7,7 +7,6 @@
  */
 
 $ = require('jquery')
- 
 
 /**
  * @brief Creates html list from javascript array
@@ -21,8 +20,8 @@ $ = require('jquery')
  * @param {string} list_items[].image_src - Image source string, required only if {has_image} is true.
  * 
  * @param element_id {string} HTML element identifier to fetch element which will have list appended to.
- * @param with_search {bool} Boolean specifying whether or not a search bar should precede the list.
- * @param search_placeholder {string}
+ * @param {bool} [with_search=false] Boolean specifying whether or not a search bar should precede the list.
+ * @param {string} [search_placeholder=""]
  * @return None
  */
 
