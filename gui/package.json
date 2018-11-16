@@ -1,0 +1,43 @@
+{
+  "name": "quantinvest",
+  "version": "1.0.0",
+  "description": "Investor's trading swiss army knife.",
+  "main": "src\\entry_point.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RamiAwar/QuantInvest.git"
+  },
+  "keywords": [
+    "finance",
+    "quantitative",
+    "investment",
+    "software",
+    "platform",
+    "stock",
+    "prediction",
+    "portfolio",
+    "optimization"
+  ],
+  "author": "Rami Awar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RamiAwar/QuantInvest/issues"
+  },
+  "homepage": "https://github.com/RamiAwar/QuantInvest#readme",
+  "devDependencies": {
+    "electron": "3.0.9",
+    "electron-reload": "^1.3.0",
+    "gulp": "^3.9.1",
+    "gulp-jsdoc3": "^2.0.0",
+    "ink-docstrap": "^1.3.2",
+    "minami": "^1.2.3"
+  },
+  "dependencies": {
+    "components-font-awesome": "^5.4.2",
+    "jquery": "^3.3.1"
+  }
+}

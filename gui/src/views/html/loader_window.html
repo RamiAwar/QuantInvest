@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QuantInvest</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../../node_modules/components-font-awesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="../css/common/photon.min.css">
+    <link rel="stylesheet" href="../css/common/photon_overrides.css">
+    <link rel="stylesheet" href="../css/loader_window.css"/>
+
+   
+  </head>
+
+  <body>
+
+    <!-- Wrap app inside .window -->
+    <div class="window content">
+
+      <!-- .toolbar-header sits at the top -->
+      <header class="toolbar toolbar-header">
+
+        <div class="title-bar">
+
+          <span id="close_window_button" class="fa-stack">
+            <i class="fa fa-stack-1x fa-circle" id="close-circle"></i>
+            <i class="fa fa-stack-1x fa-times-circle"></i>
+          </span>
+          
+          <span id="minimize_window_button" class="fa-stack">
+            <i class="fa fa-stack-1x fa-circle" id="minimize-circle"></i>
+            <i class="fa fa-stack-1x fa-minus-circle"></i>
+          </span>
+
+          <h1 class="title">QuantInvest</h1>
+        
+        </div>
+      </header>
+
+      <!-- App content in .window-content -->
+      <div class="window-content">
+        <div class="pane-group">
+
+          <div id="logo-pane" class="pane">
+
+            <div class="logo"></div>
+            
+            <div class="text-container">
+              
+              <button class="btn btn-large btn-default">New Profile</button>
+              <button class="btn btn-large btn-default">Load Profile</button>
+            </div>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+<script>
+
+  require('../js/common/window_operations.js');
+
+</script>
+
+
+  </body>
+</html>
