@@ -39,7 +39,8 @@ exports.create_window = function(file_path, w=800, h=600, mw=800, mh=600, mxw=80
 		show: true,
 		frame: false,
 		transparent: true,
-		resizable:false
+		resizable:false,
+		titleBarStyle: 'customButtonsOnHover'
 	})
 
 

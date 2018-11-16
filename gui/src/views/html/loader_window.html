@@ -41,7 +41,7 @@
       <div class="window-content">
         <div class="pane-group">
 
-          <div id="logo-pane" class="pane">
+          <!-- <div id="logo-pane" class="pane">
 
             <div class="logo"></div>
             
@@ -51,6 +51,10 @@
               <button class="btn btn-large btn-default">Load Profile</button>
             </div>
           
+          </div> -->
+
+          <!-- Dynamically inserted content from jquery below  -->
+          <div id="profile-list" class="pane pane-sm sidebar">
           </div>
 
         </div>
@@ -59,7 +63,18 @@
 
 <script>
 
+
   require('../js/common/window_operations.js');
+  $ = require('jquery')
+
+  const _widgets = require('../js/common/widgets.js')
+
+  _widgets.create_list([], 'profile-list');
+
+  // $( "#profile-list" ).load( "./profile_list.html");
+
+
+
 
 </script>
 

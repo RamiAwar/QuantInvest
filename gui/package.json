@@ -2,7 +2,7 @@
   "name": "quantinvest",
   "version": "1.0.0",
   "description": "Investor's trading swiss army knife.",
-  "main": "src\\entry_point.js",
+  "main": "src/entry_point.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/RamiAwar/QuantInvest#readme",
   "devDependencies": {
-    "electron": "3.0.9",
+    "electron": "^3.0.9",
     "electron-reload": "^1.3.0",
     "gulp": "^3.9.1",
     "gulp-jsdoc3": "^2.0.0",
