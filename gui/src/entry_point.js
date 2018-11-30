@@ -19,6 +19,8 @@ let main_window = null;
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function(){
+
+  //TODO: Refactor into 'ProfileLoader.init();'-like API
 	main_window = _window.create_window('../views/html/loader_window.html', 800, 600);
 });
 
