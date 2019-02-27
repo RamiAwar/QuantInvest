@@ -1,8 +1,13 @@
 from flask import Flask 
+from flask_login import LoginManager
+
 import os
+
 
 app = Flask(__name__);
 app.config.from_object(os.environ['APP_SETTINGS'])
+
+login = LoginManager(app);
 
 
 # Workaround to circular imports! EW!
