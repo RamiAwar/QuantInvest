@@ -1,11 +1,17 @@
-from app import db
+import mongoengine
 
-class User(db.Model):
+# Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
+mongoengine.connect('flask_mega');
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+
+
+class User(mongoengine.Document):
+
+    _id = mongoengine.ObjectIdField()
+    username = mongoengine.StringField()
+    email = mongoengine.StringField()
+    password_hash = mongoengine.StringField()
 
     def __repr__(self):
-        return '<User {}>'.format(self.username) 
+        return '< User {} >'.format(self.username) 
+
