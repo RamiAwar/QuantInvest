@@ -1,17 +1,17 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app import app
 from app.forms import LoginForm
 from app.models import User
-from flask_login import current_user, login_user, login_required
+from flask_login import current_user, login_user, logout_user, login_required
+from werkzeug.urls import url_parse
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
 
-	user = {'username': 'Test'}
 
-	return render_template('index.html', title="Home", user=user);
+	return render_template('index.html', title="Home");
 
 
 
@@ -42,7 +42,7 @@ def login():
 		
 		# Redirect user to page tried to access while anonymous, or homepage if none
 		next_page = request.args.get('next')
-		if not next_page or url_parse(next_page).netloc != '':
+		if not next_page or url_parse(next_page).netloc != '': # Make sure URL is relative not malicious
 			next_page = url_for('index')
 		
 		return redirect(next_page)

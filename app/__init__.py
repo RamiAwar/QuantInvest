@@ -8,7 +8,7 @@ app = Flask(__name__);
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 login = LoginManager(app);
-login.login_view = "login"
+login.login_view = "login" # For automatic redirects to and from login when protected pages are requested by anonymous users
 
 # Workaround to circular imports! EW!
 from app import routes
@@ -20,10 +20,4 @@ from app.models import User, Post
 @app.shell_context_processor
 def make_shell_context():
     return {'User': User, 'Post': Post}
-
-
-print(User.objects())
-
-
-print(User.objects(email__contains='rami'))
 
