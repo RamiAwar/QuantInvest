@@ -2,10 +2,11 @@ import mongoengine
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_login import UserMixin
-from app import login 
+from app import login, app
+
 
 # Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
-mongoengine.connect('flask_mega');
+mongoengine.connect('flask_mega', host=app.config['MONGODB_URI'], port=27017);
 
 
 

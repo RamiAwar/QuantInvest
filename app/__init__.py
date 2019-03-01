@@ -8,7 +8,7 @@ app = Flask(__name__);
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 login = LoginManager(app);
-
+login.login_view = "login"
 
 # Workaround to circular imports! EW!
 from app import routes

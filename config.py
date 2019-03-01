@@ -15,6 +15,9 @@ class Config(object):
 	CSRF_ENABLED = True
 	SECRET_KEY = '823a9b472dd3067f787aad0670d861766169060b487edbbb'
 
+	MONGODB_URI = os.environ.get('MONGODB_URI') or \
+		'localhost:27017';
+
 class ProductionConfig(Config):
 	DEBUG=False
 

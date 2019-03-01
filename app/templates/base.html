@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
 
+
+
 {% set navigation_list = [
 	{ 
 		'name':'Home',
 		'ref': 'index',
 		'link':'/index'
-	},
-	{
-		'name':'Login',
-		'ref': 'login',
-		'link':'/login'
 	}
 ]
 	
@@ -50,6 +47,20 @@
 
 		{% endfor %}
 
+        {% if current_user.is_anonymous %}
+	        {% if active_page == url_for('login') %}
+				<a class="nav-item nav-link active" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
+			{% else %}
+				<a class="nav-item nav-link" href="{{url_for('login')}}">Login</a>
+			{% endif %}
+        {% else %}
+	        {% if active_page == url_for('logout') %}
+				<a class="nav-item nav-link active" href="{{url_for('logout')}}">Logout<span class="sr-only">(current)</span></a>
+			{% else %}
+				<a class="nav-item nav-link" href="{{url_for('logout')}}">Logout</a>
+			{% endif %}
+        {% endif %}
+
 	    </div>
 	  </div>
 	</nav>
@@ -58,7 +69,7 @@
 	  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
 	  {% if messages %}
 	    {% for category, message in messages %}
-	      <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+	      <div class="alert alert-info alert-{{ category }} alert-dismissible" role="alert">
 	      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	      <!-- <strong>Title</strong> --> {{ message }}
 	      </div>
