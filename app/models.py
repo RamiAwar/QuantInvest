@@ -37,7 +37,15 @@ class Post(mongoengine.Document):
 
 @login.user_loader
 def load_user(id):
-	return User.objects.get(pk=id);
+	user = None;
+	try:
+		user = User.objects.get(pk=id);
+	except User.DoesNotExist:
+		# TODO: Log error : priority (3)
+		pass
+
+	return user;
+
 
 
 
