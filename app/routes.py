@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app
-from app.forms import LoginForm
+from app.forms import LoginForm, RegistrationForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -14,12 +14,31 @@ def index():
 	return render_template('index.html', title="Home");
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+
+	if current_user.is_authenticated:
+		return redirect(url_for('index'))
+
+	registration_form = RegistrationForm()
+
+	if registration_form.validate_on_submit():
+
+		user = User(username=registration_form.username.data, email=registration_form.email.data)
+		user.set_password(registration_form.password.data)
+		user.save()
+
+		flash("User created successfully", category="success")
+		return redirect(url_for('login'))
+
+	return render_template('register.html', form=registration_form)
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
 
-	# TODO: Hide case by hiding Login redirection buttons for authenticated users : priority (1)
 	if current_user.is_authenticated:
 		return redirect(url_for('index'))
 	

@@ -53,6 +53,13 @@
 			{% else %}
 				<a class="nav-item nav-link" href="{{url_for('login')}}">Login</a>
 			{% endif %}
+
+			{% if active_page == url_for('register') %}
+				<a class="nav-item nav-link active" href="{{url_for('register')}}">Sign Up<span class="sr-only">(current)</span></a>
+			{% else %}
+				<a class="nav-item nav-link" href="{{url_for('register')}}">Sign Up</a>
+			{% endif %}
+
         {% else %}
 	        {% if active_page == url_for('logout') %}
 				<a class="nav-item nav-link active" href="{{url_for('logout')}}">Logout<span class="sr-only">(current)</span></a>
