@@ -14,22 +14,27 @@
 %}
 
 <head>
-	{% if title %}
-	<title>{{title}}</title>
-	{% else %}
-	<title>Mega Site</title>
-	{% endif %}
+
+	<title>QuantInvest</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/solid.css" integrity="sha384-r/k8YTFqmlOaqRkZuSiE9trsrDXkh07mRaoGBMoDcmA58OHILZPsk29i2BsFng1B" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/fontawesome.css" integrity="sha384-4aon80D8rXCGx9ayDt85LbyUHeMWd3UiBaWliBlJ53yzm9hqN21A+o1pqoyK04h+" crossorigin="anonymous">
+
+
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	
 
 </head>
 
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="/index">Mega</a>
+	  <a class="navbar-brand" href="/index">QuantInvest</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -47,25 +52,54 @@
 
 		{% endfor %}
 
+		</div>
+
+
         {% if current_user.is_anonymous %}
+        
 	        {% if active_page == url_for('login') %}
+
+    		<div class="navbar-nav">
+
 				<a class="nav-item nav-link active" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
+			
 			{% else %}
+			
 				<a class="nav-item nav-link" href="{{url_for('login')}}">Login</a>
+			
 			{% endif %}
 
 			{% if active_page == url_for('register') %}
+			
 				<a class="nav-item nav-link active" href="{{url_for('register')}}">Sign Up<span class="sr-only">(current)</span></a>
+			
 			{% else %}
+
 				<a class="nav-item nav-link" href="{{url_for('register')}}">Sign Up</a>
+
+			</div>
 			{% endif %}
 
+
+
         {% else %}
-	        {% if active_page == url_for('logout') %}
-				<a class="nav-item nav-link active" href="{{url_for('logout')}}">Logout<span class="sr-only">(current)</span></a>
-			{% else %}
+
+			<div class="navbar-nav">
+
 				<a class="nav-item nav-link" href="{{url_for('logout')}}">Logout</a>
+
+			</div>
+			<div class="navbar-nav ml-auto">
+
+
+			{% if active_page == url_for('profile') %}
+				<a class="nav-item nav-link active ml-auto" href="{{url_for('profile')}}"><i class="fas fa-user-circle"></i>{{ current_user.username }}<span class="sr-only">(current)</span></a>
+			{% else %}
+				<a class="nav-item nav-link ml-auto" href="{{url_for('profile')}}"><i class="fas fa-user-circle"></i>  {{ current_user.username }}</a>
 			{% endif %}
+
+			</div>
+        
         {% endif %}
 
 	    </div>

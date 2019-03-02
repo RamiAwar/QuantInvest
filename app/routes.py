@@ -1,17 +1,21 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, abort
 from app import app
 from app.forms import LoginForm, RegistrationForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
 
-
-	return render_template('index.html', title="Home");
+	return render_template('index.html');
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -76,6 +80,42 @@ def logout():
 	logout_user();
 	return redirect(url_for('index'));
 
+
+@app.route('/profile')
+@login_required
+def profile():
+
+	user = current_user;
+	
+	# try:
+	# 	user = User.objects.get(username=username)
+
+	# except User.DoesNotExist:
+	# 	abort(404);
+
+	if user is not None:
+
+		# Get profiles
+		profiles = [
+			{
+				'profile 1':{
+					'expected_returns': 0.2,
+					'expected_risk': 0.18
+				}
+			}
+		];
+
+		return render_template('profile.html', user=user, profiles=profiles)
+
+# @app.route('/user/<username>')
+# @login_required
+# def user(username):
+#     user = User.query.filter_by(username=username).first_or_404()
+#     posts = [
+#         {'author': user, 'body': 'Test post #1'},
+#         {'author': user, 'body': 'Test post #2'}
+#     ]
+#     return render_template('user.html', user=user, posts=posts)
 
 
 
