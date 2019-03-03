@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="/index">QuantInvest</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+	<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+	<div class="navbar-nav">
+
+	{% if active_page == url_for('index') %}
+		<a class="nav-item nav-link active" href="{{url_for('index')}}">Dashboard<span class="sr-only">(current)</span></a>
+	{% else %}
+		<a class="nav-item nav-link" href="{{url_for('index')}}">Dashboard</a>
+	{% endif %}
+
+	</div>
+
+
+	{% if current_user.is_anonymous %}
+		
+		<div class="navbar-nav">
+
+	    {% if active_page == url_for('login') %}
+
+
+			<a class="nav-item nav-link active" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
+		
+		{% else %}
+		
+			<a class="nav-item nav-link" href="{{url_for('login')}}">Login</a>
+		
+		{% endif %}
+
+		{% if active_page == url_for('register') %}
+		
+			<a class="nav-item nav-link active" href="{{url_for('register')}}">Sign Up<span class="sr-only">(current)</span></a>
+		
+		{% else %}
+
+			<a class="nav-item nav-link" href="{{url_for('register')}}">Sign Up</a>
+
+		{% endif %}
+
+		</div>
+
+
+	{% else %}
+
+		<div class="navbar-nav">
+
+			<a class="nav-item nav-link" href="{{url_for('logout')}}">Logout</a>
+
+		</div>
+
+		<div class="navbar-nav ml-auto">
+
+
+		{% if active_page == url_for('profile') %}
+			<a class="nav-item nav-link active ml-auto" href="{{url_for('profile')}}"><i class="fas fa-user-circle fa-lg"></i>   {{ current_user.username }}<span class="sr-only">(current)</span></a>
+		{% else %}
+			<a class="nav-item nav-link ml-auto" href="{{url_for('profile')}}"><i class="fas fa-user-circle fa-lg"></i>   {{ current_user.username }}</a>
+		{% endif %}
+
+		</div>
+
+	{% endif %}
+
+	</div>
+	</div>
+</nav>

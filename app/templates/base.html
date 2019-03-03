@@ -2,17 +2,6 @@
 <html>
 
 
-
-{% set navigation_list = [
-	{ 
-		'name':'Home',
-		'ref': 'index',
-		'link':'/index'
-	}
-]
-	
-%}
-
 <head>
 
 	<title>QuantInvest</title>
@@ -33,78 +22,7 @@
 
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="/index">QuantInvest</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-	  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-	    <div class="navbar-nav">
-
-
-	    {% for item in navigation_list %}
-
-	    	{% if active_page == item.ref %}
-			<a class="nav-item nav-link active" href="{{item.link}}">{{item.name}}<span class="sr-only">(current)</span></a>
-			{% else %}
-			<a class="nav-item nav-link" href="{{item.link}}">{{item.name}}</a>
-			{% endif %}
-
-		{% endfor %}
-
-		</div>
-
-
-        {% if current_user.is_anonymous %}
-        
-	        {% if active_page == url_for('login') %}
-
-    		<div class="navbar-nav">
-
-				<a class="nav-item nav-link active" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
-			
-			{% else %}
-			
-				<a class="nav-item nav-link" href="{{url_for('login')}}">Login</a>
-			
-			{% endif %}
-
-			{% if active_page == url_for('register') %}
-			
-				<a class="nav-item nav-link active" href="{{url_for('register')}}">Sign Up<span class="sr-only">(current)</span></a>
-			
-			{% else %}
-
-				<a class="nav-item nav-link" href="{{url_for('register')}}">Sign Up</a>
-
-			</div>
-			{% endif %}
-
-
-
-        {% else %}
-
-			<div class="navbar-nav">
-
-				<a class="nav-item nav-link" href="{{url_for('logout')}}">Logout</a>
-
-			</div>
-			<div class="navbar-nav ml-auto">
-
-
-			{% if active_page == url_for('profile') %}
-				<a class="nav-item nav-link active ml-auto" href="{{url_for('profile')}}"><i class="fas fa-user-circle"></i>{{ current_user.username }}<span class="sr-only">(current)</span></a>
-			{% else %}
-				<a class="nav-item nav-link ml-auto" href="{{url_for('profile')}}"><i class="fas fa-user-circle"></i>  {{ current_user.username }}</a>
-			{% endif %}
-
-			</div>
-        
-        {% endif %}
-
-	    </div>
-	  </div>
-	</nav>
+	{% include "_argon_navbar.html" %}
 
 	{% with messages = get_flashed_messages(with_categories=true) %}
 	  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
