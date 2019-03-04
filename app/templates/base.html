@@ -43,7 +43,7 @@
 		{% endwith %}
 
 		<!-- Header -->
-    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="header bg-gradient-primary pb-8 pt-4 pt-md-4">
       <div class="container-fluid">
         <div class="header-body">
           <!-- Card stats -->
@@ -139,16 +139,15 @@
 
 	
 
-		<div class="container pt-5">
+	<div class="container pt-5">
 
-		{% set active_page = active_page|default('index') -%}
+	{% set active_page = active_page|default('index') -%}
 
-		{% block content %}{% endblock %}
-		
-		</div>
-
-
+	{% block content %}{% endblock %}
+	
 	</div>
+
+
 
 	<!-- Bootstrap scripts -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
