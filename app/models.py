@@ -9,7 +9,6 @@ from app import login, app
 mongoengine.connect('flask_mega', host=app.config['MONGODB_URI'], port=27017);
 
 
-
 class User(UserMixin, mongoengine.Document):
 
     username = mongoengine.StringField(required=True)

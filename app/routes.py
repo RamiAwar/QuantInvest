@@ -98,11 +98,35 @@ def profile():
 		# Get profiles
 		profiles = [
 			{
-				'profile 1':{
-					'expected_returns': 0.2,
-					'expected_risk': 0.18
-				}
+				'name': 'Profile A',
+				'exp_returns': 0.2,
+				'exp_risk': 0.18
+			},
+
+			{
+				'name': 'Profile B',
+				'exp_returns': 0.24,
+				'exp_risk': 0.34
+			},
+
+			{
+				'name': 'Profile C',
+				'exp_returns': 0.17,
+				'exp_risk': 0.12
+			},
+
+			{
+				'name': 'Profile D',
+				'exp_returns': 0.12,
+				'exp_risk': 0.1
+			},
+
+			{
+				'name': 'Profile E',
+				'exp_returns': 0.14,
+				'exp_risk': 0.11
 			}
+			
 		];
 
 		return render_template('profile.html', user=user, profiles=profiles)
