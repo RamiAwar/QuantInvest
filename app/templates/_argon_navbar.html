@@ -61,7 +61,7 @@
                   </li>
 
                   <li class="nav-item d-lg-none">
-                    <a class="nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="url_for('profile')">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="{{ url_for('profile') }}">
                         <span class="nav-link-inner--text">{{ current_user.username }}</span>
                     </a>
                   </li>
