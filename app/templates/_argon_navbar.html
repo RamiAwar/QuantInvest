@@ -4,17 +4,18 @@
 
     <div class="container fluid col-sm-12">
 
-        <a class="navbar-brand text-lg" href="#">QuantInvest</a>
+        <a class="navbar-brand text-lg" href="{{ url_for('index') }}">QuantInvest</a>
        
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbar-default">
             <div class="navbar-collapse-header">
                 <div class="row">
                     <div class="col-6 collapse-brand">
-                        <a href="../../index.html">QuantInvest</a>
+                        <a href="{{ url_for('index') }}">QuantInvest</a>
                     </div>
                     <div class="col-6 collapse-close">
                         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,31 +26,51 @@
                 </div>
             </div>
             
-            <ul class="navbar-nav col-md-12">
+            <ul class="navbar-nav col-md-12 align-items-center">
+
+                {% if current_user.is_anonymous %}
+                  {% if active_page == url_for('login') %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon active" href=" {{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt d-lg-none"></i>
+                            <span class="nav-link-inner--text">Login</span>
+                        </a>
+                    </li>
+                  {% else %}
+                  
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-icon" href=" {{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt d-lg-none"></i>
+                            <span class="nav-link-inner--text">Login</span>
+                        </a>
+                    </li>
+                  
+                  {% endif %}
+                {% endif %}
 
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="#">
+                    <a class="nav-link nav-link-icon" href=" {{ url_for('index') }}">
                         <i class="fas fa-tachometer-alt d-lg-none"></i>
-                        <span class="active nav-link-inner--text">Dashboard</span>
+                        <span class="nav-link-inner--text">Dashboard</span>
                     </a>
                 </li>
 
                 <li class="nav-item d-lg-none">
-                    <a class="nav-link nav-link-icon" href="#">
+                    <a class="nav-link nav-link-icon" href="iiiiiiiiiiiii">
                         <i class="fas fa-user"></i>
-                        <span class="active nav-link-inner--text">Jessica</span>
+                        <span class="nav-link-inner--text">Jessica</span>
                     </a>
                 </li>
 
                 <li class="nav-item dropdown mt-auto mb-auto ml-lg-auto d-none d-lg-block">
-                  <div class="media align-items-center">
+                  <a class="media align-items-center nav-link nav-link-icon" href="{{ url_for('profile') }}">
                     <span class="avatar avatar-sm rounded-circle">
                       <i class="fas fa-user"></i>
                     </span>
                     <div class="media-body ml-2 d-lg-block">
-                      <span class="mb-0 text-sm font-weight-bold">Jessica Jons</span>
+                      <span class="nav-link-inner--text">Jessica Jons</span>
                     </div>
-                  </div>
+                  </a>
                 </li>
 
 
