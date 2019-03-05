@@ -4,7 +4,7 @@
 
     <div class="container fluid col-sm-12">
 
-        <a class="navbar-brand text-lg" href="{{ url_for('index') }}">QuantInvest</a>
+        <a class="navbar-brand text-lg text-secondary" href="{{ url_for('index') }}">QuantInvest</a>
        
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,53 +25,59 @@
                     </div>
                 </div>
             </div>
+
+
             
             <ul class="navbar-nav col-md-12 align-items-center">
 
                 {% if current_user.is_anonymous %}
-                  {% if active_page == url_for('login') %}
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-icon active" href=" {{ url_for('login') }}">
-                            <i class="fas fa-sign-in-alt d-lg-none"></i>
-                            <span class="nav-link-inner--text">Login</span>
-                        </a>
-                    </li>
-                  {% else %}
-                  
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-icon" href=" {{ url_for('login') }}">
-                            <i class="fas fa-sign-in-alt d-lg-none"></i>
-                            <span class="nav-link-inner--text">Login</span>
-                        </a>
-                    </li>
-                  
-                  {% endif %}
-                {% endif %}
 
-                <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href=" {{ url_for('index') }}">
-                        <i class="fas fa-tachometer-alt d-lg-none"></i>
+                  
+                  <li class="nav-item">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('login') %}active{% endif %}" href=" {{ url_for('login') }}">
+                        <span class="nav-link-inner--text">Login</span>
+                    </a>
+                  </li>
+    
+                  <li class="nav-item">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('register') %}active{% endif %}" href=" {{ url_for('register') }}">
+                        <span class="nav-link-inner--text">SignUp</span>
+                    </a>
+                  </li>
+                  
+                {% else %}
+
+
+                  <li class="nav-item">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('index') %}active{% endif %}" href=" {{ url_for('index') }}">
                         <span class="nav-link-inner--text">Dashboard</span>
                     </a>
-                </li>
+                  </li>
 
-                <li class="nav-item d-lg-none">
-                    <a class="nav-link nav-link-icon" href="iiiiiiiiiiiii">
-                        <i class="fas fa-user"></i>
-                        <span class="nav-link-inner--text">Jessica</span>
+                  <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href=" {{ url_for('logout') }}">
+                        <span class="nav-link-inner--text">Logout</span>
                     </a>
-                </li>
+                  </li>
 
-                <li class="nav-item dropdown mt-auto mb-auto ml-lg-auto d-none d-lg-block">
-                  <a class="media align-items-center nav-link nav-link-icon" href="{{ url_for('profile') }}">
-                    <span class="avatar avatar-sm rounded-circle">
-                      <i class="fas fa-user"></i>
-                    </span>
-                    <div class="media-body ml-2 d-lg-block">
-                      <span class="nav-link-inner--text">Jessica Jons</span>
-                    </div>
-                  </a>
-                </li>
+                  <li class="nav-item d-lg-none">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="url_for('profile')">
+                        <span class="nav-link-inner--text">{{ current_user.username }}</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item dropdown mt-auto mb-auto ml-lg-auto d-none d-lg-block">
+                    <a class="media align-items-center nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="{{ url_for('profile') }} ">
+                      <span class="avatar avatar-sm rounded-circle">
+                        <i class="fas fa-user"></i>
+                      </span>
+                      <div class="media-body ml-2 d-lg-block">
+                        <span class="nav-link-inner--text">{{ current_user.username }}</span>
+                      </div>
+                    </a>
+                  </li>
+
+                {% endif %}
 
 
             </ul>
