@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, abort
 from app import app
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -81,67 +81,25 @@ def logout():
 	return redirect(url_for('index'));
 
 
-@app.route('/profile')
+
+@app.route('/profile', methods=["GET", "POST"])
 @login_required
 def profile():
 
-	user = current_user;
-	
-	# try:
-	# 	user = User.objects.get(username=username)
+	edit_profile_form = EditProfileForm()
 
-	# except User.DoesNotExist:
-	# 	abort(404);
+	if request.method == "POST":
 
-	if user is not None:
+		if edit_profile_form.validate_on_submit():
 
-		# Get profiles
-		profiles = [
-			{
-				'name': 'Profile A',
-				'exp_returns': 0.2,
-				'exp_risk': 0.18
-			},
+			current_user.username = edit_profile_form.username.data;
+			current_user.email = edit_profile_form.email.data;
+			current_user.save();
 
-			{
-				'name': 'Profile B',
-				'exp_returns': 0.24,
-				'exp_risk': 0.34
-			},
+			flash('Your changes have been saved.')
+			return redirect(url_for('profile'))
 
-			{
-				'name': 'Profile C',
-				'exp_returns': 0.17,
-				'exp_risk': 0.12
-			},
-
-			{
-				'name': 'Profile D',
-				'exp_returns': 0.12,
-				'exp_risk': 0.1
-			},
-
-			{
-				'name': 'Profile E',
-				'exp_returns': 0.14,
-				'exp_risk': 0.11
-			}
-			
-		];
-
-		return render_template('profile.html', user=user, profiles=profiles)
-
-# @app.route('/user/<username>')
-# @login_required
-# def user(username):
-#     user = User.query.filter_by(username=username).first_or_404()
-#     posts = [
-#         {'author': user, 'body': 'Test post #1'},
-#         {'author': user, 'body': 'Test post #2'}
-#     ]
-#     return render_template('user.html', user=user, posts=posts)
-
-
+	return render_template('profile.html', user=current_user, form=edit_profile_form)
 
 
 

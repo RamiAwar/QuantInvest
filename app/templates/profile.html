@@ -6,45 +6,7 @@
 
 <div class="container-fluid">
 
-<div class="row pb-3 pt-3 pl-5 pr-5 d-flex">
-	<div class="col-lg-7 col-md-10">
-		<h1 class="display-3">My Profiles</h1>
-	</div>
-</div>
-
-<div class="row">
-
-{% for profile in profiles %}
-
-<div class="col-xl-3 col-lg-6 mb-2 mt-4">
-	<div class="card card-stats">
-	    <div class="card-body">
-	        <div class="row">
-	            <div class="col">
-	                <h5 class="card-title text-muted mb-0">{{ profile["name"] }}</h5>
-	                <span class="h2 font-weight-light mb-0"> Expected Returns <span class="font-weight-bold">{{ profile["exp_returns"] }}</span></span>
-	                
-	                <br/>
-
-	                <span class="h2 font-weight-light mb-0"> Expected Risk <span class="font-weight-bold">{{ profile["exp_risk"] }}</span></span>
-	                </div>
-	            <div class="col-auto">
-	              <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-	                  <i class="fas fa-chart-bar"></i>
-	              </div>
-	            </div>
-	        </div>
-	        <p class="mt-3 mb-0 text-muted text-sm">
-	            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i>3.48%</span>
-	            <span class="text-nowrap">Since last month</span>
-	        </p>
-	    </div>
-	</div>
-</div>
-
-{% endfor %}
-
-</div>
+{% include "profile_editor.html" %}
 
 </div>
 {% endblock %}

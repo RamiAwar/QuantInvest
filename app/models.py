@@ -1,6 +1,6 @@
 import mongoengine
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask import url_for
 from flask_login import UserMixin
 from app import login, app
 
@@ -15,15 +15,19 @@ class User(UserMixin, mongoengine.Document):
     email = mongoengine.StringField(required=True)
     password_hash = mongoengine.StringField(required=True)
 
+    def __repr__(self):
+        return '< User {} >'.format(self.username) 
+
     def set_password(self, password):
     	self.password_hash = generate_password_hash(password);
 
     def check_password(self, password):
     	return check_password_hash(self.password_hash, password);
 
-    def __repr__(self):
-        return '< User {} >'.format(self.username) 
+    def get_profile_picture(self):
+    	return url_for('static', filename="example_user.png")
 
+    
 class Post(mongoengine.Document):
 
 	body = mongoengine.StringField(required=True)

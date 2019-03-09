@@ -54,17 +54,20 @@
                     </a>
                   </li>
 
+
+                  <li class="nav-item d-lg-none">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="{{ url_for('profile') }}">
+                        <span class="nav-link-inner--text">Profile</span>
+                    </a>
+                  </li>
+
+
                   <li class="nav-item">
                     <a class="nav-link nav-link-icon" href=" {{ url_for('logout') }}">
                         <span class="nav-link-inner--text">Logout</span>
                     </a>
                   </li>
 
-                  <li class="nav-item d-lg-none">
-                    <a class="nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="{{ url_for('profile') }}">
-                        <span class="nav-link-inner--text">{{ current_user.username }}</span>
-                    </a>
-                  </li>
 
                   <li class="nav-item dropdown mt-auto mb-auto ml-lg-auto d-none d-lg-block">
                     <a class="media align-items-center nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="{{ url_for('profile') }} ">
@@ -76,6 +79,8 @@
                       </div>
                     </a>
                   </li>
+
+
 
                 {% endif %}
 
