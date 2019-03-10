@@ -1,0 +1,4 @@
+- porfolio optimizer:
+program flow: new profile -> you have so much expected return, so much risk, best case worst case. button "i want more return". parameters go to portfolio optimizer web service -> backtesting -> plot expected performance (using past data). we can infer that this is a straight line from wherever the porfolio's past performance ends. milestone 1.
+
+tarek's component: explore each company in your portfolio more in depth. get more meaningful information about each company. portfolio explorer app.
