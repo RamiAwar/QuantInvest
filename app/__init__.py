@@ -1,6 +1,7 @@
 from flask import Flask 
 from flask_login import LoginManager
 
+import mongoengine
 import os
 
 
@@ -14,6 +15,10 @@ login.login_view = "login" # For automatic redirects to and from login when prot
 from app import routes
 
 from app.models import User, Post
+
+
+# Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
+mongoengine.connect(app.config['DB_NAME'], host=app.config['MONGODB_URI'], port=27017);
 
 
 # Make some variables available in flask shell

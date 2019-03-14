@@ -5,10 +5,7 @@ from flask_login import UserMixin
 from app import login, app
 
 
-# Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
-mongoengine.connect('flask_mega', host=app.config['MONGODB_URI'], port=27017);
-
-
+# TODO: separate auth models from others : priority (1)
 class User(UserMixin, mongoengine.Document):
 
     username = mongoengine.StringField(required=True)
