@@ -11,6 +11,7 @@ class Config(object):
 
 	MONGODB_URI = os.environ.get('MONGODB_URI') or \
 		'localhost:27017';
+	DB_NAME = 'quantinvest'
 
 	# TODO: Correct setup : priority (2)
 	# MAIL_SERVER = os.environ.get('MAIL_SERVER')
@@ -30,6 +31,7 @@ class StagingConfig(Config):
 class DevelopmentConfig(Config):
 	DEVELOPMENT=True
 	DEBUG=True
+	DB_NAME = 'flask_mega'
 
 class TestingConfig(Config):
 	TESTING=True

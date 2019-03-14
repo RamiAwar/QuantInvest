@@ -1,6 +1,7 @@
 from flask import Flask 
 from flask_login import LoginManager
 
+import mongoengine
 import os
 
 
@@ -20,6 +21,10 @@ from app.auth import bp as auth_bp
 
 app.register_blueprint(errors_bp)
 app.register_blueprint(auth_bp, url_prefix='/auth')
+
+# Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
+mongoengine.connect(app.config['DB_NAME'], host=app.config['MONGODB_URI'], port=27017);
+
 
 # Make some variables available in flask shell
 from app.models import User, Post
