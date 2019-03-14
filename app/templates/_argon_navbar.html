@@ -34,13 +34,13 @@
 
                   
                   <li class="nav-item">
-                    <a class="nav-link nav-link-icon {% if active_page == url_for('login') %}active{% endif %}" href=" {{ url_for('login') }}">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('auth.login') %}active{% endif %}" href=" {{ url_for('auth.login') }}">
                         <span class="nav-link-inner--text">Login</span>
                     </a>
                   </li>
     
                   <li class="nav-item">
-                    <a class="nav-link nav-link-icon {% if active_page == url_for('register') %}active{% endif %}" href=" {{ url_for('register') }}">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('auth.register') %}active{% endif %}" href=" {{ url_for('auth.register') }}">
                         <span class="nav-link-inner--text">SignUp</span>
                     </a>
                   </li>
@@ -63,7 +63,7 @@
 
 
                   <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href=" {{ url_for('logout') }}">
+                    <a class="nav-link nav-link-icon" href=" {{ url_for('auth.logout') }}">
                         <span class="nav-link-inner--text">Logout</span>
                     </a>
                   </li>

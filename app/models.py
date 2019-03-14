@@ -21,6 +21,7 @@ class User(UserMixin, mongoengine.Document):
     def check_password(self, password):
     	return check_password_hash(self.password_hash, password);
 
+    # TODO: Change into something customizable?
     def get_profile_picture(self):
     	return url_for('static', filename="example_user.png")
 
