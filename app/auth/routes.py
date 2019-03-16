@@ -23,7 +23,7 @@ def register():
 		user.save()
 
 		flash("User created successfully", category="success")
-		return redirect(url_for('login'))
+		return redirect(url_for('auth.login'))
 
 	return render_template('auth/register.html', form=registration_form)
 
@@ -47,7 +47,7 @@ def login():
 		if user is None or not user.check_password(login_form.password.data):
 
 			flash("Invalid username or password", category="danger");
-			return redirect(url_for('login'));
+			return redirect(url_for('auth.login'));
 
 		# Login user
 		login_user(user, remember=login_form.remember_me.data)
