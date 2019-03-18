@@ -15,6 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+
+
+
 :root
 {
     --blue: #5e72e4;
@@ -21842,3 +21845,5 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle
 
     height: 3px;
 }
+
+

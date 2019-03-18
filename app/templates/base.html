@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 
 
@@ -24,12 +24,23 @@
 
 </head>
 
-<body>
+<body style="display: flex;min-height: 100vh;flex-direction: column;">
 
-<div class="main-content">
+<!-- Bootstrap scripts -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
+
+<div class="main-content" style="flex:1;">
 
 	{% include "_argon_navbar.html" %}
 
+	<!-- Display flashed messages (notifications, errors, etc.) -->
 	<div class="container pt-2">
 	{% with messages = get_flashed_messages(with_categories=true) %}
 	  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
@@ -43,24 +54,30 @@
 	    {% endfor %}
 	  {% endif %}
 	{% endwith %}
-		
 	</div>
 
+
+
+	<!-- Keep track of active page for highlighting purposes -->
 	{% set active_page = active_page|default('index') -%}
 
+
+	<!-- Body content -->
 	<div class="container pt-3">
 		{% block content %}{% endblock %}
 	</div>
 
 </div>
 
+<footer class="mt-3 text-center pt-3 pb-3">
+	<!-- Footer -->
+	{% include "footer.html" %}
+</footer>
 
-<!-- Bootstrap scripts -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
+
 </html>

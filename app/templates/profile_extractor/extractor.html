@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% set active_page = "extractor" %}
+{% block content %}
+
+<div class="row">
+  <div class="col-xl-8 mb-5 mb-xl-0">
+    <div id="chart-container" class="card bg-gradient-default shadow">
+      <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-light ls-1 mb-1">Backtesting</h6>
+            <h2 class="text-white mb-0">Portfolio Performance</h2>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Chart -->
+        <div class="chart">
+          <!-- Chart wrapper -->
+          <canvas id="portfolio-performance-chart" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ALL THREE SLIDERS CONTAINER -->
+  <div id="configuration-container" class="col-xl-4 col-md-5 mb-5 mb-xl-0">
+    
+    <div id="time-range-slider" data-range-value-min="0" data-range-value-max="5"></div>
+    <div class="row d-none">
+        <div class="col-6">
+            <span class="range-slider-value value-low" data-range-value-low="0" id="time-range-slider-value-low"></span>
+        </div>
+        <div class="col-6 text-right">
+            <span class="range-slider-value value-high" data-range-value-high="4" id="time-range-slider-value-high"></span>
+        </div>
+    </div>
+
+    <div class="input-slider-container">
+      <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+      <div class="row mt-3 d-none">
+        <div class="col-6">
+          <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-slider-container">
+      <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+      <div class="row mt-3 d-none">
+        <div class="col-6">
+          <span id="expected-risk-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<script src="{{url_for('static', filename='js/nouislider.js')}}"></script>
+<script src="{{url_for('static', filename='js/chart.bundle.min.js')}} "></script>
+<script src="{{url_for('static', filename='js/argon.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/busyload.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/profile_extractor.js')}} "></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/lib/busyload.min.css')}}"/>
+
+
+{% endblock %}
+

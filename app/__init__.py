@@ -18,9 +18,13 @@ from app import routes
 # Register all blueprints
 from app.errors import bp as errors_bp
 from app.auth import bp as auth_bp
+from app.profile_extractor import bp as extractor_bp
 
-app.register_blueprint(errors_bp)
+
+app.register_blueprint(errors_bp, url_prefix='/error')
 app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(extractor_bp)
+
 
 # Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
 mongoengine.connect(app.config['DB_NAME'], host=app.config['MONGODB_URI'], port=27017);
