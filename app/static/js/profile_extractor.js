@@ -30,6 +30,10 @@ var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
 
 
 
+// TODO: on change value, send ajax request to optimizer and wait for response. :priority (1)
+// Disable sliders upon request, enable again upon response received and after updating chart
+expected_returns_slider.setAttribute('disabled', true)
+
 
 
 
