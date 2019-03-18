@@ -18,6 +18,7 @@ var enable_chart = function(){
 
 var t = (function(){
 
+// Values here are passed from server
 var expected_returns_slider = document.getElementById('expected-returns-slider');
 var expected_risk_slider = document.getElementById('expected-risk-slider');
 
@@ -28,7 +29,6 @@ var min_expected_risk = expected_risk_slider.dataset.rangeValueMin;
 var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
 
 
-console.log(max_expected_risk);
 
 
 
@@ -97,13 +97,13 @@ var noUiSlider = (function() {
 
 
 
-var portfolio_chart = (function() {
+var p = (function() {
 
     var $chart = $('#portfolio-performance-chart');
 
     function init($chart) {
 
-        var salesChart = new Chart($chart, {
+        var portfolio_chart = new Chart($chart, {
             type: 'line',
             options: {
                 scales: {
@@ -148,8 +148,7 @@ var portfolio_chart = (function() {
         });
 
         // Save to jQuery object
-
-        $chart.data('chart', salesChart);
+        $chart.data('chart', portfolio_chart);
 
     };
 
