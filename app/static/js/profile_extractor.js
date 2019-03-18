@@ -12,68 +12,95 @@ var enable_chart = function(){
 }
 
 
-
-
 // -------- SLIDERS ---------------
 
 var t = (function(){
 
-// Values here are passed from server
-var expected_returns_slider = document.getElementById('expected-returns-slider');
-var expected_risk_slider = document.getElementById('expected-risk-slider');
+    // Values here are passed from server
+    var expected_returns_slider = document.getElementById('expected-returns-slider');
+    var expected_risk_slider = document.getElementById('expected-risk-slider');
 
-var min_expected_returns = expected_returns_slider.dataset.rangeValueMin;
-var max_expected_returns = expected_returns_slider.dataset.rangeValueMax;
+    var min_expected_returns = expected_returns_slider.dataset.rangeValueMin;
+    var max_expected_returns = expected_returns_slider.dataset.rangeValueMax;
 
-var min_expected_risk = expected_risk_slider.dataset.rangeValueMin; 
-var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
-
-
-
-// TODO: on change value, send ajax request to optimizer and wait for response. :priority (1)
-// Disable sliders upon request, enable again upon response received and after updating chart
-expected_returns_slider.setAttribute('disabled', true)
+    var min_expected_risk = expected_risk_slider.dataset.rangeValueMin; 
+    var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
 
 
 
+    // TODO: on change value, send ajax request to optimizer and wait for response. :priority (1)
+    // Disable sliders upon request, enable again upon response received and after updating chart
+    expected_returns_slider.setAttribute('disabled', true)
 
 })();
 
 
 
 
-var noUiSlider = (function() {
+// var asdasd = (function() {
 
-    
-    // $('.input-slider-container').each(function() {
+//     $('.input-slider-container').each(function() {
 
-    //     var slider = $(this).find('.input-slider');
-    //     var sliderId = slider.attr('id');
-    //     var minValue = slider.data('range-value-min');
-    //     var maxValue = slider.data('range-value-max');
+//         var slider = $(this).find('.input-slider');
+//         var sliderId = slider.attr('id');
+//         var minValue = slider.data('range-value-min');
+//         var maxValue = slider.data('range-value-max');
 
-    //     var sliderValue = $(this).find('.range-slider-value');
-    //     var sliderValueId = sliderValue.attr('id');
-    //     var startValue = sliderValue.data('range-value-low');
+//         var sliderValue = $(this).find('.range-slider-value');
+//         var sliderValueId = sliderValue.attr('id');
+//         var startValue = sliderValue.data('range-value-low');
 
-    //     var c = document.getElementById(sliderId),
-    //             d = document.getElementById(sliderValueId);
+//         var c = document.getElementById(sliderId),
+//                 d = document.getElementById(sliderValueId);
 
-    //     noUiSlider.create(c, {
-    //             start: [parseInt(startValue)],
-    //             connect: [true, false],
-    //             //step: 1000,
-    //             range: {
-    //                     'min': [parseInt(minValue)],
-    //                     'max': [parseInt(maxValue)]
-    //             }
-    //     });
+//         noUiSlider.create(c, {
+//                 start: [parseInt(startValue)],
+//                 connect: [true, false],
+//                 //step: 1000,
+//                 range: {
+//                         'min': [parseInt(minValue)],
+//                         'max': [parseInt(maxValue)]
+//                 }
+//         });
 
-    //     c.noUiSlider.on('update', function(a, b) {
-    //             d.textContent = a[b];
-    //     });
-    // })
-    // }
+//         c.noUiSlider.on('update', function(a, b) {
+//                 d.textContent = a[b];
+//         });
+//     })
+// })
+
+
+$(document).ready(function(){
+
+    console.log("test")
+
+    console.log(noUiSlider)
+
+    var c = document.getElementById("time-range-slider"),
+        d = document.getElementById("time-range-slider-value-low"),
+        e = document.getElementById("time-range-slider-value-high"),
+        f = [d, e];
+
+    noUiSlider.create(c, {
+
+        start: 
+        [
+            parseInt(d.getAttribute('data-range-value-low')), 
+            parseInt(e.getAttribute('data-range-value-high'))
+        ],
+        connect: true,
+        range: {
+            min: parseInt(c.getAttribute('data-range-value-min')),
+            max: parseInt(c.getAttribute('data-range-value-max'))
+        }
+
+    });
+
+    c.noUiSlider.on("update", function(a, b){
+        f[b].textContent = a[b];
+    })
+
+})
 
     // if ($("#input-slider-range")[0]) {
     //         var c = document.getElementById("input-slider-range"),
@@ -88,12 +115,13 @@ var noUiSlider = (function() {
     //                         min: parseInt(c.getAttribute('data-range-value-min')),
     //                         max: parseInt(c.getAttribute('data-range-value-max'))
     //                 }
+    //
     //         }), c.noUiSlider.on("update", function(a, b) {
     //                 f[b].textContent = a[b]
     //         })
     // }
 
-})();
+// })();
 
 
 

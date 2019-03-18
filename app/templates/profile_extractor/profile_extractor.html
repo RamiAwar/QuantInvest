@@ -1,8 +1,11 @@
 {% extends "base.html" %}
-{% set active_page = "extractor" %}
+{% set active_page = "profile_extractor" %}
 {% block content %}
 
 <div class="row">
+
+
+  <!-- Chart container -->
   <div class="col-xl-8 mb-5 mb-xl-0">
     <div id="chart-container" class="card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
@@ -24,9 +27,14 @@
   </div>
 
 
+
+
   <!-- ALL THREE SLIDERS CONTAINER -->
   <div id="configuration-container" class="col-xl-4 col-md-5 mb-5 mb-xl-0">
     
+
+    <!-- Time range slider -->
+    <h2> Time Range </h2>
     <div id="time-range-slider" data-range-value-min="0" data-range-value-max="5"></div>
     <div class="row d-none">
         <div class="col-6">
@@ -37,6 +45,8 @@
         </div>
     </div>
 
+    <!-- Expected returns slider -->
+    <h2> Expected Returns </h2>
     <div class="input-slider-container">
       <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
       <div class="row mt-3 d-none">
@@ -46,6 +56,9 @@
       </div>
     </div>
 
+
+    <!-- Expected risk slider -->
+    <h2> Volatility </h2>
     <div class="input-slider-container">
       <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
       <div class="row mt-3 d-none">
@@ -60,12 +73,13 @@
 </div>
 
 
-<script src="{{url_for('static', filename='js/nouislider.js')}}"></script>
-<script src="{{url_for('static', filename='js/chart.bundle.min.js')}} "></script>
-<script src="{{url_for('static', filename='js/argon.min.js')}}"></script>
-<script src="{{url_for('static', filename='js/busyload.min.js')}}"></script>
-<script src="{{url_for('static', filename='js/profile_extractor.js')}} "></script>
-<link rel="stylesheet" href="{{url_for('static', filename='css/lib/busyload.min.css')}}"/>
+<script src="{{url_for('static', filename='js/nouislider.min.js') }}"></script>
+<script src="{{url_for('static', filename='js/chart.bundle.min.js') }} "></script>
+<script src="{{url_for('static', filename='js/argon.min.js') }}"></script>
+<script src="{{url_for('static', filename='js/busyload.min.js') }}"></script>
+<script src="{{url_for('static', filename='js/profile_extractor.js') }} "></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lib/busyload.min.css') }}"/>
 
 
 {% endblock %}

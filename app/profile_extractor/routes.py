@@ -24,4 +24,6 @@ def createprofile():
 
 
 
-	return render_template('profile_extractor/extractor.html')
+	return render_template('profile_extractor/profile_extractor.html')
+
+# @bp.route('/')
