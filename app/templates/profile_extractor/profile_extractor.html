@@ -6,7 +6,7 @@
 
 
   <!-- Chart container -->
-  <div class="col-xl-8 mb-5 mb-xl-0">
+  <div class="col-xl-7 mb-5 mb-xl-4">
     <div id="chart-container" class="card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
@@ -30,18 +30,18 @@
 
 
   <!-- ALL THREE SLIDERS CONTAINER -->
-  <div id="configuration-container" class="col-xl-4 col-md-5 ">
+  <div id="configuration-container" class="col-xl-4 col-md-5 ml-auto mb-auto mt-auto">
     
 
     <!-- Time range slider -->
-    <h2> Time Range </h2 class="mt-auto">
-    <div id="time-range-slider" class="mb-5" data-range-value-min="0" data-range-value-max="5"></div>
+    <h2> Time Range </h2>
+    <div id="time-range-slider" class="mb-5" data-range-value-min="2014" data-range-value-max="2019"></div>
     <div class="row d-none">
         <div class="col-6">
-            <span class="range-slider-value value-low" data-range-value-low="0" id="time-range-slider-value-low"></span>
+            <span class="range-slider-value value-low" data-range-value-low="2014" id="time-range-slider-value-low"></span>
         </div>
         <div class="col-6 text-right">
-            <span class="range-slider-value value-high" data-range-value-high="4" id="time-range-slider-value-high"></span>
+            <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
         </div>
     </div>
 
@@ -52,7 +52,7 @@
     <div class="input-slider-container">
       <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
       <div class="row mt-3 d-none">
-        <div class="col-6">
+        <div>
           <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
         </div>
       </div>
@@ -95,7 +95,7 @@
 
 </div>
 
-
+<script src="{{url_for('static', filename='js/wnumb.js') }}"></script>
 <script src="{{url_for('static', filename='js/nouislider.min.js') }}"></script>
 <script src="{{url_for('static', filename='js/chart.bundle.min.js') }} "></script>
 <script src="{{url_for('static', filename='js/argon.min.js') }}"></script>
