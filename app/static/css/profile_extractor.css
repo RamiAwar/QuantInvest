@@ -1,0 +1,25 @@
+/**** Custom styles for noUiSlider ****/
+.noUi-tooltip {
+    display: none;
+}
+.noUi-active .noUi-tooltip {
+    display: block;
+}
+
+/**** Custom styles for Range ****/
+input[type=range]::-webkit-slider-thumb {
+  background-color: skyblue;
+}
+input[type=range]::-moz-range-thumb {
+  background-color: skyblue;
+}
+input[type=range]::-ms-thumb {
+  background-color: skyblue;
+}
+/* For the globe and the text inside */
+input[type=range] + .thumb {
+  background-color: blue;
+}
+input[type=range] + .thumb.active .value {
+  color: #fff;
+}

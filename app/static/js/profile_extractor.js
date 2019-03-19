@@ -83,10 +83,12 @@ var noUiSlider = (function(){
             min: parseInt(c.getAttribute('data-range-value-min')),
             max: parseInt(c.getAttribute('data-range-value-max'))
         },
+        step: 1,
         pips: {
             mode: 'range',
             density: 20
-        }
+        },
+        tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 
     }), c.noUiSlider.on("update", function(a, b){
             f[b].textContent = a[b];
