@@ -82,11 +82,17 @@ var noUiSlider = (function(){
         range: {
             min: parseInt(c.getAttribute('data-range-value-min')),
             max: parseInt(c.getAttribute('data-range-value-max'))
+        },
+        pips: {
+            mode: 'range',
+            density: 20
         }
 
     }), c.noUiSlider.on("update", function(a, b){
             f[b].textContent = a[b];
         })
+
+
 
 })()
 
@@ -112,7 +118,29 @@ var noUiSlider = (function(){
 // })();
 
 
+var doghnut_chart = (function(){
 
+    new Chart(document.getElementById("doughnut-chart"), {
+        type: 'doughnut',
+        data: {
+          labels: ["MSFT", "TSLA", "WYNN", "GOOG", "AMZN"],
+          datasets: [
+            {
+              label: "Stock Tickers",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: [30,10,15,15,30]
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Portfolio'
+          }
+        }
+    });
+
+})();
 
 
 
