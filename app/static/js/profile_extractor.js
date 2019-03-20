@@ -122,8 +122,8 @@ var noUiSlider = (function(){
 
 var doghnut_chart = (function(){
 
-    new Chart(document.getElementById("doughnut-chart"), {
-        type: 'doughnut',
+    new Chart(document.getElementById("chart-pie"), {
+        type: 'pie',
         data: {
           labels: ["MSFT", "TSLA", "WYNN", "GOOG", "AMZN"],
           datasets: [
