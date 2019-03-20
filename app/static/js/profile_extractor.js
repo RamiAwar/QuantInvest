@@ -20,12 +20,6 @@ $(document).ready(function(){
     var expected_returns_slider = document.getElementById('expected-returns-slider');
     var expected_risk_slider = document.getElementById('expected-risk-slider');
 
-    // var min_expected_returns = expected_returns_slider.dataset.rangeValueMin;
-    // var max_expected_returns = expected_returns_slider.dataset.rangeValueMax;
-
-    // var min_expected_risk = expected_risk_slider.dataset.rangeValueMin; 
-    // var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
-
     var time_range_slider = document.getElementById("time-range-slider"),
         time_range_slider_min = document.getElementById("time-range-slider-value-low"),
         time_range_slider_max = document.getElementById("time-range-slider-value-high");
@@ -35,7 +29,7 @@ $(document).ready(function(){
     // TODO: on change value, send ajax request to optimizer and wait for response. :priority (1)
     // Disable sliders upon request, enable again upon response received and after updating chart
     // expected_returns_slider.setAttribute('disabled', true)
-
+    
 
 
 
