@@ -2,11 +2,58 @@
 {% set active_page = "profile_extractor" %}
 {% block content %}
 
-<div class="row">
 
+
+<div class="row justify-content-center">
+
+  <!-- ALL THREE SLIDERS CONTAINER -->
+  <div id="configuration-container" class="col-xs-12 col-md-10 col-xl-4 ml-5 mr-5 mt-auto">
+    
+
+    <!-- Time range slider -->
+    <h3> Time Range </h3>
+    <div id="time-range-slider" class="mb-5" data-range-value-min="2014" data-range-value-max="2019"></div>
+    <div class="row d-none">
+        <div class="col-6">
+            <span class="range-slider-value value-low" data-range-value-low="2014" id="time-range-slider-value-low"></span>
+        </div>
+        <div class="col-6 text-right">
+            <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
+        </div>
+    </div>
+
+
+
+    <!-- Expected returns slider -->
+    <h3> Expected Returns </h3>
+    <div class="input-slider-container mb-5">
+      <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+      <div class="row mt-3 d-none">
+        <div>
+          <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Expected risk slider -->
+    <h3> Volatility </h3>
+    <div class="input-slider-container mb-7 mb-xl-auto mr-auto">
+      <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+      <div class="row mt-3 d-none">
+        <div class="col-6">
+          <span id="expected-risk-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row justify-content-center">
 
   <!-- Chart container -->
-  <div class="col-xl-7 mb-5 mb-xl-4">
+  <div class="col-xs-12 col-md-10 col-xl-8  mb-5 mb-xl-4">
     <div id="chart-container" class="card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
@@ -25,54 +72,10 @@
       </div>
     </div>
   </div>
+</div>
 
-
-
-
-  <!-- ALL THREE SLIDERS CONTAINER -->
-  <div id="configuration-container" class="col-xl-4 col-md-5 ml-auto mb-auto mt-auto">
-    
-
-    <!-- Time range slider -->
-    <h2> Time Range </h2>
-    <div id="time-range-slider" class="mb-5" data-range-value-min="2014" data-range-value-max="2019"></div>
-    <div class="row d-none">
-        <div class="col-6">
-            <span class="range-slider-value value-low" data-range-value-low="2014" id="time-range-slider-value-low"></span>
-        </div>
-        <div class="col-6 text-right">
-            <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
-        </div>
-    </div>
-
-
-
-    <!-- Expected returns slider -->
-    <h2> Expected Returns </h2>
-    <div class="input-slider-container">
-      <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
-      <div class="row mt-3 d-none">
-        <div>
-          <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Expected risk slider -->
-    <h2> Volatility </h2>
-    <div class="input-slider-container mb-auto">
-      <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
-      <div class="row mt-3 d-none">
-        <div class="col-6">
-          <span id="expected-risk-slider-value" class="range-slider-value" data-range-value-low="100"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="col-xl-8 col-md-7 mb-5 mb-xl-0">
+<div class="row justify-content-center">
+  <div class="col-xs-12 col-md-10 col-xl-8 mb-5 mb-xl-0">
     <div id="chart-container" class="card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
@@ -84,15 +87,13 @@
       </div>
       <div class="card-body">
         <!-- Chart -->
-        <div class="chart">
+        <div class="chart mb-5">
           <!-- Chart wrapper -->
           <canvas id="chart-pie" class="chart-canvas"></canvas>
         </div>
       </div>
     </div>
   </div>
-
-
 </div>
 
 <script src="{{url_for('static', filename='js/wnumb.js') }}"></script>

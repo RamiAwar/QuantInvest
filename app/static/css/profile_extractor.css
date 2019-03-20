@@ -6,6 +6,10 @@
     display: block;
 }
 
+.noUi-pips{
+	font-size:0.9em;
+}
+
 /**** Custom styles for Range ****/
 input[type=range]::-webkit-slider-thumb {
   background-color: skyblue;

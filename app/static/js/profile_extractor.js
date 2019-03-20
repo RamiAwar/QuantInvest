@@ -11,28 +11,30 @@ var enable_chart = function(){
     $("#chart-container").busyLoad("hide");
 }
 
+$(document).ready(function(){
 
 // -------- SLIDERS ---------------
 
-var t = (function(){
 
     // Values here are passed from server
     var expected_returns_slider = document.getElementById('expected-returns-slider');
     var expected_risk_slider = document.getElementById('expected-risk-slider');
 
-    var min_expected_returns = expected_returns_slider.dataset.rangeValueMin;
-    var max_expected_returns = expected_returns_slider.dataset.rangeValueMax;
+    // var min_expected_returns = expected_returns_slider.dataset.rangeValueMin;
+    // var max_expected_returns = expected_returns_slider.dataset.rangeValueMax;
 
-    var min_expected_risk = expected_risk_slider.dataset.rangeValueMin; 
-    var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
+    // var min_expected_risk = expected_risk_slider.dataset.rangeValueMin; 
+    // var max_expected_risk = expected_risk_slider.dataset.rangeValueMax;
+
+    var time_range_slider = document.getElementById("time-range-slider"),
+        time_range_slider_min = document.getElementById("time-range-slider-value-low"),
+        time_range_slider_max = document.getElementById("time-range-slider-value-high");
 
 
 
     // TODO: on change value, send ajax request to optimizer and wait for response. :priority (1)
     // Disable sliders upon request, enable again upon response received and after updating chart
-    expected_returns_slider.setAttribute('disabled', true)
-
-})();
+    // expected_returns_slider.setAttribute('disabled', true)
 
 
 
@@ -58,30 +60,37 @@ var t = (function(){
 //             })
 //     }
 // })()
+    
+    // Initialize expected returns slider
+    noUiSlider.create(expected_returns_slider, {
+        start:0,
+        range:{'min':0, '50%':50, max:100},
+        pips: {mode:'range', density:10},
+        tooltips: wNumb({decimals:2})
+    })
 
-
-var noUiSlider = (function(){
-
-    console.log("test")
-
-    console.log(noUiSlider)
-
-    var c = document.getElementById("time-range-slider"),
-        d = document.getElementById("time-range-slider-value-low"),
-        e = document.getElementById("time-range-slider-value-high"),
-        f = [d, e];
-
-    noUiSlider.create(c, {
+    // Initialize expected risk slider
+    noUiSlider.create(expected_risk_slider, {
+        start:0,
+        range:{min:0, max:100},
+        pips: {mode:'range', density:10},
+        tooltips: wNumb({decimals:2})
+    })
+    
+    
+    // Initialize time range slider
+    f = [time_range_slider_min, time_range_slider_max];
+    noUiSlider.create( time_range_slider, {
 
         start: 
         [
-            parseInt(d.getAttribute('data-range-value-low')), 
-            parseInt(e.getAttribute('data-range-value-high'))
+            parseInt(time_range_slider_min.getAttribute('data-range-value-low')), 
+            parseInt(time_range_slider_max.getAttribute('data-range-value-high'))
         ],
         connect: true,
         range: {
-            min: parseInt(c.getAttribute('data-range-value-min')),
-            max: parseInt(c.getAttribute('data-range-value-max'))
+            min: parseInt( time_range_slider.getAttribute('data-range-value-min')),
+            max: parseInt( time_range_slider.getAttribute('data-range-value-max'))
         },
         step: 1,
         pips: {
@@ -90,13 +99,18 @@ var noUiSlider = (function(){
         },
         tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 
-    }), c.noUiSlider.on("update", function(a, b){
-            f[b].textContent = a[b];
-        })
+    }),  
+
+    time_range_slider.noUiSlider.on("update", function(a, b){
+        f[b].textContent = a[b];
+    })
 
 
 
-})()
+
+
+
+
 
     // if ($("#input-slider-range")[0]) {
     //         var c = document.getElementById("input-slider-range"),
@@ -120,9 +134,8 @@ var noUiSlider = (function(){
 // })();
 
 
-var doghnut_chart = (function(){
 
-    new Chart(document.getElementById("chart-pie"), {
+    var pie_chart = new Chart(document.getElementById("chart-pie"), {
         type: 'pie',
         data: {
           labels: ["MSFT", "TSLA", "WYNN", "GOOG", "AMZN"],
@@ -154,12 +167,8 @@ var doghnut_chart = (function(){
         }
     });
 
-})();
 
 
-
-
-var p = (function() {
 
     var $chart = $('#portfolio-performance-chart');
 
@@ -239,4 +248,4 @@ var p = (function() {
     //     });
     // });
 
-})();
+});
