@@ -248,4 +248,37 @@ $(document).ready(function(){
     //     });
     // });
 
+
+    $('#form').submit(function(e) {
+        
+        e.preventDefault();
+        var data = {};
+        var Form = this;
+        
+        $.each(this.elements, function(i, v) {
+            var input = $(v);
+            data[input.attr("name")] = input.val();
+            delete data["undefined"];
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: OPTIMIZER_ENDPOINT,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),
+            context: Form,
+            success: function(callback) {
+                console.log(callback);
+                // Watch out for Cross Site Scripting security issues when setting dynamic content!
+                $(this).text('Hello ' + callback.first_name + ' ' + callback.last_name  + '!');
+            },
+            error: function() {
+                $(this).html("error!");
+            }
+        });
+    });
+
+
+
 });

@@ -10,7 +10,6 @@ from app.profile_extractor import bp
 @login_required
 def createprofile():
 
-
 	# registration_form = RegistrationForm()
 
 	# if registration_form.validate_on_submit():
@@ -24,6 +23,6 @@ def createprofile():
 
 
 
-	return render_template('profile_extractor/profile_extractor.html')
+	return render_template('profile_extractor/profile_extractor.html', optimizer_url="localhost:")
 
 # @bp.route('/')
