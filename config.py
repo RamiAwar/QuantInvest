@@ -12,6 +12,7 @@ class Config(object):
 	MONGODB_URI = os.environ.get('MONGODB_URI') or \
 		'localhost:27017';
 	DB_NAME = 'quantinvest'
+	OPTIMIZER_ENDPOINT = "localhost:9999"
 
 	# TODO: Correct setup : priority (2)
 	# MAIL_SERVER = os.environ.get('MAIL_SERVER')
