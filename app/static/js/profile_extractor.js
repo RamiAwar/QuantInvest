@@ -138,7 +138,19 @@ var doghnut_chart = (function(){
           title: {
             display: true,
             text: 'Portfolio'
-          }
+          },
+          tooltips: {
+                callbacks: {
+                    label: function(item, data) {
+                        var label = data.datasets[item.datasetIndex].label || '';
+                        
+                        var content = '';
+                        content += data.labels[item.index] + " "
+                        content += data.datasets[item.datasetIndex].data[item.index] + '%';
+                        return content;
+                    }
+                }
+            }
         }
     });
 
@@ -182,7 +194,7 @@ var p = (function() {
                                 content += '<span class="popover-body-label mr-auto">' + label + '</span>';
                             }
 
-                            content += '<span class="popover-body-value">$' + yLabel + 'k</span>';
+                            content += '$' + yLabel + 'k';
                             return content;
                         }
                     }
