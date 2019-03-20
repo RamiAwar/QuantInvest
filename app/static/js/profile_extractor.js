@@ -132,7 +132,7 @@ $(document).ready(function(){
     // }
 
 // })();
-
+    
 
 
     var pie_chart = new Chart(document.getElementById("chart-pie"), {
@@ -153,6 +153,10 @@ $(document).ready(function(){
             text: 'Portfolio'
           },
           tooltips: {
+
+                backgroundColor: "#fff",
+                bodyFontColor: "#444",
+                titleFontColor: "#444",
                 callbacks: {
                     label: function(item, data) {
                         var label = data.datasets[item.datasetIndex].label || '';
@@ -193,6 +197,9 @@ $(document).ready(function(){
                     }]
                 },
                 tooltips: {
+                    backgroundColor: "#fff",
+                    bodyFontColor: "#444",
+                    titleFontColor: "#444",
                     callbacks: {
                         label: function(item, data) {
                             var label = data.datasets[item.datasetIndex].label || '';
