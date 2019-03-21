@@ -11,6 +11,25 @@ var enable_chart = function(){
     $("#chart-container").busyLoad("hide");
 }
 
+function removeData(chart) {
+    // chart.data.labels.pop();
+    // console.log(chart)
+    chart.data.forEach((dataset) => {
+        // console.log(dataset)
+        dataset.data.pop();
+
+    });
+    chart.update();
+}
+
+function addData(chart, label, data) {
+    chart.data.labels.push(label);
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.push(data);
+    });
+    chart.update();
+}
+
 $(document).ready(function(){
 
 // -------- SLIDERS ---------------
@@ -216,6 +235,7 @@ $(document).ready(function(){
                     }
                 }
             },
+
             data: {
                 labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 datasets: [{
@@ -233,6 +253,13 @@ $(document).ready(function(){
     // Events
     if ($chart.length) {
         init($chart);
+        
+        console.log($chart.data().chart.data);
+
+        $chart.data().chart.data.labels = ["Test","Test","Test","Test","Test","Test","Test","Test"]
+        $chart.data().chart.data.datasets[0].data[5] = 0
+        $chart.data().chart.update();
+
     }
 
     // $( "#searchForm" ).submit(function( event ) {
@@ -255,6 +282,7 @@ $(document).ready(function(){
     //     });
     // });
 
+    
 
     $('#form').submit(function(e) {
         
