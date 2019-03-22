@@ -41,7 +41,7 @@
 	{% include "_argon_navbar.html" %}
 
 	<!-- Display flashed messages (notifications, errors, etc.) -->
-	<div class="container pt-2">
+	<div id="error-container" class="container pt-2">
 	{% with messages = get_flashed_messages(with_categories=true) %}
 	  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
 	  {% if messages %}

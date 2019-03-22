@@ -15,6 +15,15 @@ var enable_charts = function(){
     })
 }
 
+var show_error = function(error_message){
+
+    $('#error-container').append('<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">\
+                <span class="alert-inner--text">' + error_message + '</span>\
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+    </div>');
+
+}
+
 var check_job = function(job_id){
 
     // Make an ajax post request to the api server, at endpoint check jobs
@@ -34,6 +43,9 @@ var check_job = function(job_id){
             console.log("Get job status successful: Received: ")
             console.log(response);
 
+
+            // TODO: Better error handling here : priority (4)
+
             if(response["is_finished"]){
 
                 // Update charts with whatever
@@ -41,6 +53,14 @@ var check_job = function(job_id){
                 // Re-enable everything 
                 enable_charts();
                 $('#submit').prop('disabled', false);
+
+            }else if(response["is_failed"]){
+
+                // Display error
+
+                enable_charts();
+                $('#submit').prop('disabled', false);
+                show_error("Unknown server error occured. Try again later.")
 
             }else{
 

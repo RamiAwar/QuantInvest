@@ -19,13 +19,12 @@ def do_nothing():
 		print(i)
 		time.sleep(1);
 
-
 	print("END");
 
 
-@bp.route('/optimize', methods=["POST"])
+@bp.route('/simpleopt', methods=["POST"])
 @login_required
-def optimize_portfolio():
+def optimize_simple():
 
 	# Get parameters as dictionary
 	parameters = request.get_json();
@@ -33,7 +32,7 @@ def optimize_portfolio():
 	# Create worker thread
 	queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
 
-	job = queue.enqueue("app.api.optimizer.optimization_handlers.optimize", parameters)
+	job = queue.enqueue("app.api.optimizer.optimization_handlers.efficient_risk_volatility", parameters)
 	
 	return jsonify({"job_id": job._id })
 
@@ -45,8 +44,6 @@ def check_job_status():
 	parameters = request.get_json();
 	job_id = parameters["job_id"];
 
-
-
 	# Check job status
 	queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
 	job = queue.fetch_job(job_id)
@@ -55,15 +52,9 @@ def check_job_status():
 
 	result = {}
 
-	if job.is_finished:
-
-		print(job.result);
-		result["is_finished"] = True;
-		result["result"] = job.result
-
-	else:
-
-		result["is_finished"] = False;
+	result["is_finished"] = job.is_finished;
+	result["is_failed"] = job.is_failed;
+	result["result"] = job.result;
 
 
 	return jsonify(result);
