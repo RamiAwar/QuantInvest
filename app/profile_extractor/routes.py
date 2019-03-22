@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_required
-# from werkzeug.urls import url_parse
+
 
 from app import app
 from app.models import User
@@ -24,7 +24,7 @@ def createprofile():
 
 
 
-	return render_template('profile_extractor/profile_extractor.html', optimizer_url=app.config["OPTIMIZER_ENDPOINT"])
+	return render_template('profile_extractor/profile_extractor.html')
 
 # @bp.route('/')
 

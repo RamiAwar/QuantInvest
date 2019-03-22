@@ -1,24 +1,28 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import jsonify, render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_required
 
 from rq import Queue
-from worker import conn
+from redis import from_url 
 
 from app import app
 from app.api import bp
 
+# from app.api.cors import crossdomain
 
-@bp.route('/optimize')
+def do_nothing():
+	pass;
+
+@bp.route('/optimize', methods=["POST"])
 @login_required
 def optimize_portfolio():
 
-	# Get parameters
-	parameters = request.args;
+	# Get parameters as dictionary
+	parameters = request.get_json();
 
 	# Create worker thread
-	conn = redis.from_url(redis_url)
-	q = Queue(connection=conn)
+	queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
 
-	job_id = q.enqueue(count_words_at_url, app.config.REDIS_URL)
-
+	job_id = queue.enqueue("app.api.optimizer.optimization_handlers.optimize", parameters)
+	
+	return jsonify({"name":"TZEST"})
 

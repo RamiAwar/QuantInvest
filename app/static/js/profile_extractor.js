@@ -278,32 +278,27 @@ $(document).ready(function(){
 
     
 
-    $('#form').submit(function(e) {
+    $('#submit').click(function() {
         
-        e.preventDefault();
-        var data = {};
-        var Form = this;
-        
-        $.each(this.elements, function(i, v) {
-            var input = $(v);
-            data[input.attr("name")] = input.val();
-            delete data["undefined"];
-        });
+        var data = {
+            "name": "test"
+        };
+
+
 
         $.ajax({
             type: 'POST',
             url: OPTIMIZER_ENDPOINT,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(data),
-            context: Form,
-            success: function(callback) {
-                console.log(callback);
-                // Watch out for Cross Site Scripting security issues when setting dynamic content!
-                $(this).text('Hello ' + callback.first_name + ' ' + callback.last_name  + '!');
+            data: JSON.stringify(data),  
+            context: $(this),
+            success: function(data) {
+                console.log("Success: received: ")
+                console.log(data);
             },
             error: function() {
-                $(this).html("error!");
+                console.log("Error")
             }
         });
     });
