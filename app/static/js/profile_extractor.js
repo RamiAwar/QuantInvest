@@ -1,21 +1,67 @@
 //-------- Helper functions -----------
-var disable_chart = function(){
- 
-    $("#chart-container").busyLoad("show", {
-        background: "rgba(0, 0, 0, 0.6)"
+var disable_charts = function(){
+    
+    $('.chart-container').each(function(){
+        $(this).busyLoad("show", {
+            background: "rgba(0, 0, 0, 0.6)"
+        })
+    })
+}
+
+var enable_charts = function(){
+
+    $('.chart-container').each(function(){
+        $(this).busyLoad("hide")
+    })
+}
+
+var check_job = function(job_id){
+
+    // Make an ajax post request to the api server, at endpoint check jobs
+    data = {
+        "job_id": job_id
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: GET_JOB_ENDPOINT,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(data),  
+        context: $(this),
+        success: function(response) {
+            
+            console.log("Get job status successful: Received: ")
+            console.log(response);
+
+            if(response["is_finished"]){
+
+                // Update charts with whatever
+
+                // Re-enable everything 
+                enable_charts();
+                $('#submit').prop('disabled', false);
+
+            }else{
+
+                setTimeout((function(){
+                    check_job(job_id);
+                }), 400);
+            }
+        },
+        error: function() {
+            console.log("Error fetching job status")
+        }
     });
+
 }
 
-var enable_chart = function(){
 
-    $("#chart-container").busyLoad("hide");
-}
-
+// TODO: Inconsistent style
 function removeData(chart) {
-    // chart.data.labels.pop();
-    // console.log(chart)
+    
     chart.data.forEach((dataset) => {
-        // console.log(dataset)
+        
         dataset.data.pop();
 
     });
@@ -280,11 +326,20 @@ $(document).ready(function(){
 
     $('#submit').click(function() {
         
+        // Disable submit button until job is finished
+        $('#submit').prop("disabled", true);
+
+        // Display loading sign on charts
+        disable_charts();
+
+        // Get slider data and submit to optimizer as a job        
         var data = {
-            "name": "test"
+            "expected_returns": expected_returns_slider.noUiSlider.get(),
+            "expected_risk": expected_risk_slider.noUiSlider.get(),
+            "time_range": time_range_slider.noUiSlider.get()
         };
 
-
+        
 
         $.ajax({
             type: 'POST',
@@ -293,14 +348,29 @@ $(document).ready(function(){
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data),  
             context: $(this),
-            success: function(data) {
+            success: function(response) {
+                
                 console.log("Success: received: ")
-                console.log(data);
+                console.log(response);
+                
+                job_id = response["job_id"];
+
+                // Then check for job result, and display that
+                check_job(job_id);
+
             },
             error: function() {
                 console.log("Error")
             }
         });
+
+        
+
+
+
+
+
+
     });
 
 

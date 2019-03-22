@@ -23,7 +23,6 @@
     </div>
 
 
-
     <!-- Expected returns slider -->
     <h3> Expected Returns </h3>
     <div class="input-slider-container mb-5">
@@ -48,10 +47,13 @@
     </div>
   </div>
 
+
   <div class="row ml-auto mr-auto mb-7">
     <button type="button" class="btn btn-primary">Primary</button>
     <button id="submit" type="button" class="btn btn-primary">Update</button>
   </div>
+
+
 
 </div>
 
@@ -59,7 +61,7 @@
 
   <!-- Chart container -->
   <div class="col-xs-12 col-md-10 col-xl-8  mb-5 mb-xl-4">
-    <div id="chart-container" class="card bg-gradient-default shadow">
+    <div id="performance-chart-container" class="chart-container card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
           <div class="col">
@@ -81,7 +83,7 @@
 
 <div class="row justify-content-center">
   <div class="col-xs-12 col-md-10 col-xl-8 mb-5 mb-xl-0">
-    <div id="chart-container" class="card bg-gradient-default shadow">
+    <div id="portfolio-chart-container" class="chart-container card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
           <div class="col">
@@ -103,7 +105,9 @@
 
 <script type="text/javascript">
   
-  OPTIMIZER_ENDPOINT = "http:{{ url_for('api.optimize_portfolio', _external=True) }}"
+  OPTIMIZER_ENDPOINT = "{{ url_for('api.optimize_portfolio') }}"
+  GET_JOB_ENDPOINT = "{{ url_for('api.check_job_status') }}"
+
 
 </script>
 
