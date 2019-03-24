@@ -1,2 +1,3 @@
 web: gunicorn entry:app
-worker: rq worker optimizer-queue
+
+worker: python app/api/optimizer/worker.py
