@@ -24,6 +24,7 @@ var show_error = function(error_message){
 
 }
 
+
 var check_job = function(job_id){
 
     // Make an ajax post request to the api server, at endpoint check jobs
@@ -49,6 +50,7 @@ var check_job = function(job_id){
             if(response["is_finished"]){
 
                 // Update charts with whatever
+
 
                 // Re-enable everything 
                 enable_charts();
@@ -76,7 +78,6 @@ var check_job = function(job_id){
 
 }
 
-
 // TODO: Inconsistent style
 function removeData(chart) {
     
@@ -96,6 +97,8 @@ function addData(chart, label, data) {
     chart.update();
 }
 
+
+
 $(document).ready(function(){
 
 // -------- SLIDERS ---------------
@@ -110,36 +113,6 @@ $(document).ready(function(){
         time_range_slider_max = document.getElementById("time-range-slider-value-high");
 
 
-
-    // TODO: on change value, send ajax request to optimizer and wait for response. :priority (1)
-    // Disable sliders upon request, enable again upon response received and after updating chart
-    // expected_returns_slider.setAttribute('disabled', true)
-    
-
-
-
-// var noUiSlider = (function() {
-
-//     if ($("#input-slider-range")[0]) {
-//             var c = document.getElementById("input-slider-range"),
-//                     d = document.getElementById("input-slider-range-value-low"),
-//                     e = document.getElementById("input-slider-range-value-high"),
-//                     f = [d, e];
-
-//             noUiSlider.create(c, {
-//                     start: [parseInt(d.getAttribute('data-range-value-low')), parseInt(e.getAttribute('data-range-value-high'))],
-//                     connect: !0,
-//                     range: {
-//                             min: parseInt(c.getAttribute('data-range-value-min')),
-//                             max: parseInt(c.getAttribute('data-range-value-max'))
-//                     }
-    
-//             }), c.noUiSlider.on("update", function(a, b) {
-//                     f[b].textContent = a[b]
-//             })
-//     }
-// })()
-    
     // Initialize expected returns slider
     noUiSlider.create(expected_returns_slider, {
         start:0,
@@ -213,16 +186,17 @@ $(document).ready(function(){
 // })();
     
 
+    var $piechart = $('#chart-pie')
 
-    var pie_chart = new Chart(document.getElementById("chart-pie"), {
+    var pie_chart = new Chart($piechart, {
         type: 'pie',
         data: {
-          labels: ["MSFT", "TSLA", "WYNN", "GOOG", "AMZN"],
+          labels: [""],
           datasets: [
             {
               label: "Stock Tickers",
-              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-              data: [30,10,15,15,30]
+              backgroundColor: ["#eee"],
+              data: [0]
             }
           ]
         },
@@ -250,7 +224,7 @@ $(document).ready(function(){
         }
     });
 
-
+    $piechart.data('data', pie_chart)
 
 
     var $chart = $('#portfolio-performance-chart');

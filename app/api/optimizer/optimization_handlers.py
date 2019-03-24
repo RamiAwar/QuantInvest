@@ -13,8 +13,8 @@ def efficient_risk_volatility(parameters):
 
 	print("From optimizer: ", parameters)
 
-	start = datetime(year=parameters["time_range"][0], month=1, day=1)
-	end = datetime(year=parameters["time_range"][1], month=1, day=1)
+	start = datetime(year=int(float(parameters["time_range"][0])), month=1, day=1)
+	end = datetime(year=int(float(parameters["time_range"][1])), month=1, day=1)
 
 	# Stocks to fetch
 	data = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
@@ -37,4 +37,6 @@ def efficient_risk_volatility(parameters):
 
 	cleaned_weights = ef.clean_weights()
 
-	return cleaned_weight
+	cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
+
+	return cleaned_weights
