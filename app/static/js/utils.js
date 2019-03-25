@@ -30,34 +30,77 @@ var show_error = function(error_message){
 
 }
 
-function get_random_color() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+function get_random(length) { return Math.floor(Math.random()*(length)); }
+
+function get_random_sample(array, size) {
+
+    var length = array.length, start = get_random(length);
+
+    for(var i = size; i--;) {
+        var index = (start + i)%length, rindex = get_random(length);
+        var temp = array[rindex];
+        array[rindex] = array[index];
+        array[index] = temp;
     }
-    return color;
+
+    var end = start + size, sample = array.slice(start, end);
+    if(end > length)
+        sample = sample.concat(array.slice(0, end - length));
+    
+    return sample;
 }
 
 var generate_random_colors_array = function(n){
-    var colors = [];
-    for(var i = 0; i < n; i++){
-        colors.push(String(get_random_color()));
-    }
-    return colors;
+    var colors_array = ["#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#4CAF50", "#009688", "#00BCD4", "#03A9F4", "#2196F3", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722", "#795548", "#9E9E9E", "#607D8B", ]
+    return get_random_sample(colors_array, n);
 }
 
+
+// Simple interface for updating pie and line chart data
+var update_chart = function(chart, labels, data, pie=false) {
+    
+    if(labels.length != data.length){
+        console.log("ERROR: data length and labels length provided are different, cannot update charts.")
+        return false;
+    }
+    
+    chart.data().data.content.chart.data.datasets[0].data = data;
+    chart.data().data.content.chart.data.labels = labels;
+
+    if(pie){
+        chart.data().data.content.data.datasets[0].backgroundColor = generate_random_colors_array(labels.length);
+    }
+
+    chart.data().data.content.chart.update();
+
+    return true;
+
+}
+
+
+var update_charts = function($portfolio_chart, $pie_chart, portfolio_weights, portfolio_performance){
+
+    // TODO: Enable portfolio performance updates after integration with backtesting api : priority (1)
+
+    // update_chart($portfolio_chart, ["Test","Test","Test","Test","Test","Test","Test","Test"], [0,0,0,10,0,0,0,0,0]);
+    update_chart($pie_chart, portfolio_weights['labels'], portfolio_weights['data'], true);
+
+}
+
+
+
+// PieChart constructor, basically returns a customized Chart instance for custom styled pie charts.
 class PieChart{
 
     constructor(dom_element, chart_label, data_labels, data){
         
-        this.chart = new Chart(dom_element, {
+        this.content = new Chart(dom_element, {
             type: 'pie',
             data: {
               labels: data_labels,
               datasets: [
                 {
-                  label: "test",
+                  label: "Dataset 1",
                   backgroundColor: generate_random_colors_array(data_labels.length),
                   data: data
                 }
@@ -72,7 +115,7 @@ class PieChart{
 
                     backgroundColor: "#fff",
                     bodyFontColor: "#444",
-                    titleFontColor: "#444",
+                    titleFontColor: "#eee",
                     callbacks: {
                         label: function(item, data) {
                             var label = data.datasets[item.datasetIndex].label || '';
@@ -89,9 +132,11 @@ class PieChart{
     }
 }
 
+
+// PortfolioChart class that returns a customized Chart instance for drawing a stylized line chart
 class PortfolioChart{
 
-    constructor(){
+    constructor($chart){
         this.chart = new Chart($chart, {
             type: 'line',
             options: {
@@ -132,10 +177,10 @@ class PortfolioChart{
             },
 
             data: {
-                labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: [''],
                 datasets: [{
                     label: 'Performance',
-                    data: [0, 120, 10, 30, 15, 40, 20, 60, 60]
+                    data: [0]
                 }]
             }
         });

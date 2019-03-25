@@ -37,6 +37,17 @@ def efficient_risk_volatility(parameters):
 
 	cleaned_weights = ef.clean_weights()
 
-	cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
+	cleaned_weights = {k: round(v*100, 3) for k, v in cleaned_weights.items() if v != 0}
 
-	return cleaned_weights
+	data = {}
+	data["labels"] = list(cleaned_weights.keys())
+	data["data"] = list(cleaned_weights.values())
+
+	# Testing data
+	# data = {
+	# 	"labels": ["AAPL", "AMZN", "TSLA"],
+	# 	"data": [10, 80, 10]
+	# }
+
+
+	return data

@@ -56,7 +56,7 @@ def check_job_status():
 	result["is_failed"] = job.is_failed;
 	result["result"] = job.result;
 
-
+	# print(job.result);
 	return jsonify(result);
 
 

@@ -1,79 +1,3 @@
-var update_charts = function(result_portfolio){
-
-    update_piechart()
-
-}
-
-var check_job = function(job_id){
-
-    // Make an ajax post request to the api server, at endpoint check jobs
-    data = {
-        "job_id": job_id
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: GET_JOB_ENDPOINT,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(data),  
-        context: $(this),
-        success: function(response) {
-            
-            console.log("Get job status - Received: ")
-            console.log(response);
-
-
-            // TODO: Better error handling here : priority (4)
-
-            if(response["is_finished"]){
-
-                // Update charts with whatever
-
-
-                // Re-enable everything 
-                update_charts(response["result"])
-                enable_charts();
-                $('#submit').prop('disabled', false);
-
-            }else if(response["is_failed"]){
-
-                // Display error
-
-                enable_charts();
-                $('#submit').prop('disabled', false);
-                show_error("Unknown server error occured. Try again later.")
-
-            }else{
-
-                setTimeout((function(){
-                    check_job(job_id);
-                }), 400);
-            }
-        },
-        error: function() {
-            console.log("Error fetching job status")
-        }
-    });
-}
-
-var update_piechart = function(chart, labels, data) {
-    
-    
-
-
-    chart.update();
-}
-
-
-var update_linechart = function(chart, labels, data){
-
-
-}
-
-
-
-
 $(document).ready(function(){
 
 // -------- SLIDERS ---------------
@@ -131,37 +55,27 @@ $(document).ready(function(){
     time_range_slider.noUiSlider.on("update", function(a, b){
         f[b].textContent = a[b];
     })
-    
 
+
+
+
+
+        
+    // ------------------- CHARTS -----------------------------
+
+    // Initialize pie chart 
     var $pie_chart = $('#chart-pie')
-
-    var pie_chart = new PieChart($pie_chart, "Portfolio", ["tesla", "msft"], [25,65])
-
+    var pie_chart = new PieChart($pie_chart, "Portfolio", ["tesla", "msft", "googl", "amzn", "plx", "ret"], [25,10, 5, 20, 13, 27])
+    // Save to jQuery object
     $pie_chart.data('data', pie_chart)
 
 
+    // Initialize portfolio chart
     var $portfolio_chart = $('#portfolio-performance-chart');
+    var portfolio_chart = new PortfolioChart($portfolio_chart);
+    // Save to jQuery object
+    $portfolio_chart.data('chart', portfolio_chart);
 
-    function init($chart) {
-
-        var portfolio_chart = new PortfolioChart($portfolio_chart)
-
-        // Save to jQuery object
-        $chart.data('chart', portfolio_chart);
-
-    };
-
-    // Events
-    if ($chart.length) {
-        init($chart);
-        
-        console.log($chart.data().chart.data);
-
-        $chart.data().chart.data.labels = ["Test","Test","Test","Test","Test","Test","Test","Test"]
-        $chart.data().chart.data.datasets[0].data[5] = 0
-        $chart.data().chart.update();
-
-    }
 
     $('#submit').click(function() {
         
@@ -195,7 +109,7 @@ $(document).ready(function(){
                 job_id = response["job_id"];
 
                 // Then check for job result, and display that
-                check_job(job_id);
+                check_job(job_id, $portfolio_chart, $pie_chart);
 
             },
             error: function() {
@@ -211,6 +125,62 @@ $(document).ready(function(){
 
 
     });
+
+    // TODO: Refactor this function to accept a callback function and call it on success : priority (1)
+
+    // Function to check requested job status by polling API endpoint.
+    var check_job = function(job_id){
+
+        // Make an ajax post request to the api server, at endpoint check jobs
+        data = {
+            "job_id": job_id
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: GET_JOB_ENDPOINT,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),  
+            context: $(this),
+            success: function(response) {
+                
+                console.log("Get job status - Received: ")
+                console.log(response);
+
+
+                // TODO: Better error handling here : priority (4)
+
+                if(response["is_finished"]){
+
+                   
+                    // Update charts and re-enable everything 
+                    // TODO: Pipe portfolio performance here : priority (1)
+                    update_charts($portfolio_chart,  $pie_chart, response["result"], "");
+
+                    enable_charts();
+                    $('#submit').prop('disabled', false);
+
+                }else if(response["is_failed"]){
+
+                    // Display error
+
+                    enable_charts();
+                    $('#submit').prop('disabled', false);
+                    show_error("Unknown server error occured. Try again later.")
+
+                }else{
+
+                    setTimeout((function(){
+                        check_job(job_id);
+                    }), 400);
+                }
+            },
+            error: function() {
+                console.log("Error fetching job status")
+            }
+        });
+    }
 
 
 
