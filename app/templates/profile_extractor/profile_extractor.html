@@ -4,10 +4,10 @@
 
 
 
-<div class="row justify-content-center">
+<div class="row justify-content-center mt-5 mb-5">
 
   <!-- ALL THREE SLIDERS CONTAINER -->
-  <div id="configuration-container" class="col-xs-12 col-md-10 col-xl-4 ml-5 mr-5 mt-auto">
+  <div id="configuration-container" class="col-xs-12 col-md-10 col-xl-4 ml-5 mr-5 mt-auto mb-md-5">
     
 
     <!-- Time range slider -->
@@ -47,10 +47,12 @@
     </div>
   </div>
 
-
-  <div class="row ml-auto mr-auto mb-7">
-    <button type="button" class="btn btn-primary">Primary</button>
-    <button id="submit" type="button" class="btn btn-primary">Update</button>
+  <!-- Action buttons container -->
+  <div class="row col-md-10 col-xl-2 align-items-center">
+    <div class="container">
+      <button type="button" class="btn btn-block btn-primary" style="max-height:50px;">Primary</button>
+      <button id="submit" type="button" class="btn btn-block btn-primary" style="max-height:50px;">Update</button>
+    </div>
   </div>
 
 
@@ -116,6 +118,8 @@
 <script src="{{url_for('static', filename='js/chart.bundle.min.js') }} "></script>
 <script src="{{url_for('static', filename='js/argon.min.js') }}"></script>
 <script src="{{url_for('static', filename='js/busyload.min.js') }}"></script>
+
+<script src="{{url_for('static', filename='js/utils.js') }}"></script>
 <script src="{{url_for('static', filename='js/profile_extractor.js') }} "></script>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/busyload.min.css') }}"/>

@@ -1,29 +1,8 @@
-//-------- Helper functions -----------
-var disable_charts = function(){
-    
-    $('.chart-container').each(function(){
-        $(this).busyLoad("show", {
-            background: "rgba(0, 0, 0, 0.6)"
-        })
-    })
-}
+var update_charts = function(result_portfolio){
 
-var enable_charts = function(){
-
-    $('.chart-container').each(function(){
-        $(this).busyLoad("hide")
-    })
-}
-
-var show_error = function(error_message){
-
-    $('#error-container').append('<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">\
-                <span class="alert-inner--text">' + error_message + '</span>\
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-    </div>');
+    update_piechart()
 
 }
-
 
 var check_job = function(job_id){
 
@@ -41,7 +20,7 @@ var check_job = function(job_id){
         context: $(this),
         success: function(response) {
             
-            console.log("Get job status successful: Received: ")
+            console.log("Get job status - Received: ")
             console.log(response);
 
 
@@ -53,6 +32,7 @@ var check_job = function(job_id){
 
 
                 // Re-enable everything 
+                update_charts(response["result"])
                 enable_charts();
                 $('#submit').prop('disabled', false);
 
@@ -75,27 +55,22 @@ var check_job = function(job_id){
             console.log("Error fetching job status")
         }
     });
-
 }
 
-// TODO: Inconsistent style
-function removeData(chart) {
+var update_piechart = function(chart, labels, data) {
     
-    chart.data.forEach((dataset) => {
-        
-        dataset.data.pop();
+    
 
-    });
+
     chart.update();
 }
 
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data);
-    });
-    chart.update();
+
+var update_linechart = function(chart, labels, data){
+
+
 }
+
 
 
 
@@ -156,128 +131,20 @@ $(document).ready(function(){
     time_range_slider.noUiSlider.on("update", function(a, b){
         f[b].textContent = a[b];
     })
-
-
-
-
-
-
-
-
-    // if ($("#input-slider-range")[0]) {
-    //         var c = document.getElementById("input-slider-range"),
-    //                 d = document.getElementById("input-slider-range-value-low"),
-    //                 e = document.getElementById("input-slider-range-value-high"),
-    //                 f = [d, e];
-
-    //         noUiSlider.create(c, {
-    //                 start: [parseInt(d.getAttribute('data-range-value-low')), parseInt(e.getAttribute('data-range-value-high'))],
-    //                 connect: !0,
-    //                 range: {
-    //                         min: parseInt(c.getAttribute('data-range-value-min')),
-    //                         max: parseInt(c.getAttribute('data-range-value-max'))
-    //                 }
-    //
-    //         }), c.noUiSlider.on("update", function(a, b) {
-    //                 f[b].textContent = a[b]
-    //         })
-    // }
-
-// })();
     
 
-    var $piechart = $('#chart-pie')
+    var $pie_chart = $('#chart-pie')
 
-    var pie_chart = new Chart($piechart, {
-        type: 'pie',
-        data: {
-          labels: [""],
-          datasets: [
-            {
-              label: "Stock Tickers",
-              backgroundColor: ["#eee"],
-              data: [0]
-            }
-          ]
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'Portfolio'
-          },
-          tooltips: {
+    var pie_chart = new PieChart($pie_chart, "Portfolio", ["tesla", "msft"], [25,65])
 
-                backgroundColor: "#fff",
-                bodyFontColor: "#444",
-                titleFontColor: "#444",
-                callbacks: {
-                    label: function(item, data) {
-                        var label = data.datasets[item.datasetIndex].label || '';
-                        
-                        var content = '';
-                        content += data.labels[item.index] + " "
-                        content += data.datasets[item.datasetIndex].data[item.index] + '%';
-                        return content;
-                    }
-                }
-            }
-        }
-    });
-
-    $piechart.data('data', pie_chart)
+    $pie_chart.data('data', pie_chart)
 
 
-    var $chart = $('#portfolio-performance-chart');
+    var $portfolio_chart = $('#portfolio-performance-chart');
 
     function init($chart) {
 
-        var portfolio_chart = new Chart($chart, {
-            type: 'line',
-            options: {
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            color: Charts.colors.gray[900],
-                            zeroLineColor: Charts.colors.gray[900]
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                if (!(value % 10)) {
-                                    return '$' + value + 'k';
-                                }
-                            }
-                        }
-                    }]
-                },
-                tooltips: {
-                    backgroundColor: "#fff",
-                    bodyFontColor: "#444",
-                    titleFontColor: "#444",
-                    callbacks: {
-                        label: function(item, data) {
-                            var label = data.datasets[item.datasetIndex].label || '';
-                            var yLabel = item.yLabel;
-                            var content = '';
-
-                            if (data.datasets.length > 1) {
-                                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
-                            }
-
-                            content += '$' + yLabel + 'k';
-                            return content;
-                        }
-                    }
-                }
-            },
-
-            data: {
-                labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Performance',
-                    data: [0, 120, 10, 30, 15, 40, 20, 60, 60]
-                }]
-            }
-        });
+        var portfolio_chart = new PortfolioChart($portfolio_chart)
 
         // Save to jQuery object
         $chart.data('chart', portfolio_chart);
@@ -295,28 +162,6 @@ $(document).ready(function(){
         $chart.data().chart.update();
 
     }
-
-    // $( "#searchForm" ).submit(function( event ) {
- 
-    //     // Stop form from submitting normally
-    //     event.preventDefault();
-
-    //     // Get some values from elements on the page:
-    //     var $form = $( this ),
-    //     term = $form.find( "input[name='s']" ).val(),
-    //     url = $form.attr( "action" );
-
-    //     // Send the data using post
-    //     var posting = $.post( url, { s: term } );
-
-    //     // Put the results in a div
-    //     posting.done(function( data ) {
-    //         var content = $( data ).find( "#content" );
-    //         $( "#result" ).empty().append( content );
-    //     });
-    // });
-
-    
 
     $('#submit').click(function() {
         
