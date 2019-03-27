@@ -20,11 +20,15 @@ from app.errors import bp as errors_bp
 from app.auth import bp as auth_bp
 from app.profile_extractor import bp as extractor_bp
 from app.api import bp as api_bp
+from app.stock_prices import bp as stock_prices_bp
+from app.backtest import bp as backtest_bp
 
 app.register_blueprint(errors_bp, url_prefix='/error')
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(extractor_bp)
 app.register_blueprint(api_bp, url_prefix='/api')
+app.register_blueprint(stock_prices_bp, url_prefix='/stock_prices')
+app.register_blueprint(backtest_bp, url_prefix='/backtest')
 
 
 # Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
