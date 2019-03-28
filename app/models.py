@@ -42,6 +42,14 @@ class StockDailyPrice(mongoengine.Document):
 	stock_ticker = mongoengine.StringField(required=True)
 	date = mongoengine.DateTimeField(required=True)
 	price = mongoengine.FloatField(required=True)
+
+	def to_dict(self):
+		data = {
+            'stock_ticker': self.stock_ticker,
+            'date': self.date,
+			'price': self.price
+        }
+		return data
 	
 	def get_tasks_in_progress(self):
 		return Task.objects.get(job_id=self.stock_ticker, complete=False)

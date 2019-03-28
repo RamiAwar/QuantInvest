@@ -4,8 +4,7 @@ from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import risk_models
 from pypfopt import expected_returns
 
-from iexfinance.stocks import Stock
-from iexfinance.stocks import get_historical_data
+from app.api.stock_prices.get_data import get_all_snp500_data
 
 from datetime import datetime
 
@@ -15,12 +14,6 @@ def efficient_risk_volatility(parameters):
 
 	start = datetime(year=int(float(parameters["time_range"][0])), month=1, day=1)
 	end = datetime(year=int(float(parameters["time_range"][1])), month=1, day=1)
-
-	# Stocks to fetch
-	data = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
-	table = data[0]
-
-	tickers = table["Symbol"].tolist()
 
 	snp500_df = get_historical_data(tickers[:100], start=start, end=end, output_format="pandas")
 	snp500_df = pd.concat([snp500_df[stock]["open"] for stock in tickers[:100]], axis=1, keys=tickers[:100])

@@ -44,10 +44,8 @@ from app.models import StockDailyPrice
 from app.api.stock_prices.launch_task import launch_task
 
 if StockDailyPrice.objects.first() == None: # check if any data for any snp 500 stock exists
-    for stock_ticker in snp_500_df['Symbol']:
-        print('launching task')
-        task = launch_task('fetch_snp500_data', stock_ticker)
-        print(task.job_id)
+    for i in range(0, len(snp_500_df['Symbol']), 100):
+        task = launch_task('fetch_snp500_data', list(snp_500_df['Symbol'][i:i+100]))
 
 
 # Make some variables available in flask shell

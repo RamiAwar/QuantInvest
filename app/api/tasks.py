@@ -11,17 +11,6 @@ from app.models import StockDailyPrice
 
 app.app_context().push()
 
-def _set_task_progress(progress):
-    job = get_current_job()
-    if job:
-        job.meta['progress'] = progress
-        job.save_meta()
-        task = Task.objects.get('task_progress', {'task_id': job.get_id(), 'progress': progress})
-
-        if progress >= 100:
-            task.complete = True
-        task.save()
-
 def example(seconds):
     job = get_current_job()
     print('Starting task')
@@ -34,15 +23,12 @@ def example(seconds):
     job.save_meta()
     print('Task completed')
 
-def fetch_snp500_data(stock_ticker):
+def fetch_snp500_data(stock_tickers):
     try:
-        print('fetching data for stock ' + stock_ticker)
         current_date = datetime.now()
-        missing_data = fetch_missing_data(stock_ticker, current_date-relativedelta(years=5), current_date)
-        missing_data = [StockDailyPrice(stock_ticker=quote['stock_ticker'], date=quote['date'], price=quote['price']) for quote in missing_data]
+        missing_data = fetch_missing_data(stock_tickers, current_date-relativedelta(years=5), current_date)
         for quote in missing_data:
-            quote.save()
+            stockDailyPrice = StockDailyPrice(stock_ticker=quote['stock_ticker'], date=quote['date'], price=quote['price'])
+            stockDailyPrice.save()
     except:
-        _set_task_progress(100)
         app.logger.error('Unhandled exception', exc_info=sys.exc_info())
-    print(missing_data)
