@@ -1,6 +1,6 @@
 import pandas as pd
-from app.stock_prices.get_data import get_data
-from app.backtest.data_manipulation import dict_to_dataframe
+from app.api.stock_prices.get_data import get_data
+from app.api.backtest.data_manipulation import dict_to_dataframe
 
 def prepare_dataframe(portfolio, start_date, end_date):
     # portfolio is a dict mapping stocks to weights

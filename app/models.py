@@ -3,6 +3,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import url_for
 from flask_login import UserMixin
 from app import login, app
+from app import app
+import redis
+import rq
 
 
 # TODO: separate auth models from others : priority (1)
@@ -38,9 +41,32 @@ class Post(mongoengine.Document):
 class StockDailyPrice(mongoengine.Document):
 	stock_ticker = mongoengine.StringField(required=True)
 	date = mongoengine.DateTimeField(required=True)
-	open_price = mongoengine.FloatField(required=True)
+	price = mongoengine.FloatField(required=True)
+	
+	def get_tasks_in_progress(self):
+		return Task.objects.get(job_id=self.stock_ticker, complete=False)
+
+	def get_task_in_progress(self, name):
+		return Task.objects.get(name=name, job_id=self.stock_ticker, complete=False).first()
+
 	def __repr__(self):
 		return '< Price of {} at {} >'.format(self.stock_ticker, self.date);
+
+class Task(mongoengine.Document):
+	job_id = mongoengine.StringField(required=True)
+	complete = mongoengine.BooleanField(required=True, default=False)
+	name = mongoengine.StringField(required=True)
+
+	def get_rq_job(self):
+		try:
+			rq_job = rq.job.Job.fetch(self.id, connection=app.redis)
+		except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
+			return None
+		return rq_job
+
+	def get_progress(self):
+		job = self.get_rq_job()
+		return job.meta.get('progress', 0) if job is not None else 100
 
 @login.user_loader
 def load_user(id):

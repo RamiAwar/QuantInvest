@@ -4,15 +4,15 @@
 .. moduleauthor:: Nader Al Awar <github.com/naderalawar>
 """
 
-from app.backtest import bp
+from app.api.backtest import bp
 import pandas as pd
 from flask import request
 from flask import jsonify
-from app.backtest.get_statistics import prepare_dataframe
-from app.backtest.get_statistics import compute_statistics
-from app.backtest.get_statistics import compute_daily_returns
-from app.backtest.get_statistics import compute_moving_average
-from app.backtest.get_statistics import compute_moving_standard_deviation
+from app.api.backtest.get_statistics import prepare_dataframe
+from app.api.backtest.get_statistics import compute_statistics
+from app.api.backtest.get_statistics import compute_daily_returns
+from app.api.backtest.get_statistics import compute_moving_average
+from app.api.backtest.get_statistics import compute_moving_standard_deviation
 from datetime import datetime
 
 @bp.route("/", methods=['POST'])
@@ -25,7 +25,7 @@ def get_portfolio_statistics():
         :param end: end point of the data in DDMMYYY format
         :return: results of the backtest
         - Example::
-            POST http://127.0.0.1:5000/backtest/?window=50&start=01012018&end=05012018
+            POST http://127.0.0.1:5000/api/backtest/?window=50&start=01012018&end=05012018
             '{
                 "AAPL": 2,
                 "TSLA": "7"
@@ -69,7 +69,7 @@ def get_daily_returns():
         :param end: end point of the data in DDMMYYY format
         :return: results of the backtest
         - Example::
-            POST http://127.0.0.1:5000/backtest/daily_returns?start=01012018&end=05012018
+            POST http://127.0.0.1:5000/api/backtest/daily_returns?start=01012018&end=05012018
             '{
                 "AAPL": 2,
                 "TSLA": "7"
@@ -107,7 +107,7 @@ def get_moving_average():
         :param end: end point of the data in DDMMYYY format
         :return: results of the backtest
         - Example::
-            POST http://127.0.0.1:5000/backtest/daily_returns?window=50&start=01012018&end=05012018
+            POST http://127.0.0.1:5000/api/backtest/daily_returns?window=50&start=01012018&end=05012018
             '{
                 "AAPL": 2,
                 "TSLA": "7"
@@ -147,7 +147,7 @@ def get_moving_standard_deviation():
         :param end: end point of the data in DDMMYYY format
         :return: results of the backtest
         - Example::
-            POST http://127.0.0.1:5000/backtest/daily_returns?window=50&start=01012018&end=05012018
+            POST http://127.0.0.1:5000/api/backtest/daily_returns?window=50&start=01012018&end=05012018
             '{
                 "AAPL": 2,
                 "TSLA": "7"

@@ -4,9 +4,9 @@
 .. moduleauthor:: Nader Al Awar <github.com/naderalawar>
 """
 
-from app.stock_prices import bp
+from app.api.stock_prices import bp
 from flask import request
-from app.stock_prices.get_data import get_data
+from app.api.stock_prices.get_data import get_data
 from flask import jsonify
 from datetime import datetime
 
@@ -25,7 +25,7 @@ def get_stock_ticker_data():
 
         - Example ::
             
-            GET http://127.0.0.1:5000/stock_prices/?ticker=GOOG&start=01052018&end=05052018
+            GET http://127.0.0.1:5000/api/stock_prices/?ticker=GOOG&start=01052018&end=05052018
         
          - Expected Success Response::
 
