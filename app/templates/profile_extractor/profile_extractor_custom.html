@@ -1,38 +1,31 @@
-<div class="card col-sm-10 col-md-6 mx-auto">
+<div class="card col-sm-10 col-md-10 mx-auto">
   <div class="card-body">
-  <form action="" method="post" novalidate>
-    {# 
-    {{ custom_optimization_form.hidden_tag() }}
-
+    
     <div class="card-title form-group-row">
       <h3>Sign In</h3>
     </div>
 
 
-    <form http://www.randomsnippets.com/2008/02/21/how-to-dynamically-add-form-elements-via-javascript/
-    
-    <div class="form-group row">
+    <div class="form-group">
 
-        <span class="text-danger">{{ error }}</span>
-
-    </div>
-
-    <div class="form-group row">
-
-      {{ custom_optimization_form.password.label(class_="col-form-label") }}
+      <script src="{{url_for('static', filename='js/profile_extractor_custom.js')}}" language="Javascript" type="text/javascript"></script>
       
-      {{ custom_optimization_form.password(class_="form-control") }}
+      <form action="/" method="POST">
+               
+        <div id="dynamicInput" class="form-group row col-xs-12 col-md-6">
+          <label class="form-control-label">Ticker 1</label>
+          <input class="form-control form-control-alternative" type="text" name="myInputs[]">
+        </div>
 
-      {% for error in custom_optimization_form.password.errors %}
-        <span class="text-danger">{{ error }}</span>
-      {% endfor %}
+        <div class="col-xs-12 col-md-6">
+          <input type="button" class="btn btn-primary" value="Add stock ticker" onClick="addInput('dynamicInput');">
+        </div>
+      
+      </form>
+      
 
     </div>
 
-    <div class="form-group row">
-      {{ custom_optimization_form.submit(class_="form-control btn btn-primary mx-auto")}}
-    </div>
- #}  </form>
 
   <p>New User? <a href="{{ url_for('auth.register') }}">Sign up now!</a></p>
 
