@@ -25,22 +25,15 @@ class User(UserMixin, mongoengine.Document):
     def get_profile_picture(self):
     	return url_for('static', filename="example_user.png")
 
-    
-class Post(mongoengine.Document):
-
-	body = mongoengine.StringField(required=True)
-	timestamp = mongoengine.DateTimeField(required=True)
-	user_id = mongoengine.ObjectIdField(required=True)
-
-	def __repr__(self):
-		return '< Post by {} at {} >'.format(self.user_id, self.timestamp);
-
 class StockDailyPrice(mongoengine.Document):
-	stock_ticker = mongoengine.StringField(required=True)
+
+	ticker = mongoengine.StringField(required=True)
 	date = mongoengine.DateTimeField(required=True)
 	open_price = mongoengine.FloatField(required=True)
+
 	def __repr__(self):
 		return '< Price of {} at {} >'.format(self.stock_ticker, self.date);
+		
 
 @login.user_loader
 def load_user(id):

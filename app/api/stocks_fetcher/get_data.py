@@ -7,6 +7,9 @@ from app.stock_prices import snp_500_df
 from app.stock_prices.daily_price_dto import DailyPriceDto
 
 def get_data(stock_ticker, start_date, end_date):
+    """ If stock is inside snp500, fetch from database, otherwise fetch from iexfinance api.
+    """
+
     if snp_500_df['Symbol'].eq(stock_ticker).any():
         print('yup')
     else:

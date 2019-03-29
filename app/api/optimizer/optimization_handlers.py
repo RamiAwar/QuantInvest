@@ -9,6 +9,8 @@ from iexfinance.stocks import get_historical_data
 
 from datetime import datetime
 
+
+
 def efficient_risk_volatility(parameters):
 
 	print("From optimizer: ", parameters)
@@ -25,7 +27,6 @@ def efficient_risk_volatility(parameters):
 	snp500_df = get_historical_data(tickers[:100], start=start, end=end, output_format="pandas")
 	snp500_df = pd.concat([snp500_df[stock]["open"] for stock in tickers[:100]], axis=1, keys=tickers[:100])
 
-
 	mu = expected_returns.mean_historical_return(snp500_df)
 
 	S = risk_models.sample_cov(snp500_df)
@@ -39,4 +40,8 @@ def efficient_risk_volatility(parameters):
 
 	cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
 
+	
+
 	return cleaned_weights
+
+

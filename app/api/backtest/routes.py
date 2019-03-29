@@ -4,15 +4,18 @@
 .. moduleauthor:: Nader Al Awar <github.com/naderalawar>
 """
 
-from app.backtest import bp
+from app.api.backtest import bp
+
 import pandas as pd
 from flask import request
 from flask import jsonify
-from app.backtest.get_statistics import prepare_dataframe
-from app.backtest.get_statistics import compute_statistics
-from app.backtest.get_statistics import compute_daily_returns
-from app.backtest.get_statistics import compute_moving_average
-from app.backtest.get_statistics import compute_moving_standard_deviation
+
+from app.api.backtest.get_statistics import prepare_dataframe
+from app.api.backtest.get_statistics import compute_statistics
+from app.api.backtest.get_statistics import compute_daily_returns
+from app.api.backtest.get_statistics import compute_moving_average
+from app.api.backtest.get_statistics import compute_moving_standard_deviation
+
 from datetime import datetime
 
 @bp.route("/", methods=['POST'])
@@ -49,13 +52,16 @@ def get_portfolio_statistics():
             }
     """
     portfolio = request.get_json(force=True)
+
     try:
         window = int(request.args.get('window'))
     except:
         pass
+
     start_date = parse_date(request.args.get('start'))
     end_date = parse_date(request.args.get('end'))
     prices_df = prepare_dataframe(portfolio, start_date, end_date)
+
     performance = compute_statistics(prices_df)
     return performance.to_json(orient='index')
 
@@ -91,8 +97,10 @@ def get_daily_returns():
     portfolio = request.get_json(force=True)
     start_date = parse_date(request.args.get('start'))
     end_date = parse_date(request.args.get('end'))
+
     prices_df = prepare_dataframe(portfolio, start_date, end_date)
     performance = compute_daily_returns(prices_df)
+
     return performance.to_json(orient='index')
 
 @bp.route("/moving_average", methods=['POST'])
@@ -169,8 +177,12 @@ def get_moving_standard_deviation():
     start_date = parse_date(request.args.get('start'))
     end_date = parse_date(request.args.get('end'))
     prices_df = prepare_dataframe(portfolio, start_date, end_date)
+
     performance = compute_moving_standard_deviation(prices_df, window)
+    
     return performance.to_json(orient='index')
 
 def parse_date(date):
+
     return datetime.strptime(date, '%d%m%Y')
+

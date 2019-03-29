@@ -29,10 +29,9 @@ def optimize_simple():
 	# Get parameters as dictionary
 	parameters = request.get_json();
 
-	# Create worker thread
+	# Create job in optimization queue
 	queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
 
-	job = queue.enqueue("app.api.optimizer.optimization_handlers.efficient_risk_volatility", parameters)
 	
 	return jsonify({"job_id": job._id })
 
