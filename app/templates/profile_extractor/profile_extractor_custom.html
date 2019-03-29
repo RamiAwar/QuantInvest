@@ -1,8 +1,7 @@
-<div class="card col-sm-10 col-md-10 mx-auto">
-  <div class="card-body">
-    
+<div class="col-sm-10 col-md-10 mx-auto">
+  
     <div class="card-title form-group-row">
-      <h3>Sign In</h3>
+      <h2>Custom Portfolio</h2>
     </div>
 
 
@@ -10,26 +9,27 @@
 
       <script src="{{url_for('static', filename='js/profile_extractor_custom.js')}}" language="Javascript" type="text/javascript"></script>
       
-      <form action="/" method="POST">
-               
-        <div id="dynamicInput" class="form-group row col-xs-12 col-md-6">
-          <label class="form-control-label">Ticker 1</label>
-          <input class="form-control form-control-alternative" type="text" name="myInputs[]">
+        <div id="dynamic-ticker-list" class="form-group">  
+          <div class="form-group row col-xs-12 col-md-6">
+        
+            <label class="form-control-label">Ticker 1</label>
+            <input class="form-control form-control-alternative" type="text">
+        
+          </div>
         </div>
 
-        <div class="col-xs-12 col-md-6">
-          <input type="button" class="btn btn-primary" value="Add stock ticker" onClick="addInput('dynamicInput');">
-        </div>
-      
-      </form>
-      
+        <div class="form-group ">
+
+          <input type="button" class="btn btn-primary" value="Add stock ticker" onClick="addInput('dynamic-ticker-list');">
+          <button id="submit-custom" class="btn btn-primary">Optimize</button>
+        
+        </div>      
 
     </div>
 
 
   <p>New User? <a href="{{ url_for('auth.register') }}">Sign up now!</a></p>
 
-  </div>
 </div>
 
 
