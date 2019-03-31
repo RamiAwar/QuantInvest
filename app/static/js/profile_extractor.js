@@ -1,104 +1,3 @@
-//-------- Helper functions -----------
-var disable_charts = function(){
-    
-    $('.chart-container').each(function(){
-        $(this).busyLoad("show", {
-            background: "rgba(0, 0, 0, 0.6)"
-        })
-    })
-}
-
-var enable_charts = function(){
-
-    $('.chart-container').each(function(){
-        $(this).busyLoad("hide")
-    })
-}
-
-var show_error = function(error_message){
-
-    $('#error-container').append('<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">\
-                <span class="alert-inner--text">' + error_message + '</span>\
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-    </div>');
-
-}
-
-
-var check_job = function(job_id){
-
-    // Make an ajax post request to the api server, at endpoint check jobs
-    data = {
-        "job_id": job_id
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: GET_JOB_ENDPOINT,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(data),  
-        context: $(this),
-        success: function(response) {
-            
-            console.log("Get job status successful: Received: ")
-            console.log(response);
-
-
-            // TODO: Better error handling here : priority (4)
-
-            if(response["is_finished"]){
-
-                // Update charts with whatever
-
-
-                // Re-enable everything 
-                enable_charts();
-                $('#submit').prop('disabled', false);
-
-            }else if(response["is_failed"]){
-
-                // Display error
-
-                enable_charts();
-                $('#submit').prop('disabled', false);
-                show_error("Unknown server error occured. Try again later.")
-
-            }else{
-
-                setTimeout((function(){
-                    check_job(job_id);
-                }), 400);
-            }
-        },
-        error: function() {
-            console.log("Error fetching job status")
-        }
-    });
-
-}
-
-// TODO: Inconsistent style
-function removeData(chart) {
-    
-    chart.data.forEach((dataset) => {
-        
-        dataset.data.pop();
-
-    });
-    chart.update();
-}
-
-function addData(chart, label, data) {
-    chart.data.labels.push(label);
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data);
-    });
-    chart.update();
-}
-
-
-
 $(document).ready(function(){
 
 // -------- SLIDERS ---------------
@@ -161,162 +60,22 @@ $(document).ready(function(){
 
 
 
-
-
-
-    // if ($("#input-slider-range")[0]) {
-    //         var c = document.getElementById("input-slider-range"),
-    //                 d = document.getElementById("input-slider-range-value-low"),
-    //                 e = document.getElementById("input-slider-range-value-high"),
-    //                 f = [d, e];
-
-    //         noUiSlider.create(c, {
-    //                 start: [parseInt(d.getAttribute('data-range-value-low')), parseInt(e.getAttribute('data-range-value-high'))],
-    //                 connect: !0,
-    //                 range: {
-    //                         min: parseInt(c.getAttribute('data-range-value-min')),
-    //                         max: parseInt(c.getAttribute('data-range-value-max'))
-    //                 }
-    //
-    //         }), c.noUiSlider.on("update", function(a, b) {
-    //                 f[b].textContent = a[b]
-    //         })
-    // }
-
-// })();
-    
-
-    var $piechart = $('#chart-pie')
-
-    var pie_chart = new Chart($piechart, {
-        type: 'pie',
-        data: {
-          labels: [""],
-          datasets: [
-            {
-              label: "Stock Tickers",
-              backgroundColor: ["#eee"],
-              data: [0]
-            }
-          ]
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'Portfolio'
-          },
-          tooltips: {
-
-                backgroundColor: "#fff",
-                bodyFontColor: "#444",
-                titleFontColor: "#444",
-                callbacks: {
-                    label: function(item, data) {
-                        var label = data.datasets[item.datasetIndex].label || '';
-                        
-                        var content = '';
-                        content += data.labels[item.index] + " "
-                        content += data.datasets[item.datasetIndex].data[item.index] + '%';
-                        return content;
-                    }
-                }
-            }
-        }
-    });
-
-    $piechart.data('data', pie_chart)
-
-
-    var $chart = $('#portfolio-performance-chart');
-
-    function init($chart) {
-
-        var portfolio_chart = new Chart($chart, {
-            type: 'line',
-            options: {
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            color: Charts.colors.gray[900],
-                            zeroLineColor: Charts.colors.gray[900]
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                if (!(value % 10)) {
-                                    return '$' + value + 'k';
-                                }
-                            }
-                        }
-                    }]
-                },
-                tooltips: {
-                    backgroundColor: "#fff",
-                    bodyFontColor: "#444",
-                    titleFontColor: "#444",
-                    callbacks: {
-                        label: function(item, data) {
-                            var label = data.datasets[item.datasetIndex].label || '';
-                            var yLabel = item.yLabel;
-                            var content = '';
-
-                            if (data.datasets.length > 1) {
-                                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
-                            }
-
-                            content += '$' + yLabel + 'k';
-                            return content;
-                        }
-                    }
-                }
-            },
-
-            data: {
-                labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Performance',
-                    data: [0, 120, 10, 30, 15, 40, 20, 60, 60]
-                }]
-            }
-        });
-
-        // Save to jQuery object
-        $chart.data('chart', portfolio_chart);
-
-    };
-
-    // Events
-    if ($chart.length) {
-        init($chart);
         
-        console.log($chart.data().chart.data);
+    // ------------------- CHARTS -----------------------------
 
-        $chart.data().chart.data.labels = ["Test","Test","Test","Test","Test","Test","Test","Test"]
-        $chart.data().chart.data.datasets[0].data[5] = 0
-        $chart.data().chart.update();
+    // Initialize pie chart 
+    var $pie_chart = $('#chart-pie')
+    var pie_chart = new PieChart($pie_chart, "Portfolio", ["tesla", "msft", "googl", "amzn", "plx", "ret"], [25,10, 5, 20, 13, 27])
+    // Save to jQuery object
+    $pie_chart.data('data', pie_chart)
 
-    }
 
-    // $( "#searchForm" ).submit(function( event ) {
- 
-    //     // Stop form from submitting normally
-    //     event.preventDefault();
+    // Initialize portfolio chart
+    var $portfolio_chart = $('#portfolio-performance-chart');
+    var portfolio_chart = new PortfolioChart($portfolio_chart);
+    // Save to jQuery object
+    $portfolio_chart.data('chart', portfolio_chart);
 
-    //     // Get some values from elements on the page:
-    //     var $form = $( this ),
-    //     term = $form.find( "input[name='s']" ).val(),
-    //     url = $form.attr( "action" );
-
-    //     // Send the data using post
-    //     var posting = $.post( url, { s: term } );
-
-    //     // Put the results in a div
-    //     posting.done(function( data ) {
-    //         var content = $( data ).find( "#content" );
-    //         $( "#result" ).empty().append( content );
-    //     });
-    // });
-
-    
 
     $('#submit').click(function() {
         
@@ -357,15 +116,68 @@ $(document).ready(function(){
                 console.log("Error")
             }
         });
-
-        
-
-
-
-
-
-
     });
+
+    // TODO: Refactor this function to accept a callback function and call it on success : priority (1)
+
+    // Function to check requested job status by polling API endpoint.
+    var check_job = function(job_id){
+
+        // Make an ajax post request to the api server, at endpoint check jobs
+        data = {
+            "job_id": job_id
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: GET_JOB_ENDPOINT,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),  
+            context: $(this),
+            success: function(response) {
+                
+                console.log("Get job status - Received: ")
+                console.log(response);
+
+
+                // TODO: Better error handling here : priority (4)
+
+                if(response["is_finished"]){
+
+                   
+                    // Update charts and re-enable everything 
+                    // TODO: Pipe portfolio performance here : priority (1)
+                    update_charts($pie_chart, $portfolio_chart, response["weights"], response["performance"]);
+
+
+
+                    // TODO: Create pie chart and display received portfolio on pie chart
+
+
+                    enable_charts();
+                    $('#submit').prop('disabled', false);
+
+                }else if(response["is_failed"]){
+
+                    // Display error
+
+                    enable_charts();
+                    $('#submit').prop('disabled', false);
+                    show_error("Unknown server error occured. Try again later.")
+
+                }else{
+
+                    setTimeout((function(){
+                        check_job(job_id);
+                    }), 400);
+                }
+            },
+            error: function() {
+                console.log("Error fetching job status")
+            }
+        });
+    }
 
 
 

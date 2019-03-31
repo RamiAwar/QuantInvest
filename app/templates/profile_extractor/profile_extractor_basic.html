@@ -1,0 +1,112 @@
+<!-- Sliders, buttons interface -->
+
+<div class="row justify-content-center mt-5 mb-5">
+
+ 
+ <h1 style="width:100%;" class="pl-5 pr-5 mb-5"> Modify Portfolio Characteristics </h1>
+  <hr>
+
+  <!-- ALL THREE SLIDERS CONTAINER -->
+  <div id="configuration-container" class="col-xs-12 col-md-10 col-xl-4 ml-5 mr-5 mt-auto mb-md-5">  
+    
+    
+
+    <!-- Time range slider -->
+    <h3> Time Range </h3>
+    <div id="time-range-slider" class="mb-5" data-range-value-min="2014" data-range-value-max="2019"></div>
+    <div class="row d-none">
+        <div class="col-6">
+            <span class="range-slider-value value-low" data-range-value-low="2014" id="time-range-slider-value-low"></span>
+        </div>
+        <div class="col-6 text-right">
+            <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
+        </div>
+    </div>
+
+
+    <!-- Expected returns slider -->
+    <h3> Expected Returns </h3>
+    <div class="input-slider-container mb-5">
+      <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+      <div class="row mt-3 d-none">
+        <div>
+          <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Expected risk slider -->
+    <h3> Volatility </h3>
+    <div class="input-slider-container mb-5 mr-auto">
+      <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+      <div class="row mt-3 d-none">
+        <div class="col-6">
+          <span id="expected-risk-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action buttons container -->
+  <div class="row col-md-10 col-xl-2 align-items-center">
+    <div class="container">
+      
+      <button id="submit" type="button" class="btn btn-block btn-primary" style="max-height:50px;">Optimize</button>
+    </div>
+  </div>
+</div>
+
+<!-- Portfolio performance chart -->
+<div class="row justify-content-center">
+
+
+  <h1 style="width:100%;" class="pl-5 pr-5 mt-3 mb-5 ">Optimization Result </h1>
+  <hr>
+
+  <!-- Chart container -->
+  <div class="col-xs-12 col-md-10 col-xl-8  mb-5 mb-xl-4">
+   
+    <button type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
+    <div id="performance-chart-container" class="chart-container card bg-gradient-default shadow">  
+      <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-light ls-1 mb-1">Backtesting</h6>
+            <h2 class="text-white mb-0">Portfolio Performance</h2>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Chart -->
+        <div class="chart">
+          <!-- Chart wrapper -->
+          <canvas id="portfolio-performance-chart" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pie chart -->
+<div class="row justify-content-center">
+  <div class="col-xs-12 col-md-10 col-xl-8 mb-5 mb-xl-0">
+    <div id="portfolio-chart-container" class="chart-container card bg-gradient-default shadow">
+      <div class="card-header bg-transparent">
+        <div class="row align-items-center">
+          <div class="col">
+            <h6 class="text-uppercase text-light ls-1 mb-1">Optimal Portfolio</h6>
+            <h2 class="text-white mb-0">Constituents</h2>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Chart -->
+        <div class="chart mb-5">
+          <!-- Chart wrapper -->
+          <canvas id="chart-pie" class="chart-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  

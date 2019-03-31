@@ -44,6 +44,7 @@ app.snp500_data_queue = rq.Queue('snp500-data-queue', connection=app.redis)
 from app.models import StockDailyPrice
 from app.api.stock_fetcher.launch_task import launch_task
 
+# TODO: Refactor : priority (1)
 if StockDailyPrice.objects.first() == None: # check if any data for any snp 500 stock exists
     for i in range(0, len(snp_500_df['Symbol']), 100):
         task = launch_task('fetch_snp500_data', list(snp_500_df['Symbol'][i:i+100]))

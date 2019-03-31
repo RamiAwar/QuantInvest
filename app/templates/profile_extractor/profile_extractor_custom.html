@@ -1,45 +1,171 @@
-<div class="card col-sm-10 col-md-6 mx-auto">
-  <div class="card-body">
-  <form action="" method="post" novalidate>
-    {# 
-    {{ custom_optimization_form.hidden_tag() }}
+<div class="row mr-0 ml-0">
 
-    <div class="card-title form-group-row">
-      <h3>Sign In</h3>
+  <div class="col-md-6 pr-0">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Stocks</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <script src="{{url_for('static', filename='js/profile_extractor_custom.js')}}" language="Javascript" type="text/javascript"></script>
+          
+          <div id="dynamic-ticker-list" class="container">  
+            <div class="form-group">
+          
+              <label class="form-control-label">Ticker 1</label>
+              <input class="form-control form-control-alternative" type="text">
+          
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <div class="container">
+            <input type="button" class="btn btn-primary" value="Add stock ticker" onClick="addInput('dynamic-ticker-list');">
+          </div>
+
+        </div>      
+      </div>
+
+
     </div>
+  </div>
 
-    <div class="form-group row">
+  
+  <div class="col-md-6">
+    <div class="card">
 
-      {{ custom_optimization_form.email.label(class_="col-form-label") }}
-            
-      {{ custom_optimization_form.email(class_="form-control") }}
-      
-      {% for error in custom_optimization_form.email.errors %}
-        <span class="text-danger">{{ error }}</span>
-      {% endfor %}
+      <div class="card-header">
+        <h5 class="h3 mb-0">Time Span</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label"> Start date</label>
+          <input class="form-control" type="date" value="2015-01-01" id="start-date">
+
+        </div>
+
+        <div class="form-group">
+
+          <label class="form-control-label"> End date</label>
+          <input class="form-control" type="date" value="2019-01-01" id="end-date">
+
+        </div>
+   
+      </div>
+
 
     </div>
+  </div>
 
-    <div class="form-group row">
 
-      {{ custom_optimization_form.password.label(class_="col-form-label") }}
-      
-      {{ custom_optimization_form.password(class_="form-control") }}
+</div>
 
-      {% for error in custom_optimization_form.password.errors %}
-        <span class="text-danger">{{ error }}</span>
-      {% endfor %}
+<div class="row mr-0 ml-0">
+
+  <div class="col-md-6 pr-0">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Optimization</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label">Optimization goal</label>
+
+          <select class="form-control" id="optimization-select" onchange="change_opt_constraints(event)">
+            <option value="max-sharpe">Maximize sharpe ratio</option>
+            <option value="min-volatility">Minimize volatility</option>
+            <option value="min-volatility-target">Minimize volatility subject to ...</option>
+            <option value="max-return-target">Maximize return subject to ...</option>
+          </select>
+
+        </div>
+
+        <div class="form-group " id="constraints-container">
+          <input class="d-none" id="target-return">
+          <input class="d-none" id="target-volatility">
+        </div>
+   
+      </div>
+
 
     </div>
+  </div>
 
-    <div class="form-group row">
-      {{ custom_optimization_form.submit(class_="form-control btn btn-primary mx-auto")}}
+  
+ <!-- <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Backtesting Options</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          test
+
+        </div>
+   
+      </div>
+
+
     </div>
- #}  </form>
+  </div> -->
 
-  <p>New User? <a href="{{ url_for('auth.register') }}">Sign up now!</a></p>
 
+</div>
+
+<div class="row ml-0 mr-0">
+  <div class="container">
+    <button style="margin-bottom:30px;" type="button" id="submit-custom" class="btn btn-primary btn-lg btn-block">Optimize</button>
   </div>
 </div>
 
+<div id="custom-pie-chart-container" class="row ml-0 mr-0 d-none">
+  <div class="container">
+    <div class="card bg-gradient-default shadow">
+        
+      <div class="card-header bg-transparent">
+        <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+      </div>
 
+      <div class="card-body">
+        <canvas id="chart-pie-custom" class="chart-canvas"></canvas>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div id="custom-portfolio-performance-chart-container" class="row ml-0 mr-0 d-none">
+  <div class="container">
+    <div class="card bg-gradient-default shadow">
+        
+      <div class="card-header bg-transparent">
+        <h5 class="h3 mb-0 text-white">Backtested Portfolio Performance</h5>
+      </div>
+
+      <div class="card-body">
+        <canvas id="portfolio-performance-chart-custom" class="chart-canvas"></canvas>
+      </div>
+
+
+    </div>
+  </div>
+</div>
