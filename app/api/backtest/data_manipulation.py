@@ -1,7 +1,6 @@
 import pandas as pd
 
 def dict_to_dataframe(stock_prices_dict): # takes in a dictionary of stock prices and returns a dataframe
-    print(stock_prices_dict)
     list_of_earliest_dates = []
     list_of_oldest_dates = []
 
