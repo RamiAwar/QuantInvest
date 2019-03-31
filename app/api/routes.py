@@ -8,20 +8,6 @@ from app import app
 from app.api import bp
 
 
-# TODO: Remove temporary import : priority (1)
-import time 
-
-# from app.api.cors import crossdomain
-
-def do_nothing():
-
-	for i in range(5):
-		print(i)
-		time.sleep(1);
-
-	print("END");
-
-
 @bp.route('/simpleopt', methods=["POST"])
 @login_required
 def optimize_simple():
@@ -31,6 +17,7 @@ def optimize_simple():
 
 	# Create job in optimization queue
 	queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
+	job = queue.enqueue("app.api.optimizer.optimization_handlers.efficient_risk_volatility", parameters)
 
 	
 	return jsonify({"job_id": job._id })

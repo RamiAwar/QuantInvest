@@ -16,6 +16,7 @@ class Config(object):
 
 	OPTIMIZER_QUEUE = os.getenv("OPTIMIZATION_QUEUE", "optimizer-queue")
 
+
 	# TODO: Correct setup : priority (2)
 	# MAIL_SERVER = os.environ.get('MAIL_SERVER')
  #    MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
