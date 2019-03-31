@@ -24,14 +24,14 @@ from app.errors import bp as errors_bp
 from app.auth import bp as auth_bp
 from app.profile_extractor import bp as extractor_bp
 from app.api import bp as api_bp
-from app.api.stock_prices import bp as stock_prices_bp
+from app.api.stock_fetcher import bp as stock_fetcher_bp
 from app.api.backtest import bp as backtest_bp
 
 app.register_blueprint(errors_bp, url_prefix='/error')
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(extractor_bp)
 app.register_blueprint(api_bp, url_prefix='/api')
-app.register_blueprint(stock_prices_bp, url_prefix='/api/stock_prices')
+app.register_blueprint(stock_fetcher_bp, url_prefix='/api/stock_fetcher')
 app.register_blueprint(backtest_bp, url_prefix='/api/backtest')
 
 
@@ -41,7 +41,7 @@ app.redis = Redis.from_url(app.config['REDIS_URL'])
 app.snp500_data_queue = rq.Queue('snp500-data-queue', connection=app.redis)
 
 from app.models import StockDailyPrice
-from app.api.stock_prices.launch_task import launch_task
+from app.api.stock_fetcher.launch_task import launch_task
 
 if StockDailyPrice.objects.first() == None: # check if any data for any snp 500 stock exists
     for i in range(0, len(snp_500_df['Symbol']), 100):

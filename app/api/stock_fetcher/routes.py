@@ -4,13 +4,13 @@
 .. moduleauthor:: Nader Al Awar <github.com/naderalawar>
 """
 
-from app.api.stock_prices import bp
+from app.api.stock_fetcher import bp
 from flask import request
-from app.api.stock_prices.get_data import get_data
+from app.api.stock_fetcher.get_data import get_data
 from flask import jsonify
 from datetime import datetime
 
-@bp.route("/", methods=['GET'])
+@bp.route("/", methods=['POST'])
 def get_stock_ticker_data():
     """
         **Get the historical data**
@@ -25,29 +25,21 @@ def get_stock_ticker_data():
 
         - Example ::
             
-            GET http://127.0.0.1:5000/api/stock_prices/?ticker=GOOG&start=01052018&end=05052018
+            POST http://127.0.0.1:5000/api/stock_prices/?ticker=GOOG&start=01052018&end=05052018
+            '{
+                "Tickers": ['AAPL', 'TSLA'],
+                "Start": 01052018,
+                "End": 05052018
+            }'
         
          - Expected Success Response::
 
-            [
-                {
-                    "close_price":558.46,
-                    "date":"Thu, 01 May 2014 00:00:00 GMT",
-                    "highest_price":568.0,
-                    "lowest_price":552.92,
-                    "open_price":568.0,
-                    "stock_ticker":"GOOG",
-                    "volume":13052.0
-                },
-                {
-
-                },
-            ]
     """
-    stock_ticker = request.args.get('ticker')
-    start_date = request.args.get('start')
-    end_date = request.args.get('end')
+    data_requested = request.get_json(force=True)
+    stock_tickers = data_requested['Tickers']
+    start_date = data_requested['Start']
+    end_date = data_requested['End']
     start_date = datetime.strptime(start_date, '%d%m%Y')
     end_date = datetime.strptime(end_date, '%d%m%Y')
 
-    return jsonify(get_data(stock_ticker, start_date, end_date))
+    return jsonify(get_data(stock_tickers, start_date, end_date))
