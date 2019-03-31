@@ -92,8 +92,10 @@ var update_charts = function($portfolio_chart, $pie_chart, portfolio_weights, po
 // PieChart constructor, basically returns a customized Chart instance for custom styled pie charts.
 class PieChart{
 
-    constructor(dom_element, chart_label, data_labels, data){
-        
+    constructor(dom_element, chart_label, data_labels=[""], data=[0]){
+
+        this.element = dom_element;
+
         this.content = new Chart(dom_element, {
             type: 'pie',
             data: {
@@ -130,6 +132,7 @@ class PieChart{
             }
         });
     }
+
 }
 
 

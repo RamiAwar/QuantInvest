@@ -56,6 +56,14 @@
     --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
+.disabledTab{
+    pointer-events: none;
+
+    color: #212529;
+    border-color: #f7fafc; 
+    background-color: #f7fafc;
+}
+
 *,
 *::before,
 *::after
@@ -5704,6 +5712,8 @@ input[type='button'].btn-block
     border-radius: .375rem; 
     background-color: #fff;
     background-clip: border-box;
+
+    margin-bottom:30px;
 }
 .card > hr
 {

@@ -13,31 +13,29 @@
    
     </ul>
 </div>
-<div class="card shadow">
-    <div class="card-body">
-        <div class="tab-content" id="myTabContent">
-          
-          <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
 
-            {% include "profile_extractor/profile_extractor_custom.html" %}
+<div class="tab-content" id="myTabContent">
+  
+  <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
 
-          </div>
+    {% include "profile_extractor/profile_extractor_custom.html" %}
 
-          <div class="tab-pane fade show" id="tab-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
-            
-            {% include "profile_extractor/profile_extractor_basic.html" %}
+  </div>
 
-          </div>
+  <div class="tab-pane fade show" id="tab-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+    
+    {% include "profile_extractor/profile_extractor_basic.html" %}
 
-        </div>
-    </div>
+  </div>
+
 </div>
+
 
 
 
 <script type="text/javascript">
   
-  OPTIMIZER_ENDPOINT = "{{ url_for('api.optimize_simple') }}"
+  OPTIMIZER_ENDPOINT = "{{ url_for('api.optimize') }}"
   GET_JOB_ENDPOINT = "{{ url_for('api.check_job_status') }}"
 
 

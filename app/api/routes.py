@@ -14,17 +14,48 @@ import time
 # from app.api.cors import crossdomain
 
 
-@bp.route('/simpleopt', methods=["POST"])
+@bp.route('/optimize', methods=["POST"])
 @login_required
-def optimize_simple():
+def optimize():
+    """Optimization endpoint that handles all optimization methods and creates corresponding jobs.
+
+    Expected json request data:
+    {
+        "ticker_list": ticker_list,
+        "start_date": start_date,
+        "end_date": end_date,
+        "optimization_method": optimization_method,
+        "optimization_parameters": {
+            "target_volatility": 0.12,
+            "target_return": 0.2
+        }
+    }
+
+    Decorators:
+        bp.route
+        login_required
+
+    Returns:
+        JSON Object -- job_id
+    """
 
     # Get parameters as dictionary
     parameters = request.get_json()
 
-    # Create worker thread
+    # Create queue object
     queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
 
-    job = queue.enqueue("app.api.optimizer.optimization_handlers.efficient_risk_volatility", parameters)
+    # Check type of optimization
+    optimization_method = parameters["optimization_method"]
+
+    if optimization_method == "max-sharpe":
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.max_sharpe", parameters)
+    elif optimization_method == "min-volatility":
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility", parameters)
+    elif optimization_method == "min-volatility-target":
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility_target", parameters)
+    elif optimization_method == "max-return-target":
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.max_return_target", parameters)
 
     return jsonify({"job_id": job._id})
 

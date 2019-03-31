@@ -109,21 +109,13 @@ $(document).ready(function(){
                 job_id = response["job_id"];
 
                 // Then check for job result, and display that
-                check_job(job_id, $portfolio_chart, $pie_chart);
+                check_job(job_id);
 
             },
             error: function() {
                 console.log("Error")
             }
         });
-
-        
-
-
-
-
-
-
     });
 
     // TODO: Refactor this function to accept a callback function and call it on success : priority (1)
@@ -156,7 +148,12 @@ $(document).ready(function(){
                    
                     // Update charts and re-enable everything 
                     // TODO: Pipe portfolio performance here : priority (1)
-                    update_charts($portfolio_chart,  $pie_chart, response["result"], "");
+                    update_charts($pie_chart, $portfolio_chart, response["weights"], response["performance"]);
+
+
+
+                    // TODO: Create pie chart and display received portfolio on pie chart
+
 
                     enable_charts();
                     $('#submit').prop('disabled', false);

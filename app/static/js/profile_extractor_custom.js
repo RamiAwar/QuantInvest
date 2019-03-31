@@ -10,7 +10,7 @@ function addInput(divName){
 		
 		var newdiv = document.createElement('div');
 
-		newdiv.innerHTML = '<div class="form-group row col-xs-12 col-md-6"> ' + 
+		newdiv.innerHTML = '<div class="form-group"> ' + 
           ' <label class="form-control-label">Ticker ' + (counter + 1) + ' </label> ' + 
           ' <input class="form-control form-control-alternative" type="text"> ' + 
         '</div>';
@@ -21,15 +21,126 @@ function addInput(divName){
      }
 }
 
+
+OPTIMIZATION_CONSTRAINTS = {
+    "max-sharpe": '<input class="d-none" id="target-return">'+
+          '<input class="d-none" id="target-volatility">',
+    "min-volatility": '<input class="d-none" id="target-return">' +
+          '<input class="d-none" id="target-volatility">',
+    "min-volatility-target": '<label class="form-control-label">Target portfolio return</label>' + 
+                             '<input class="form-control" type="number" value="0.2" id="target-return">',
+    "max-return-target": '<label class="form-control-label">Target portfolio volatility</label>' + 
+                             '<input class="form-control" type="number" value="0.13" id="target-volatility">'
+       
+}
+
+var change_opt_constraints = function(event){
+
+    var value = event.target.value;
+
+    $("#constraints-container").html(OPTIMIZATION_CONSTRAINTS[value]);
+
+}
+
+
+// TODO: Validate inputs using javascript : priority (2)
+var validate_inputs = function(){
+    return true;
+}
+
+
 $(document).ready(function(){
 
 
+    var $start_date = $('#start-date')
+    var $end_date = $('#end-date')
+
+    // Boolean to display charts only after first submission
+    var charts_visible = false;
+        
+    // --- Initialize charts -----
+    // Initialize pie chart
+    var $pie_chart = $('#chart-pie-custom')
+    var pie_chart = new PieChart($pie_chart)
+    // Save to jQuery object
+    $pie_chart.data('data', pie_chart)
+
+
+    // Initialize portfolio performance chart
+    var $portfolio_chart = $('#portfolio-performance-chart-custom');
+    var portfolio_chart = new PortfolioChart($portfolio_chart);
+    // Save to jQuery object
+    $portfolio_chart.data('chart', portfolio_chart);
+
+    // Function to check requested job status by polling API endpoint.
+    var check_job = function(job_id){
+
+        // Make an ajax post request to the api server, at endpoint check jobs
+        data = {
+            "job_id": job_id
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: GET_JOB_ENDPOINT,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),  
+            context: $(this),
+            success: function(response) {
+                
+                console.log(response);
+
+                // TODO: Better error handling here : priority (4)
+                if(response["is_finished"]){
+
+                    // Update charts and re-enable everything 
+                    if(!charts_visible){
+
+                        //  Remove display none class from chart elements
+                        $('#custom-portfolio-performance-chart-container').removeClass('d-none');
+                        $('#custom-pie-chart-container').removeClass('d-none');
+
+                    }
+
+                    update_charts($portfolio_chart,  $pie_chart, response["result"], "");
+
+                    enable_charts();
+
+                    $('#submit-custom').prop("disabled", false);
+                    $('#tabs-icons-text-2-tab').removeClass("disabledTab");
+
+                }else if(response["is_failed"]){
+
+                    // Display error
+
+                    enable_charts();                    
+                    $('#submit-custom').prop("disabled", false);
+                    $('#tabs-icons-text-2-tab').removeClass("disabledTab");
+
+                    show_error("Unknown server error occured. Try again later.")
+
+                }else{
+
+                    setTimeout((function(){
+                        check_job(job_id);
+                    }), 400);
+                }
+            },
+            error: function() {
+                console.log("Error fetching job status")
+            }
+        });
+    }
 
 	$('#submit-custom').click(function() {
         
-        // Disable submit button until job is finished
-        $('#submit-custom').prop("disabled", true);
+        if(!validate_inputs()) return false;    
 
+        // Disable page navigation and submit button until job is finished
+        $('#submit-custom').prop("disabled", true);
+        $('#tabs-icons-text-2-tab').addClass("disabledTab");
+        
         // Display loading sign on charts
         disable_charts();
 
@@ -40,40 +151,51 @@ $(document).ready(function(){
         	ticker_list.push(val)
         })
 
-        console.log(ticker_list)
+        // Get time range
+        var start_date = $start_date.val();
+        var end_date = $end_date.val();
+    
+        // Get optimization method
+        var optimization_method = $('#optimization-select').val()
+        
+        // Get target risk and target return (will be empty strings if not user inputted)
+        var target_risk = $('#target-volatility')
+        var target_return = $('#target-return')
 
-        // Get slider data and submit to optimizer as a job        
-        // var data = {
-        //     "ticker_list": 
-        //     // "method": ,
-        //     // "expected_risk": ,
-        //     // "expected_returns":             
+        // Compile form data into an object
+        data = {
+            "ticker_list": ticker_list,
+            "start_date": start_date,
+            "end_date": end_date,
+            "optimization_method": optimization_method,
+            "optimization_parameters": {}
+        }
 
-        // };
-
-
-        // $.ajax({
-        //     type: 'POST',
-        //     url: OPTIMIZER_ENDPOINT,
-        //     dataType: 'json',
-        //     contentType: 'application/json; charset=utf-8',
-        //     data: JSON.stringify(data),  
-        //     context: $(this),
-        //     success: function(response) {
+        // Send ajax request to server to begin optimization job
+        $.ajax({
+            type: 'POST',
+            url: OPTIMIZER_ENDPOINT,
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),  
+            context: $(this),
+            success: function(response) {
                 
-        //         console.log("Success: received: ")
-        //         console.log(response);
-                
-        //         job_id = response["job_id"];
 
-        //         // Then check for job result, and display that
-        //         check_job(job_id, $portfolio_chart, $pie_chart);
 
-        //     },
-        //     error: function() {
-        //         console.log("Error")
-        //     }
-        // });
+                console.log(response);
+
+                job_id = response["job_id"];
+
+
+                // Then check for job result, and display that
+                check_job(job_id);
+
+            },
+            error: function() {
+                console.log("Error sending ajax request to initiate job")
+            }
+        });
 
 
     });
