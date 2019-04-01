@@ -6,6 +6,7 @@ from app import login, app
 from app import app
 import redis
 import rq
+import pandas as pd
 
 
 # TODO: separate auth models from others : priority (4)
@@ -52,6 +53,24 @@ class StockDailyPrice(mongoengine.Document):
 	def __repr__(self):
 		return '< Price of {} at {} >'.format(self.stock_ticker, self.date);
 		
+class SnP500Tickers(mongoengine.Document):
+
+    symbol = mongoengine.StringField(required=True)
+    name = mongoengine.StringField()
+    sector = mongoengine.StringField()
+
+    # Static function
+    def initialize():
+
+        snp_500_df = pd.read_csv('snp_500.csv')
+        for index, row in snp_500_df.iterrows():
+            s = SnP500Tickers(symbol=row['Symbol'], name=row['Name'], sector=row['Sector'])
+            s.save()
+
+    def __repr__(self):
+        return '< SnP500 : {} - object >'.format(self.symbol);
+
+
 
 class Task(mongoengine.Document):
 	job_id = mongoengine.StringField(required=True)

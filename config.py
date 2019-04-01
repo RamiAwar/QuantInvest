@@ -15,7 +15,7 @@ class Config(object):
 	REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 
 	OPTIMIZER_QUEUE = os.getenv("OPTIMIZATION_QUEUE", "optimizer-queue")
-
+	DATA_FETCHING_QUEUE = os.getenv("DATA_FETCHING_QUEUE", "data-fetching-queue")
 
 	# TODO: Correct setup : priority (2)
 	# MAIL_SERVER = os.environ.get('MAIL_SERVER')

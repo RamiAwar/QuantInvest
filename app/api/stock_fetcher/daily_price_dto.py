@@ -1,12 +1,13 @@
 class DailyPriceDto:
-    def __init__(self, stock_ticker, price, date):
-        self.stock_ticker = stock_ticker
+
+    def __init__(self, ticker, price, date):
+        self.ticker = ticker
         self.price = price
         self.date = date
 
     def to_dict(self):
         data = {
-            'stock_ticker': self.stock_ticker,
+            'ticker': self.ticker,
             'date': self.date,
             'price': self.price
         }
