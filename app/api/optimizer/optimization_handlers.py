@@ -14,7 +14,8 @@ def max_sharpe(parameters):
 
     print("From optimizer: ", parameters)
 
-    snp500_df = get_all_snp500_data(parameters["start_date"], parameters["end_date"])
+    snp500_df = get_all_snp500_data(datetime.strptime(parameters["start_date"], '%Y-%m-%d'), 
+                                    datetime.strptime(parameters["end_date"], '%Y-%m-%d'));
 
     mu = expected_returns.mean_historical_return(snp500_df)
 

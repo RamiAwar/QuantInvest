@@ -14,6 +14,7 @@ def get_all_snp500_data(start_date, end_date):
     data = StockDailyPrice.objects(date__lte=end_date, date__gte=start_date)
     
     data_df = pd.DataFrame()
+    
     data_df['date'] = pd.date_range(start_date, end_date)
     data_df = data_df.set_index(['date'])
     
