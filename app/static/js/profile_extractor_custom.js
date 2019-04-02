@@ -23,12 +23,16 @@ function addInput(divName){
 
 
 OPTIMIZATION_CONSTRAINTS = {
+
     "max-sharpe": '<input class="d-none" id="target-return">'+
           '<input class="d-none" id="target-volatility">',
+
     "min-volatility": '<input class="d-none" id="target-return">' +
           '<input class="d-none" id="target-volatility">',
+
     "min-volatility-target": '<label class="form-control-label">Target portfolio return</label>' + 
                              '<input class="form-control" type="number" value="0.2" id="target-return">',
+
     "max-return-target": '<label class="form-control-label">Target portfolio volatility</label>' + 
                              '<input class="form-control" type="number" value="0.13" id="target-volatility">'
        
@@ -81,6 +85,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
+
             type: 'POST',
             url: GET_JOB_ENDPOINT,
             dataType: 'json',

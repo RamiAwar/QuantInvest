@@ -2,23 +2,33 @@ import pandas as pd
 from app.api.stock_fetcher.get_data import get_data
 from app.api.backtest.data_manipulation import dict_to_dataframe
 
+
 def prepare_dataframe(portfolio, start_date, end_date):
+
     # portfolio is a dict mapping stocks to weights
     print(portfolio.keys())
+    print(portfolio)
+
     df = get_data(list(portfolio.keys()), start_date, end_date)
-    # df = dict_to_dataframe(stock_prices)
     df.dropna(inplace=True)
     df = compute_total_value(df, portfolio)
     return df
 
-def compute_total_value(prices_over_time, portfolio):
-    df = prices_over_time
-    for column in df:
-        df[column] = df[column].apply(lambda x: x * portfolio[column]) # multiply each column by the number of stocks bought to get total price
-    stocks_list = list(df)
-    df['total_value'] = df.sum(axis=1)
-    df.drop(stocks_list, axis=1, inplace=True)
-    return df
+
+def compute_total_value(prices_df, portfolio):
+
+    # Get portfolio data
+    prices_df = get_historical_data(list(portfolio.keys()), output_format="pandas")
+    # db['AAPL']['Adj. Close'].diff()
+
+    prices_df = pd.concat([prices_df[stock]["close"]
+                           for stock in list(portfolio.keys())], axis=1, keys=portfolio.keys())
+
+    prices_df = pd.concat([(prices_df[stock].diff() + initial_amount) * portfolio[stock]
+                           for stock in list(portfolio.keys())], axis=1, keys=portfolio.keys()).sum(axis=1).dropna()
+
+    return prices_df
+
 
 def compute_daily_returns(prices_over_time):
     df = prices_over_time
@@ -26,11 +36,13 @@ def compute_daily_returns(prices_over_time):
     df.dropna(inplace=True)
     return df
 
+
 def compute_moving_average(prices_over_time, window):
     df = prices_over_time
     df['moving_average'] = float('nan')
     df['moving_average'] = df.rolling(window=window).mean()
     return df
+
 
 def compute_moving_standard_deviation(prices_over_time, window):
     df = prices_over_time
@@ -38,9 +50,10 @@ def compute_moving_standard_deviation(prices_over_time, window):
     df['moving_standard_deviation'] = df.rolling(window=window).std()
     return df
 
+
 def compute_statistics(prices_over_time):
     df = prices_over_time
     df = compute_daily_returns(df)
     df = compute_moving_average(df, 50)
     df = compute_moving_standard_deviation(df, 50)
-    return df    
+    return df
