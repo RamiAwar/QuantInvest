@@ -31,10 +31,9 @@ def max_sharpe(parameters):
 
     cleaned_weights = {k: round(v*100, 3) for k, v in cleaned_weights.items() if v != 0}
 
-    print(cleaned_weights)
+    backtest_results = get_daily_returns(cleaned_weights, parameters["start_date"], parameters["end_date"])
 
-    # backtest_results = get_daily_returns(cleaned_weights, parameters["start_date"], parameters["end_date"])
-
+    print(backtest_results.head())
     # data = {}
     # data["labels"] = list(cleaned_weights.keys())
     # data["data"] = list(cleaned_weights.values())
