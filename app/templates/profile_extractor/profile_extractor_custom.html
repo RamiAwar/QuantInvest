@@ -20,6 +20,7 @@
               <input class="form-control form-control-alternative" type="text">
           
             </div>
+
           </div>
 
         </div>
@@ -38,27 +39,26 @@
   </div>
 
   
-  <div class="col-md-6">
+  <div class="col-md-6 pr-0">
     <div class="card">
 
       <div class="card-header">
-        <h5 class="h3 mb-0">Time Span</h5>
+        <h5 class="h3 mb-0">Portfolio Details</h5>
       </div>
 
       <div class="card-body">
 
         <div class="form-group">
 
-          <label class="form-control-label"> Start date</label>
-          <input class="form-control" type="date" value="2015-01-01" id="start-date">
+          <label class="form-control-label">Initial Amount</label>
+
+          <input class="form-control form-control-alternative" type="number" value="100000" id="initial-amount-input">
 
         </div>
 
-        <div class="form-group">
-
-          <label class="form-control-label"> End date</label>
-          <input class="form-control" type="date" value="2019-01-01" id="end-date">
-
+        <div class="form-group " id="constraints-container">
+          <input class="d-none" id="target-return">
+          <input class="d-none" id="target-volatility">
         </div>
    
       </div>
@@ -66,11 +66,13 @@
 
     </div>
   </div>
+  
 
 
 </div>
 
 <div class="row mr-0 ml-0">
+
 
   <div class="col-md-6 pr-0">
     <div class="card">
@@ -97,6 +99,36 @@
         <div class="form-group " id="constraints-container">
           <input class="d-none" id="target-return">
           <input class="d-none" id="target-volatility">
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div>
+  
+
+  <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Time Span</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label"> Start date</label>
+          <input class="form-control" type="date" value="2015-01-01" id="start-date">
+
+        </div>
+
+        <div class="form-group">
+
+          <label class="form-control-label"> End date</label>
+          <input class="form-control" type="date" value="2019-01-01" id="end-date">
+
         </div>
    
       </div>
@@ -136,7 +168,7 @@
   </div>
 </div>
 
-<div id="custom-pie-chart-container" class="row ml-0 mr-0 d-none">
+<div id="custom-pie-chart-container" class="row ml-0 mr-0">
   <div class="container">
     <div class="card bg-gradient-default shadow">
         
@@ -145,7 +177,7 @@
       </div>
 
       <div class="card-body">
-        <canvas id="chart-pie-custom" class="chart-canvas"></canvas>
+        <canvas id="chart-pie-custom" style="min-height: 40vh;" class="chart-canvas"></canvas>
       </div>
 
 
@@ -153,7 +185,7 @@
   </div>
 </div>
 
-<div id="custom-portfolio-performance-chart-container" class="row ml-0 mr-0 d-none">
+<div id="custom-portfolio-performance-chart-container" class="row ml-0 mr-0">
   <div class="container">
     <div class="card bg-gradient-default shadow">
         
@@ -162,7 +194,7 @@
       </div>
 
       <div class="card-body">
-        <canvas id="portfolio-performance-chart-custom" class="chart-canvas"></canvas>
+        <canvas id="portfolio-performance-chart-custom" style="min-height: 40vh;" class="chart-canvas"></canvas>
       </div>
 
 

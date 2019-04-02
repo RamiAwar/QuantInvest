@@ -58,23 +58,23 @@ $(document).ready(function(){
 
     var $start_date = $('#start-date')
     var $end_date = $('#end-date')
-
-    // Boolean to display charts only after first submission
-    var charts_visible = false;
         
     // --- Initialize charts -----
     // Initialize pie chart
     var $pie_chart = $('#chart-pie-custom')
-    var pie_chart = new PieChart($pie_chart)
+    var pie_chart = new PieChart($pie_chart, "Portfolio")
     // Save to jQuery object
     $pie_chart.data('data', pie_chart)
 
 
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
-    var portfolio_chart = new PortfolioChart($portfolio_chart);
+    var portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
+    
     // Save to jQuery object
-    $portfolio_chart.data('chart', portfolio_chart);
+    $portfolio_chart.data('data', portfolio_chart);
+
+    console.log($portfolio_chart.data())
 
     // Function to check requested job status by polling API endpoint.
     var check_job = function(job_id){
@@ -99,16 +99,7 @@ $(document).ready(function(){
                 // TODO: Better error handling here : priority (4)
                 if(response["is_finished"]){
 
-                    // Update charts and re-enable everything 
-                    if(!charts_visible){
-
-                        //  Remove display none class from chart elements
-                        $('#custom-portfolio-performance-chart-container').removeClass('d-none');
-                        $('#custom-pie-chart-container').removeClass('d-none');
-
-                    }
-
-                    update_charts($portfolio_chart,  $pie_chart, response["result"], "");
+                    update_charts($portfolio_chart,  $pie_chart, response["result"]["weights"], response["result"]["performance"]);
 
                     enable_charts();
 
@@ -156,12 +147,17 @@ $(document).ready(function(){
         	ticker_list.push(val)
         })
 
+        console.log(ticker_list)
+
         // Get time range
         var start_date = $start_date.val();
         var end_date = $end_date.val();
     
         // Get optimization method
         var optimization_method = $('#optimization-select').val()
+
+        // Get initial portfolio amount
+        var initial_amount = $('#initial-amount-input').val()
         
         // Get target risk and target return (will be empty strings if not user inputted)
         var target_risk = $('#target-volatility')
@@ -170,6 +166,7 @@ $(document).ready(function(){
         // Compile form data into an object
         data = {
             "ticker_list": ticker_list,
+            "initial_amount": initial_amount,
             "start_date": start_date,
             "end_date": end_date,
             "optimization_method": optimization_method,

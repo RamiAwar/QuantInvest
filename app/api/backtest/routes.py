@@ -9,12 +9,14 @@ from datetime import datetime
 from flask import request, jsonify
 
 from app.api.backtest import bp
-from app.api.backtest.get_statistics import (prepare_dataframe, 
-                                            compute_statistics, 
-                                            compute_daily_returns,
-                                            compute_moving_average,
-                                            compute_moving_standard_deviation)
-@bp.route("/", methods=['POST'])
+# from app.api.backtest.get_statistics import (prepare_dataframe,
+#                                             compute_statistics,
+#                                             compute_daily_returns,
+#                                             compute_moving_average,
+#                                             compute_moving_standard_deviation)
+# @bp.route("/", methods=['POST'])
+
+
 def get_portfolio_statistics():
     """
         **Gets all portfolio statistics: daily returns, moving_average, moving_standard_deviation.**
@@ -61,6 +63,7 @@ def get_portfolio_statistics():
     performance = compute_statistics(prices_df)
     return performance.to_json(orient='index')
 
+
 @bp.route("/daily_returns", methods=['POST'])
 def get_daily_returns():
     """
@@ -98,6 +101,7 @@ def get_daily_returns():
     performance = compute_daily_returns(prices_df)
 
     return performance.to_json(orient='index')
+
 
 @bp.route("/moving_average", methods=['POST'])
 def get_moving_average():
@@ -139,6 +143,7 @@ def get_moving_average():
     performance = compute_moving_average(prices_df, window)
     return performance.to_json(orient='index')
 
+
 @bp.route("/moving_standard_deviation", methods=['POST'])
 def get_moving_standard_deviation():
     """
@@ -175,10 +180,10 @@ def get_moving_standard_deviation():
     prices_df = prepare_dataframe(portfolio, start_date, end_date)
 
     performance = compute_moving_standard_deviation(prices_df, window)
-    
+
     return performance.to_json(orient='index')
+
 
 def parse_date(date):
 
     return datetime.strptime(date, '%d%m%Y')
-

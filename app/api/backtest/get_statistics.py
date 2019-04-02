@@ -6,27 +6,24 @@ from app.api.backtest.data_manipulation import dict_to_dataframe
 def prepare_dataframe(portfolio, start_date, end_date):
 
     # portfolio is a dict mapping stocks to weights
-    print(portfolio.keys())
-    print(portfolio)
+    # print(portfolio.keys())
+    # print(portfolio)
 
     df = get_data(list(portfolio.keys()), start_date, end_date)
     df.dropna(inplace=True)
-    df = compute_total_value(df, portfolio)
+
     return df
 
 
-def compute_total_value(prices_df, portfolio):
+def compute_total_value(prices_df, initial_amount, portfolio):
 
     # Get portfolio data
-    prices_df = get_historical_data(list(portfolio.keys()), output_format="pandas")
+    # prices_df = get_historical_data(list(portfolio.keys()), output_format="pandas")
     # db['AAPL']['Adj. Close'].diff()
 
-    prices_df = pd.concat([prices_df[stock]["close"]
-                           for stock in list(portfolio.keys())], axis=1, keys=portfolio.keys())
-
     prices_df = pd.concat([(prices_df[stock].diff() + initial_amount) * portfolio[stock]
-                           for stock in list(portfolio.keys())], axis=1, keys=portfolio.keys()).sum(axis=1).dropna()
-
+                           for stock in list(portfolio.keys())], axis=1, keys=list(portfolio.keys())).sum(axis=1).dropna()
+    prices_df = prices_df.drop(prices_df.index[0])
     return prices_df
 
 
