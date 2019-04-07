@@ -9,10 +9,13 @@ class Config(object):
 	CSRF_ENABLED = True
 	SECRET_KEY = '823a9b472dd3067f787aad0670d861766169060b487edbbb'
 
-	MONGODB_URI = os.environ.get('MONGODB_URI') or \
-		'localhost:27017';
+	MONGODB_URI = os.environ.get('MONGODB_URI') or 'localhost:27017';
 	DB_NAME = 'quantinvest'
-	OPTIMIZER_ENDPOINT = "localhost:9999"
+
+	REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+
+	OPTIMIZER_QUEUE = os.getenv("OPTIMIZATION_QUEUE", "optimizer-queue")
+	DATA_FETCHING_QUEUE = os.getenv("DATA_FETCHING_QUEUE", "data-fetching-queue")
 
 	# TODO: Correct setup : priority (2)
 	# MAIL_SERVER = os.environ.get('MAIL_SERVER')

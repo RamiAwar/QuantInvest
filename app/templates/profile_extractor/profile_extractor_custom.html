@@ -1,0 +1,203 @@
+<div class="row mr-0 ml-0">
+
+  <div class="col-md-6 pr-0">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Stocks</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <script src="{{url_for('static', filename='js/profile_extractor_custom.js')}}" language="Javascript" type="text/javascript"></script>
+          
+          <div id="dynamic-ticker-list" class="container">  
+            <div class="form-group">
+          
+              <label class="form-control-label">Ticker 1</label>
+              <input class="form-control form-control-alternative" type="text">
+          
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <div class="container">
+            <input type="button" class="btn btn-primary" value="Add stock ticker" onClick="addInput('dynamic-ticker-list');">
+          </div>
+
+        </div>      
+      </div>
+
+
+    </div>
+  </div>
+
+  
+  <div class="col-md-6 pr-0">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Portfolio Details</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label">Initial Amount</label>
+
+          <input class="form-control form-control-alternative" type="number" value="100000" id="initial-amount-input">
+
+        </div>
+
+        <div class="form-group " id="constraints-container">
+          <input class="d-none" id="target-return">
+          <input class="d-none" id="target-volatility">
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div>
+  
+
+
+</div>
+
+<div class="row mr-0 ml-0">
+
+
+  <div class="col-md-6 pr-0">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Optimization</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label">Optimization goal</label>
+
+          <select class="form-control" id="optimization-select" onchange="change_opt_constraints(event)">
+            <option value="max-sharpe">Maximize sharpe ratio</option>
+            <option value="min-volatility">Minimize volatility</option>
+            <option value="min-volatility-target">Minimize volatility subject to ...</option>
+            <option value="max-return-target">Maximize return subject to ...</option>
+          </select>
+
+        </div>
+
+        <div class="form-group " id="constraints-container">
+          <input class="d-none" id="target-return">
+          <input class="d-none" id="target-volatility">
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div>
+  
+
+  <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Time Span</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label"> Start date</label>
+          <input class="form-control" type="date" value="2015-01-01" id="start-date">
+
+        </div>
+
+        <div class="form-group">
+
+          <label class="form-control-label"> End date</label>
+          <input class="form-control" type="date" value="2019-01-01" id="end-date">
+
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div>
+
+  
+ <!-- <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Backtesting Options</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          test
+
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div> -->
+
+
+</div>
+
+<div class="row ml-0 mr-0">
+  <div class="container">
+    <button style="margin-bottom:30px;" type="button" id="submit-custom" class="btn btn-primary btn-lg btn-block">Optimize</button>
+  </div>
+</div>
+
+<div id="custom-pie-chart-container" class="row ml-0 mr-0">
+  <div class="container">
+    <div class="card bg-gradient-default shadow">
+        
+      <div class="card-header bg-transparent">
+        <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+      </div>
+
+      <div class="card-body">
+        <canvas id="chart-pie-custom" style="min-height: 40vh;" class="chart-canvas"></canvas>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div id="custom-portfolio-performance-chart-container" class="row ml-0 mr-0">
+  <div class="container">
+    <div class="card bg-gradient-default shadow">
+        
+      <div class="card-header bg-transparent">
+        <h5 class="h3 mb-0 text-white">Backtested Portfolio Performance</h5>
+      </div>
+
+      <div class="card-body">
+        <canvas id="portfolio-performance-chart-custom" style="min-height: 40vh;" class="chart-canvas"></canvas>
+      </div>
+
+
+    </div>
+  </div>
+</div>
