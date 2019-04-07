@@ -6,6 +6,10 @@ from app import app
 from app.models import User
 from app.profile_extractor import bp
 
+@bp.route('/extractprofile', methods=["GET"])
+@login_required
+def extractprofile():
+    pass
 
 @bp.route('/createprofile', methods=['GET'])
 @login_required
