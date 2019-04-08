@@ -33,12 +33,6 @@ def profile():
 	return render_template('profile.html', user=current_user, form=edit_profile_form)
 
 
-@app.route('/quiz', methods=["GET"])
-@login_required
-def quiz():
-
-	return render_template('risk_assessment_questionnaire.html')
-
 
 
 

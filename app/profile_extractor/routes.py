@@ -9,7 +9,9 @@ from app.profile_extractor import bp
 @bp.route('/extractprofile', methods=["GET"])
 @login_required
 def extractprofile():
-    pass
+    return render_template('risk_assessment_questionnaire.html')
+
+
 
 @bp.route('/createprofile', methods=['GET'])
 @login_required

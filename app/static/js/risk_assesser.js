@@ -1,19 +1,23 @@
 (function() {
   var questions = [{
-    question: "What is 2*5?",
-    choices: [2, 5, 10, 15, 20],
-    correctAnswer: 2
+    question: "What is the amount of money you are willing to invest?",
+    choices: ["< $1000", "$1000 - $9000", "$10,000 - $90,000", "$100,000 - $900,000", "> $1,000,000"],
+    weights: [1, 2, 3, 5, 7]
   }, {
-    question: "What is 3*6?",
-    choices: [3, 6, 9, 12, 18],
-    correctAnswer: 4
+    question: "What percentage of your savings does this amount constitute?",
+    choices: ["1% - 5%", "5% - 10%", "10% - 20%", "20% - 50%", "> 50%"],
+    correctAnswer: [7, 5, 3, 2, 1]
   }, {
-    question: "What is 8*9?",
-    choices: [72, 99, 108, 134, 156],
-    correctAnswer: 0
+    question: "What is your age range?",
+    choices: ["< 20 years", "20 - 35 years", "36 - 50 years", "51 - 65 years", "> 65 years"],
+    correctAnswer: [7, 5, 3, 2, 1]
   }, {
-    question: "What is 1*7?",
-    choices: [4, 5, 6, 7, 8],
+    question: "Which investment objective best describes you?",
+    choices: ["Prefer to preserve invested capital safely as opposed to growth and risk",
+              "Prefer to preserve capital and generate regular income slightly above money market rates",
+              "",
+              "",
+              ""],
     correctAnswer: 3
   }, {
     question: "What is 8*8?",
@@ -106,8 +110,8 @@
     var input = '';
     for (var i = 0; i < questions[index].choices.length; i++) {
       item = $('<li>');
-      input = '<input type="radio" name="answer" value=' + i + ' />';
-      input += questions[index].choices[i];
+      input = '<input type="radio" name="answer" value="  ' + i + '" />';
+      input += '    ' + questions[index].choices[i];
       item.append(input);
       radioList.append(item);
     }
@@ -151,9 +155,11 @@
   
   // Computes score and returns a paragraph element to be displayed
   function displayScore() {
+
     var score = $('<p>',{id: 'question'});
     
     var numCorrect = 0;
+
     for (var i = 0; i < selections.length; i++) {
       if (selections[i] === questions[i].correctAnswer) {
         numCorrect++;
@@ -165,3 +171,6 @@
     return score;
   }
 })();
+
+
+
