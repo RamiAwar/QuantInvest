@@ -164,6 +164,10 @@ class PortfolioChart{
                 scales: {
                     xAxes: [{
                         type: 'time',
+                        time: {
+                            unit: 'month',
+                            tooltipFormat: 'DD/MM/YYYY'
+                        },
                         ticks: {
                             autoSkip: true,
                             maxTicksLimit: 8
@@ -197,7 +201,7 @@ class PortfolioChart{
                                 content += '<span class="popover-body-label mr-auto">' + label + '</span>';
                             }
 
-                            content += '$' + yLabel + 'k';
+                            content += '$' + Math.round(yLabel);
                             return content;
                         }
                     }

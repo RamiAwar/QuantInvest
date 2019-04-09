@@ -38,7 +38,7 @@ def compute_total_value(prices_df, initial_amount, portfolio):
     prices_df = prices_df.cumsum()
     prices_df = prices_df + initial_amount
 
-    print(prices_df.head())
+    # print(prices_df.head())
 
     return prices_df
 
