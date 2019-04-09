@@ -27,7 +27,7 @@
 <body style="display: flex;min-height: 100vh;flex-direction: column;">
 
 <!-- Bootstrap scripts -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
@@ -41,7 +41,7 @@
 	{% include "_argon_navbar.html" %}
 
 	<!-- Display flashed messages (notifications, errors, etc.) -->
-	<div class="container pt-2">
+	<div id="error-container" class="container pt-2">
 	{% with messages = get_flashed_messages(with_categories=true) %}
 	  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
 	  {% if messages %}
@@ -50,7 +50,6 @@
 				<span class="alert-inner--text">{{ message }}</span>
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
-		
 	    {% endfor %}
 	  {% endif %}
 	{% endwith %}
