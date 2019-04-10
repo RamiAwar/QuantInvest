@@ -55,6 +55,16 @@ var validate_inputs = function(ticker_list){
         return false;
     }
 
+    // Check time span range start > 01/01/2015
+
+    // checkout this link : https://stackoverflow.com/questions/47300494/start-date-should-not-be-greater-than-end-date-bootstrap-date-picker
+
+    // Check optimization parameters non empty
+
+    
+
+
+
     return true;
 
 }
@@ -82,8 +92,6 @@ $(document).ready(function(){
     var portfolio_chart = null
     
     
-    console.log($portfolio_chart.data())
-
     // Function to check requested job status by polling API endpoint.
     var check_job = function(job_id){
 
@@ -141,8 +149,11 @@ $(document).ready(function(){
 
         var ticker_list = []
         $("#dynamic-ticker-list :input").each(function(){
-            var val = $(this).val();
-            ticker_list.push(val)
+            var val = $(this).val().toUpperCase().trim();
+            if (val !== ""){
+                ticker_list.push(val);    
+            }
+            
         })
         
         if(!validate_inputs(ticker_list)) return false;
@@ -174,16 +185,11 @@ $(document).ready(function(){
         }else{
             disable_charts();    
         }
-        
 
-        // Compile ticker list
-        var ticker_list = []
-        $("#dynamic-ticker-list :input").each(function(){
-        	var val = $(this).val();
-        	ticker_list.push(val)
-        })
 
         console.log(ticker_list)
+
+
 
         // Get time range
         var start_date = $start_date.val();
