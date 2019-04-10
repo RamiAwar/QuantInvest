@@ -25,29 +25,15 @@ def get_all_snp500_data(start_date, end_date):
         data_df[stock_ticker] = np.nan
 
     for quote in data:
-        data_df.at[quote.date, quote.stock_ticker] = quote.price
+        data_df.at[quote.date, quote.ticker] = quote.price
 
     data_df.dropna(how='all', inplace=True)
-
+    data_df.dropna(how='any', axis=1, inplace=True)
+    
     return data_df
 
 
 def fetch_missing_data(stock_tickers, start_date, end_date):
-
-    # if len(stock_tickers) == 1:
-
-    #     missing_data = {}
-
-    #     stock_data = get_historical_data(stock_tickers, start_date, end_date)
-    #     stock_data = [stock_tickers, value['open'] for key, value in stock_data.items()]
-
-    #     if len(stock_data) == 0:
-    #         return {}
-
-    #     missing_data[stock_tickers[0]] = stock_data
-    #     return missing_data
-
-    # else:
 
     missing_data = {}
 
@@ -55,7 +41,10 @@ def fetch_missing_data(stock_tickers, start_date, end_date):
 
     stock_data = get_historical_data(stock_tickers, start_date, end_date, output_format="pandas")
 
-    stock_data = pd.concat([stock_data[stock]["open"] for stock in stock_tickers], axis=1, keys=stock_tickers)
+    if len(stock_tickers) == 1: # iex will return different headers if only one stock is requested
+        stock_data = pd.concat([stock_data["open"]], axis=1,keys=stock_tickers)
+    else:
+        stock_data = pd.concat([stock_data[stock]["open"] for stock in stock_tickers], axis=1, keys=stock_tickers)
 
     # for ticker, quote in stock_data.items():
     #     ticker_data = []

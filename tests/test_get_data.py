@@ -19,8 +19,8 @@ class GetDataTests(unittest.TestCase):
 
     def test_get_all_snp500_data(self):
         current_date = datetime.now()
-        get_all_snp500_data(current_date-relativedelta(month=1), current_date)
-        self.assertTrue(True)
+        df = get_all_snp500_data(current_date-relativedelta(month=1), current_date)
+        self.assertFalse(df.isnull().values.any())
 
 
 if __name__ == '__main__':
