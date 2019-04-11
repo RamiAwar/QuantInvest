@@ -42,6 +42,12 @@ from app.models import *
 
 SnP500Tickers.initialize()
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from startup_tasks import cache_data
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=cache_data, trigger="interval", days=1)
+scheduler.start()
 
 @app.shell_context_processor
 def make_shell_context():
