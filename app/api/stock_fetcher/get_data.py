@@ -6,7 +6,7 @@ from iexfinance.stocks import get_historical_data
 
 from app.models import StockDailyPrice
 from app.api.stock_fetcher.daily_price_dto import DailyPriceDto
-from app.models import StockDailyPrice, SnP500Tickers
+from app.models import StockDailyPrice, snp500_tickers
 
 
 def get_all_snp500_data(start_date, end_date):
@@ -18,7 +18,7 @@ def get_all_snp500_data(start_date, end_date):
     data_df['date'] = pd.date_range(start_date, end_date)
     data_df = data_df.set_index(['date'])
 
-    snp_500_objects = SnP500Tickers.objects()
+    snp_500_objects = snp500_tickers.objects()
     snp_500_tickers = [obj["symbol"] for obj in snp_500_objects]
 
     for stock_ticker in snp_500_tickers:
@@ -29,7 +29,7 @@ def get_all_snp500_data(start_date, end_date):
 
     data_df.dropna(how='all', inplace=True)
     data_df.dropna(how='any', axis=1, inplace=True)
-    
+
     return data_df
 
 
@@ -41,8 +41,8 @@ def fetch_missing_data(stock_tickers, start_date, end_date):
 
     stock_data = get_historical_data(stock_tickers, start_date, end_date, output_format="pandas")
 
-    if len(stock_tickers) == 1: # iex will return different headers if only one stock is requested
-        stock_data = pd.concat([stock_data["open"]], axis=1,keys=stock_tickers)
+    if len(stock_tickers) == 1:  # iex will return different headers if only one stock is requested
+        stock_data = pd.concat([stock_data["open"]], axis=1, keys=stock_tickers)
     else:
         stock_data = pd.concat([stock_data[stock]["open"] for stock in stock_tickers], axis=1, keys=stock_tickers)
 
@@ -75,7 +75,7 @@ def get_data(stock_tickers, start_date, end_date):
     """
 
     # Split ticker list into snp500 tickers and non-snp500 tickers
-    # snp_500_objects = SnP500Tickers.objects()
+    # snp_500_objects = snp500_tickers.objects()
     # snp_500_tickers = [obj["symbol"] for obj in snp_500_objects];
 
     # is_in_snp_500 = [ticker for ticker in stock_tickers if ticker in snp_500_tickers] # this list contains all the snp_500 tickers from the input
