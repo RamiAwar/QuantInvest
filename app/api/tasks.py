@@ -10,10 +10,14 @@ from app.models import StockDailyPrice
 def fetch_snp500_data(stock_tickers):
 
     try:
-        default_date = datetime.strptime("2015-01-01", '%Y-%m-%d')
-        latest_available_data = (StockDailyPrice.objects.order_by('-date').first().date or default_date)
-
         current_date = datetime.now()
+
+        default_date = current_date - relativedelta(years=5)
+        latest_available_data = StockDailyPrice.objects.order_by('-date').first()
+        if latest_available_data != None:
+            latest_available_date = latest_available_data.date
+        else:
+            latest_available_date = default_date
 
         print("Fetching data in the range " + str(latest_available_date) + " " + str(current_date))
 
