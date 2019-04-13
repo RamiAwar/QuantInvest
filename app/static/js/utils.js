@@ -28,6 +28,9 @@ var show_error = function(error_message){
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
     </div>');
 
+    window.scrollTo(0, 0);
+
+
 }
 
 function get_random(length) { return Math.floor(Math.random()*(length)); }

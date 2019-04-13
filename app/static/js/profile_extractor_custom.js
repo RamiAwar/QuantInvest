@@ -22,6 +22,7 @@ function addInput(divName){
 }
 
 
+
 OPTIMIZATION_CONSTRAINTS = {
 
     "max-sharpe": '<input class="d-none" id="target-return">'+
@@ -52,15 +53,26 @@ var validate_inputs = function(ticker_list){
     
     // Check stocks list greater than or equal to 2
     if(ticker_list.length < 2){
+        show_error("Invalid request: More than 1 stock is required to build a portfolio.")
         return false;
     }
 
     // Check time span range start > 01/01/2015
+    start_moment = moment($('#start-date').val(), "YYYY-MM-DD");
+    end_moment = moment($('#end-date').val(), "YYYY-MM-DD");
 
-    // checkout this link : https://stackoverflow.com/questions/47300494/start-date-should-not-be-greater-than-end-date-bootstrap-date-picker
+    if(!end_moment.isAfter(start_moment)){
+        show_error("Invalid request: End date is before start date.");
+        return false;
+    }
+
+    if(moment("2014-12-31").isAfter(start_moment)){
+        show_error("Invalid request: Please select a starting date after 2015")
+        return false;
+    }
 
     // Check optimization parameters non empty
-
+    
     
 
 
@@ -90,8 +102,8 @@ $(document).ready(function(){
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
     var portfolio_chart = null
-    
-    
+
+
     // Function to check requested job status by polling API endpoint.
     var check_job = function(job_id){
 
@@ -155,6 +167,8 @@ $(document).ready(function(){
             }
             
         })
+
+
         
         if(!validate_inputs(ticker_list)) return false;
 
