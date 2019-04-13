@@ -10,7 +10,7 @@ from app.api.stock_fetcher.get_data import get_data, get_all_snp500_data
 from app.api.backtest import backtest_portfolio
 
 from datetime import datetime
-
+from dateutil.relativedelta import relativedelta
 
 def max_sharpe(parameters):
 
@@ -222,8 +222,8 @@ def target_return_volatility(parameters):
 
     print("From optimizer: ", parameters)
 
-    stocks_df = get_all_snp500_data(datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
-                         datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
+    stocks_df = get_all_snp500_data(datetime.now()-relativedelta(month=11), datetime.now())
+    
     print("Stocks df")
     print(stocks_df.head())
 
@@ -245,8 +245,7 @@ def target_return_volatility(parameters):
 
     # backtest_results = get_daily_returns(cleaned_weights, parameters["start_date"], parameters["end_date"])
 
-    backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights, initial_amount=int(parameters[
-                                          "initial_amount"]), start_date=parameters["start_date"], end_date=parameters["end_date"])
+    backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights, initial_amount=1000, start_date=parameters["start_date"], end_date=parameters["end_date"])
 
     print(backtest_results.describe())
 

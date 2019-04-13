@@ -6,7 +6,7 @@ from iexfinance.stocks import get_historical_data
 
 from app.models import StockDailyPrice
 from app.api.stock_fetcher.daily_price_dto import DailyPriceDto
-from app.models import StockDailyPrice, SnP500Tickers
+from app.models import StockDailyPrice, snp500tickers
 
 
 def get_all_snp500_data(start_date, end_date):
@@ -18,16 +18,17 @@ def get_all_snp500_data(start_date, end_date):
     data_df['date'] = pd.date_range(start_date, end_date)
     data_df = data_df.set_index(['date'])
 
-    snp_500_objects = SnP500Tickers.objects()
+    snp_500_objects = snp500tickers.objects()
     snp_500_tickers = [obj["symbol"] for obj in snp_500_objects]
 
     for stock_ticker in snp_500_tickers:
         data_df[stock_ticker] = np.nan
 
     for quote in data:
-        data_df.at[quote.date, quote.stock_ticker] = quote.price
+        data_df.at[quote.date, quote.ticker] = quote.price
 
     data_df.dropna(how='all', inplace=True)
+    data_df.dropna(how='any', axis=1, inplace=True)
 
     return data_df
 

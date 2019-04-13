@@ -38,20 +38,20 @@ class StockDailyPrice(mongoengine.Document):
 
 	def to_dict(self):
 		data = {
-            'stock_ticker': self.stock_ticker,
+            'ticker': self.ticker,
             'date': self.date,
 			'price': self.price
         }
 		return data
 	
 	def get_tasks_in_progress(self):
-		return Task.objects.get(job_id=self.stock_ticker, complete=False)
+		return Task.objects.get(job_id=self.ticker, complete=False)
 
 	def get_task_in_progress(self, name):
-		return Task.objects.get(name=name, job_id=self.stock_ticker, complete=False).first()
+		return Task.objects.get(name=name, job_id=self.ticker, complete=False).first()
 
 	def __repr__(self):
-		return '< Price of {} at {} >'.format(self.stock_ticker, self.date);
+		return '< Price of {} at {} >'.format(self.ticker, self.date);
 		
 class snp500tickers(mongoengine.Document):
 
@@ -64,7 +64,7 @@ class snp500tickers(mongoengine.Document):
 
         snp_500_df = pd.read_csv('snp_500.csv')
         for index, row in snp_500_df.iterrows():
-            s = SnP500Tickers(symbol=row['Symbol'], name=row['Name'], sector=row['Sector'])
+            s = snp500tickers(symbol=row['Symbol'], name=row['Name'], sector=row['Sector'])
             s.save()
 
     def __repr__(self):

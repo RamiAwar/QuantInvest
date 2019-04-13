@@ -44,7 +44,7 @@ from app.models import *
 from app.api.stock_fetcher.launch_task import launch_task
 
 
-SnP500Tickers.initialize()
+snp500tickers.initialize()
 
 
 # TODO: Refactor : priority (1)
@@ -57,7 +57,7 @@ SnP500Tickers.initialize()
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'User': User, 'StockDailyPrice':StockDailyPrice, 'SnP500Tickers':SnP500Tickers}
+    return {'User': User, 'StockDailyPrice':StockDailyPrice, 'snp500tickers':snp500tickers}
 
 
 
