@@ -48,13 +48,32 @@ var change_opt_constraints = function(event){
 
 
 // TODO: Validate inputs using javascript : priority (2)
-var validate_inputs = function(){
+var validate_inputs = function(ticker_list){
+    
+    // Check stocks list greater than or equal to 2
+    if(ticker_list.length < 2){
+        return false;
+    }
+
+    // Check time span range start > 01/01/2015
+
+    // checkout this link : https://stackoverflow.com/questions/47300494/start-date-should-not-be-greater-than-end-date-bootstrap-date-picker
+
+    // Check optimization parameters non empty
+
+    
+
+
+
     return true;
+
 }
 
 
 $(document).ready(function(){
 
+    // Keeping track of chart creation
+    var firsttime = true;
 
     var $start_date = $('#start-date')
     var $end_date = $('#end-date')
@@ -62,20 +81,17 @@ $(document).ready(function(){
     // --- Initialize charts -----
     // Initialize pie chart
     var $pie_chart = $('#chart-pie-custom')
-    var pie_chart = new PieChart($pie_chart, "Portfolio")
-    // Save to jQuery object
-    $pie_chart.data('data', pie_chart)
+    var pie_chart = null
+    
 
+    $('#custom-pie-chart-container').hide();
+    $('#custom-portfolio-performance-chart-container').hide();
 
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
-    var portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
+    var portfolio_chart = null
     
-    // Save to jQuery object
-    $portfolio_chart.data('data', portfolio_chart);
-
-    console.log($portfolio_chart.data())
-
+    
     // Function to check requested job status by polling API endpoint.
     var check_job = function(job_id){
 
@@ -130,24 +146,50 @@ $(document).ready(function(){
     }
 
 	$('#submit-custom').click(function() {
+
+        var ticker_list = []
+        $("#dynamic-ticker-list :input").each(function(){
+            var val = $(this).val().toUpperCase().trim();
+            if (val !== ""){
+                ticker_list.push(val);    
+            }
+            
+        })
         
-        if(!validate_inputs()) return false;    
+        if(!validate_inputs(ticker_list)) return false;
+
 
         // Disable page navigation and submit button until job is finished
         $('#submit-custom').prop("disabled", true);
         $('#tabs-icons-text-2-tab').addClass("disabledTab");
         
         // Display loading sign on charts
-        disable_charts();
+        if(firsttime){
+            // Chart hiding has to be in this convoluted way due to chartjs bugs
+            firsttime = false;
 
-        // Compile ticker list
-        var ticker_list = []
-        $("#dynamic-ticker-list :input").each(function(){
-        	var val = $(this).val();
-        	ticker_list.push(val)
-        })
+            // Show chart containers
+            $('#custom-pie-chart-container').show();
+            $('#custom-portfolio-performance-chart-container').show();
+
+            // Create charts
+            portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
+            pie_chart = new PieChart($pie_chart, "Portfolio");
+
+            // Save to jQuery objects
+            $pie_chart.data('data', pie_chart)
+            $portfolio_chart.data('data', portfolio_chart);
+
+            disable_charts(); 
+
+        }else{
+            disable_charts();    
+        }
+
 
         console.log(ticker_list)
+
+
 
         // Get time range
         var start_date = $start_date.val();
