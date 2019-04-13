@@ -10,7 +10,7 @@ from app.api.stock_fetcher.get_data import get_data, get_all_snp500_data
 from app.api.backtest import backtest_portfolio
 
 from datetime import datetime
-
+from dateutil.relativedelta import relativedelta
 
 def max_sharpe(parameters):
 
