@@ -53,7 +53,7 @@ class StockDailyPrice(mongoengine.Document):
 	def __repr__(self):
 		return '< Price of {} at {} >'.format(self.stock_ticker, self.date);
 		
-class SnP500Tickers(mongoengine.Document):
+class snp500tickers(mongoengine.Document):
 
     symbol = mongoengine.StringField(required=True)
     name = mongoengine.StringField()
