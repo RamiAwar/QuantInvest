@@ -12,7 +12,6 @@ def extractprofile():
     return render_template('risk_assessment_questionnaire.html')
 
 
-
 @bp.route('/createprofile', methods=['GET'])
 @login_required
 def createprofile():
@@ -30,7 +29,7 @@ def createprofile():
 
 
 
-	return render_template('profile_extractor/profile_extractor.html')
+	return render_template('profile_extractor/profile_extractor.html', basic=False)
 
 # @bp.route('/')
 

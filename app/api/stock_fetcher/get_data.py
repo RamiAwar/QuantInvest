@@ -6,7 +6,7 @@ from iexfinance.stocks import get_historical_data
 
 from app.models import StockDailyPrice
 from app.api.stock_fetcher.daily_price_dto import DailyPriceDto
-from app.models import StockDailyPrice, snp500tickers
+from app.models import StockDailyPrice, snp500_tickers
 
 
 def get_all_snp500_data(start_date, end_date):
@@ -18,7 +18,7 @@ def get_all_snp500_data(start_date, end_date):
     data_df['date'] = pd.date_range(start_date, end_date)
     data_df = data_df.set_index(['date'])
 
-    snp_500_objects = snp500tickers.objects()
+    snp_500_objects = snp500_tickers.objects()
     snp_500_tickers = [obj["symbol"] for obj in snp_500_objects]
 
     for stock_ticker in snp_500_tickers:
@@ -35,28 +35,16 @@ def get_all_snp500_data(start_date, end_date):
 
 def fetch_missing_data(stock_tickers, start_date, end_date):
 
-    # if len(stock_tickers) == 1:
-
-    #     missing_data = {}
-
-    #     stock_data = get_historical_data(stock_tickers, start_date, end_date)
-    #     stock_data = [stock_tickers, value['open'] for key, value in stock_data.items()]
-
-    #     if len(stock_data) == 0:
-    #         return {}
-
-    #     missing_data[stock_tickers[0]] = stock_data
-    #     return missing_data
-
-    # else:
-
     missing_data = {}
 
     # TODO: Handle over 100 stock tickers : priority (4)
 
     stock_data = get_historical_data(stock_tickers, start_date, end_date, output_format="pandas")
 
-    stock_data = pd.concat([stock_data[stock]["open"] for stock in stock_tickers], axis=1, keys=stock_tickers)
+    if len(stock_tickers) == 1:  # iex will return different headers if only one stock is requested
+        stock_data = pd.concat([stock_data["open"]], axis=1, keys=stock_tickers)
+    else:
+        stock_data = pd.concat([stock_data[stock]["open"] for stock in stock_tickers], axis=1, keys=stock_tickers)
 
     # for ticker, quote in stock_data.items():
     #     ticker_data = []
@@ -87,7 +75,7 @@ def get_data(stock_tickers, start_date, end_date):
     """
 
     # Split ticker list into snp500 tickers and non-snp500 tickers
-    # snp_500_objects = SnP500Tickers.objects()
+    # snp_500_objects = snp500_tickers.objects()
     # snp_500_tickers = [obj["symbol"] for obj in snp_500_objects];
 
     # is_in_snp_500 = [ticker for ticker in stock_tickers if ticker in snp_500_tickers] # this list contains all the snp_500 tickers from the input

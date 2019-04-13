@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask
 from flask_login import LoginManager
 
 import mongoengine
@@ -7,12 +7,11 @@ import rq
 import os
 import pandas as pd
 
-
-app = Flask(__name__);
+app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
-login = LoginManager(app);
-login.login_view = "auth.login" # For automatic redirects to and from login when protected pages are requested by anonymous users
+login = LoginManager(app)
+login.login_view = "auth.login"  # For automatic redirects to and from login when protected pages are requested by anonymous users
 
 from app import routes
 
@@ -32,36 +31,19 @@ app.register_blueprint(api_bp, url_prefix='/api')
 app.register_blueprint(stock_fetcher_bp, url_prefix='/api/stock_fetcher')
 app.register_blueprint(backtest_bp, url_prefix='/api/backtest')
 
-
 # Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
-mongoengine.connect(app.config['DB_NAME'], host=app.config['MONGODB_URI'], port=27017);
+mongoengine.connect(app.config['DB_NAME'], host=app.config['MONGODB_URI'], port=27017)
 
 app.redis = Redis.from_url(app.config['REDIS_URL'])
-app.snp500_data_queue = rq.Queue(app.config['DATA_FETCHING_QUEUE'], connection=app.redis)
+app.snp500_data_queue = rq.Queue(app.config['CACHING_QUEUE'], connection=app.redis)
 
 
 from app.models import *
-from app.api.stock_fetcher.launch_task import launch_task
 
-
-snp500tickers.initialize()
-
-
-# TODO: Refactor : priority (1)
-# if StockDailyPrice.objects.first() == None: # check if any data for any snp 500 stock exists
-#     for i in range(0, len(snp_500_df['Symbol']), 100):
-#         task = launch_task('fetch_snp500_data', list(snp_500_df['Symbol'][i:i+100]))
-
-
-# Make some variables available in flask shell
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'User': User, 'StockDailyPrice':StockDailyPrice, 'snp500tickers':snp500tickers}
-
-
-
-
+    return {'User': User, 'StockDailyPrice': StockDailyPrice, 'snp500_tickers': snp500_tickers}
 
 
 # TODO: Refactor into logger class (mail logger, nonmail logging) : priority (2)
@@ -104,7 +86,3 @@ def make_shell_context():
 
 #     app.logger.setLevel(logging.INFO)
 #     app.logger.info('Microblog startup')
-
-
-
-
