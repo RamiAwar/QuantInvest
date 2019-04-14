@@ -28,12 +28,12 @@
         <div class="form-group justify-content-between">
 
           <div class="d-flex justify-content-between">
-            <div class='btn btn-primary mb-3 pr-6 pl-6' id='next'>Next</div>
             <div class='btn btn-primary mb-3 pr-6 pl-6' id='prev'>Prev</div>
+            <div class='btn btn-primary mb-3 pr-6 pl-6' id='next'>Next</div>
           </div>
 
           <div class='btn btn-primary btn-block mb-3' id='end'>Continue</div>   
-          <div class='btn btn-secondary btn-block' id='start'>Start Over</div>   
+          <div class='btn btn-secondary btn-block' id='start-over'>Start Over</div>   
 
         </div>
       
@@ -44,6 +44,11 @@
   </div>
 </div>
 
+<script type="text/javascript">
+  var CREATE_PROFILE_URL = "{{ url_for('profile_extractor.createprofile') }}"
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/utils.js')}}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/risk_assesser.js')}}"></script>
 
 {% endblock %}

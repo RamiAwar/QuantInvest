@@ -1,19 +1,30 @@
 (function() {
+
+  var risk_score = 0;
+
+
   var questions = [{
     question: "What is the amount of money you are willing to invest?",
     choices: ["< $1000", "$1000 - $9000", "$10,000 - $90,000", "$100,000 - $900,000", "> $1,000,000"],
-    weights: [1, 2, 3, 5, 7]
-  }, {
-    question: "What percentage of your savings does this amount constitute?",
-    choices: ["1% - 5%", "5% - 10%", "10% - 20%", "20% - 50%", "> 50%"],
-    weights: [7, 5, 3, 2, 1]
-  }, {
-    question: "What is your age range?",
-    choices: ["< 20 years", "20 - 35 years", "36 - 50 years", "51 - 65 years", "> 65 years"],
-    weights: [7, 5, 3, 2, 1]
-  }
+    weights: [1, 2, 3, 5, 7]}
+  // }, {
+  //   question: "What percentage of your savings does this amount constitute?",
+  //   choices: ["1% - 5%", "5% - 10%", "10% - 20%", "20% - 50%", "> 50%"],
+  //   weights: [7, 5, 3, 2, 1]
+  // }, {
+  //   question: "What is your age range?",
+  //   choices: ["< 20 years", "20 - 35 years", "36 - 50 years", "51 - 65 years", "> 65 years"],
+  //   weights: [7, 5, 3, 2, 1]
+  // },{
+  //   question: "If your net portfolio value dropped by 2% after the market closed, how would you react?",
+  //   choices: ["Sell all portfolio to prevent further losses", "Sell a portion of your portfolio", "Hold your investments and sell nothing, expecting conditions to improve", "Invest in more stocks, tolerating short term losses in hope of long term growth."],
+  //   weights: [1, 3, 5, 7]
+  // },
+
 
   ];
+
+  explanation_text = "<br> This score represents how much you are willing to take risks in your investment. QuantInvest uses this score to generate a suitable investment profile for you. Click continue to see more details and experiment with different profiles.";
   
   var questionCounter = 0; //Tracks question number
   var selections = []; //Array containing user choices
@@ -55,7 +66,8 @@
   });
   
   // Click handler for the 'Start Over' button
-  $('#start').on('click', function (e) {
+  $('#start-over').on('click', function (e) {
+
     e.preventDefault();
     
     if(quiz.is(':animated')) {
@@ -64,9 +76,20 @@
     questionCounter = 0;
     selections = [];
     displayNext();
-    $('#start').hide();
+    $('#start-over').hide();
+
+    risk_score = 0;
   });
   
+  $('#end').on('click', function(e){
+    form = $('<form action="' + CREATE_PROFILE_URL + '" method="POST">' + 
+    '<input type="hidden" name="score" value="' + risk_score + '">' +
+    '</form>');
+    $(document.body).append(form);
+    form.submit();
+
+
+  })
   
   
   // Creates and returns the div that contains the questions and 
@@ -126,19 +149,22 @@
         
         // Controls display of 'prev' button
         if(questionCounter === 1){
+
           $('#prev').show();
+
         } else if(questionCounter === 0){
           
           $('#prev').hide();
           $('#end').hide();
           $('#next').show();
         }
+
       }else {
         var scoreElem = displayScore();
         quiz.append(scoreElem).fadeIn();
         $('#next').hide();
         $('#prev').hide();
-        $('#start').show();
+        $('#start-over').show();
         $('#end').show();
 
       }
@@ -150,13 +176,12 @@
 
     var score = $('<p>',{id: 'question'});
     
-    var risk_score = 0;
-
     for (var i = 0; i < selections.length; i++) {
       risk_score += questions[i].weights[selections[i]]
     }
     
-    score.append('Your risk analysis score is ' + risk_score);
+    score.append('Your risk analysis score is ' + risk_score + explanation_text);
+
 
     //TODO: Add more detailed description of risk class and meaning : priority (1)
 
