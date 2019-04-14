@@ -34,30 +34,35 @@ def max_sharpe(parameters):
     # cleaned_weights = {k: round(v * 100, 3) for k, v in cleaned_weights.items() if v != 0}
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
 
-    print(cleaned_weights)
-
-    # backtest_results = get_daily_returns(cleaned_weights, parameters["start_date"], parameters["end_date"])
+    # get tuple of 3 values: (return, vol, sharpe)
+    performance = ef.portfolio_performance()
 
     backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights, initial_amount=int(parameters[
       "initial_amount"]), start_date=parameters["start_date"], end_date=parameters["end_date"])
-
-    print(backtest_results.describe())
 
     backtest_results_dict = backtest_results.to_dict()
 
     output = {
 
-    "weights": {
-    "labels": list(cleaned_weights.keys()),
-            # Convert into percentages instead of proportions
-            "data":  [round(x * 100, 2) for x in list(cleaned_weights.values())]
-            },
+        "weights": {
 
-            "performance": {
+            "labels": list(cleaned_weights.keys()),
+                    # Convert into percentages instead of proportions
+                    "data":  [round(x * 100, 2) for x in list(cleaned_weights.values())]
+        },
+
+        "performance": {
             "labels": list(backtest_results_dict.keys()),
             "data": list(backtest_results_dict.values())
-            }
-            }
+        }, 
+
+        # TODO: Add more portfolio statistics : priority (3)
+        "statistics": {
+            "expected_return": performance[0],
+            "volatility": performance[1],
+            "sharpe_ratio": performance[2]
+        }
+    }
 
     return output
 
@@ -239,18 +244,22 @@ def target_return_volatility(parameters):
 
     cleaned_weights = ef.clean_weights()
 
+    
+
     # cleaned_weights = {k: round(v * 100, 3) for k, v in cleaned_weights.items() if v != 0}
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
 
-    print(cleaned_weights)
+    # print(cleaned_weights)
 
     # backtest_results = get_daily_returns(cleaned_weights, parameters["start_date"], parameters["end_date"])
 
     backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights, initial_amount=1000, start_date=parameters["start_date"], end_date=parameters["end_date"])
 
-    print(backtest_results.describe())
+    # print(backtest_results.describe())
 
     backtest_results_dict = backtest_results.to_dict()
+
+
 
     output = {
 

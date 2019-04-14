@@ -36,8 +36,8 @@ class StockDailyPrice(mongoengine.Document):
     date = mongoengine.DateTimeField(required=True)
     price = mongoengine.FloatField(required=True)
 
-	def to_dict(self):
-		data = {
+    def to_dict(self):
+        data = {
             'ticker': self.ticker,
             'date': self.date,
             'price': self.price

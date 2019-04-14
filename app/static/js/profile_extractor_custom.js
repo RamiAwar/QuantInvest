@@ -117,6 +117,9 @@ $(document).ready(function(){
 
                     update_charts($portfolio_chart,  $pie_chart, response["result"]["weights"], response["result"]["performance"]);
 
+                    // Update portfolio summary
+                    
+
                     enable_charts();
 
                     $('#submit-custom').prop("disabled", false);
