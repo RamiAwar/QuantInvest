@@ -173,7 +173,7 @@
     <div class="card bg-gradient-default shadow chart-container">
         
       <div class="card-header bg-transparent">
-        <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+        <h5 class="h3 mb-0 text-white">Portfolio Constituents Chart</h5>
       </div>
 
       <div class="card-body">
@@ -202,26 +202,140 @@
   </div>
 </div>
 
-<div id="custom-portfolio-performance-chart-container" class="row ml-0 mr-0">
-  <div class="container">
-    <div class="card bg-gradient-default shadow chart-container">
-        
-      <div class="card-header bg-transparent">
-        <h5 class="h3 mb-0 text-white">Portfolio Statistics</h5>
+<div class="row ml-0 mr-0">
+  <div id="portfolio-statistics-container" class="col-md-6">
+    <div class="container">
+
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Statistics</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="row mb-3">
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Expected Returns</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">2.5%</span>
+            </div>
+
+            
+            
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-chart-bar-32"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Volatility</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">10.4%</span>
+            </div>
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Sharpe Ratio</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">5.8</span>
+            </div>
+
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Initial Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">$1000</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-briefcase-24"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Final Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">$4578</span>
+            </div>
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Start Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">2015-03-01</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-calendar-grid-58"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">End Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white">2019-02-12</span>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="card-body">
-        
-        <h3 class="card-title text-white">Summary</h3>
-        <blockquote class="blockquote text-white mb-0">
-            <p>Expected Returns: <span></p>
-            <p>Volatility: </p>
-            <footer class="blockquote-footer text-danger">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-        </blockquote>
-
-      </div>
-
-
     </div>
   </div>
+
+  <div id="portfolio-weights-container" class="col-md-6">
+    <div class="container">
+      
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="table-responsive">
+            <div>
+            <table class="table align-items-center table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="sort" data-sort="name">Ticker</th>
+                        <th scope="col" class="sort" data-sort="budget">Percentage</th>
+                      
+                    </tr>
+                </thead>
+                <tbody class="list">
+                    
+                    <tr>
+                        <th scope="row">
+                            <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="name mb-0 text-sm">Argon Design System</span>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="budget">
+                            $2500 USD
+                        </td>
+                        
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>
