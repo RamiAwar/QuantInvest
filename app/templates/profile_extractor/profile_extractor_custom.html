@@ -218,7 +218,7 @@
             
             <div class="col">
                 <h5 class="card-title text-uppercase text-muted mb-0">Expected Returns</h5>
-                <span class="h2 font-weight-bold mb-0 text-white">2.5%</span>
+                <span id="portfolio-expected-return" class="h2 font-weight-bold mb-0 text-white"></span>
             </div>
 
             
@@ -234,12 +234,12 @@
           <div class="row">
             <div class="col">
                 <h5 class="card-title text-uppercase text-muted mb-0">Volatility</h5>
-                <span class="h2 font-weight-bold mb-0 text-white">10.4%</span>
+                <span id="portfolio-volatility" class="h2 font-weight-bold mb-0 text-white">10.4%</span>
             </div>
             
             <div class="col">
                 <h5 class="card-title text-uppercase text-muted mb-0">Sharpe Ratio</h5>
-                <span class="h2 font-weight-bold mb-0 text-white">5.8</span>
+                <span id="portfolio-sharpe-ratio" class="h2 font-weight-bold mb-0 text-white">5.8</span>
             </div>
 
           </div>
@@ -249,7 +249,7 @@
           <div class="row mb-3">
             <div class="col">
                 <h5 class="card-title text-uppercase text-muted mb-0">Initial Value</h5>
-                <span class="h2 font-weight-bold mb-0 text-white">$1000</span>
+                <span id="portfolio-initial-value" class="h2 font-weight-bold mb-0 text-white">$1000</span>
             </div>
 
             <div class="col-auto">
@@ -262,7 +262,7 @@
           <div class="row">
             <div class="col">
                 <h5 class="card-title text-uppercase text-muted mb-0">Final Value</h5>
-                <span class="h2 font-weight-bold mb-0 text-white">$4578</span>
+                <span id="portfolio-final-value" class="h2 font-weight-bold mb-0 text-white">$4578</span>
             </div>
           </div>
 
@@ -270,7 +270,7 @@
 
           <div class="row mb-3">
             <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-0">Start Date</h5>
+                <h5 id="portfolio-start-date" class="card-title text-uppercase text-muted mb-0">Start Date</h5>
                 <span class="h2 font-weight-bold mb-0 text-white">2015-03-01</span>
             </div>
 
@@ -282,7 +282,7 @@
           </div>
           <div class="row">
             <div class="col">
-                <h5 class="card-title text-uppercase text-muted mb-0">End Date</h5>
+                <h5 id="portfolio-end-date" class="card-title text-uppercase text-muted mb-0">End Date</h5>
                 <span class="h2 font-weight-bold mb-0 text-white">2019-02-12</span>
             </div>
           </div>
@@ -312,7 +312,7 @@
                       
                     </tr>
                 </thead>
-                <tbody class="list">
+                <tbody id="portfolio-ticker-list" class="list">
                     
                     <tr>
                         <th scope="row">
@@ -327,6 +327,7 @@
                         </td>
                         
                     </tr>
+                    
                   </tbody>
                 </table>
               </div>

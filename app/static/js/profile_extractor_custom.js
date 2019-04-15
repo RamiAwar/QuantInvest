@@ -69,6 +69,36 @@ var validate_inputs = function(ticker_list){
 
 }
 
+Number.prototype.round = function(places) {
+  return +(Math.round(this + "e+" + places)  + "e-" + places);
+}
+
+var update_portfolio_summary = function(statistics, performance){
+    
+    // Update basic 3 stats
+    $('#portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
+    $('#portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
+    $('#portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
+
+
+
+
+
+    // row = """<tr> \
+    //                     <th scope="row"> \
+    //                         <div class="media align-items-center"> \
+    //                             <div class="media-body"> \
+    //                                 <span class="name mb-0  text-sm">Argon Design System</span> \
+    //                             </div> \
+    //                         </div> \
+    //                     </th> \
+    //                     <td class="budget"> \
+    //                         $2500 USD \
+    //                     </td> \
+    //                      \
+                    // </tr>""";
+}
+
 
 $(document).ready(function(){
 
@@ -118,7 +148,7 @@ $(document).ready(function(){
                     update_charts($portfolio_chart,  $pie_chart, response["result"]["weights"], response["result"]["performance"]);
 
                     // Update portfolio summary
-                    
+                    update_portfolio_summary(response["result"]["statistics"], 0, 0);
 
                     enable_charts();
 
