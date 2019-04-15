@@ -95,12 +95,12 @@ var update_chart = function(chart, labels, data, pie=false) {
 }
 
 
-var update_charts = function($portfolio_chart, $pie_chart, portfolio_weights, portfolio_performance){
+var update_charts = function($portfolio_chart, $pie_chart, portfolio_weights, labels, data){
 
     // Enable portfolio performance updates after integration with backtesting api
     // console.log($portfolio_chart)
 
-    update_chart($portfolio_chart, portfolio_performance['labels'], portfolio_performance['data']);
+    update_chart($portfolio_chart, labels, data);
     update_chart($pie_chart, portfolio_weights['labels'], portfolio_weights['data'], true);
 
 }

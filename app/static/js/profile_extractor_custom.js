@@ -73,14 +73,15 @@ Number.prototype.round = function(places) {
   return +(Math.round(this + "e+" + places)  + "e-" + places);
 }
 
-var update_portfolio_summary = function(statistics, performance){
+var update_portfolio_summary = function(statistics, initial_value, final_value){
     
     // Update basic 3 stats
     $('#portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
     $('#portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
     $('#portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
 
-
+    $('#portfolio-initial-value').html("$" + initial_value)
+    $('#portfolio-final-value').html("$" + final_value)
 
 
 
@@ -142,13 +143,16 @@ $(document).ready(function(){
                 
                 console.log(response);
 
+                values = response["result"]["performance"]["data"]
+                labels = response["result"]["performance"]["labels"]
+
                 // TODO: Better error handling here : priority (4)
                 if(response["is_finished"]){
 
-                    update_charts($portfolio_chart,  $pie_chart, response["result"]["weights"], response["result"]["performance"]);
+                    update_charts($portfolio_chart, $pie_chart, response["result"]["weights"], labels, data);
 
                     // Update portfolio summary
-                    update_portfolio_summary(response["result"]["statistics"], 0, 0);
+                    update_portfolio_summary(response["result"]["statistics"], response["result"]["performance"]["data"][0].round(1), response["result"]["performance"]["data"][-1].round(1));
 
                     enable_charts();
 
