@@ -6,17 +6,9 @@ from app.api.backtest.data_manipulation import dict_to_dataframe
 
 def backtest_portfolio(portfolio, start_date, end_date, window=50):
 
-    df = prepare_dataframe(portfolio, start_date, end_date)
-    df = compute_statistics(df, portfolio, window)
-
-    return df
-
-def prepare_dataframe(portfolio, start_date, end_date):
-
-    # portfolio is a dict mapping stocks to weights
-
     df = get_data(list(portfolio.keys()), start_date, end_date)
     df.dropna(inplace=True)
+    df = compute_statistics(df, portfolio, window)
 
     return df
 
