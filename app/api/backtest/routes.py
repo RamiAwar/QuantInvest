@@ -9,14 +9,14 @@ from datetime import datetime
 from flask import request, jsonify
 
 from app.api.backtest import bp
-# from app.api.backtest.get_statistics import (prepare_dataframe,
-#                                             compute_statistics,
-#                                             compute_daily_returns,
-#                                             compute_moving_average,
-#                                             compute_moving_standard_deviation)
-# @bp.route("/", methods=['POST'])
+from app.api.backtest.get_statistics import (prepare_dataframe,
+                                            compute_statistics,
+                                            compute_daily_returns,
+                                            compute_moving_average,
+                                            compute_moving_standard_deviation)
 
 
+@bp.route("/", methods=['POST'])
 def get_portfolio_statistics():
     """
         **Gets all portfolio statistics: daily returns, moving_average, moving_standard_deviation.**

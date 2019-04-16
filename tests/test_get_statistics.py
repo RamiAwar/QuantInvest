@@ -1,5 +1,5 @@
 import unittest
-from app.api.backtest.get_statistics import prepare_dataframe, compute_statistics
+from app.api.backtest.get_statistics import backtest_portfolio
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -14,8 +14,8 @@ class GetStatisticsTests(unittest.TestCase):
     
     def test_compute_statistics(self):
         current_date = datetime.now()
-        df = prepare_dataframe(self.portfolio, current_date-relativedelta(month=1), current_date)
-        compute_statistics(df)
+        df = backtest_portfolio(self.portfolio, current_date-relativedelta(month=1), current_date)
+        print(df)
         self.assertTrue(True)
 
 
