@@ -73,31 +73,46 @@ Number.prototype.round = function(places) {
   return +(Math.round(this + "e+" + places)  + "e-" + places);
 }
 
-var update_portfolio_summary = function(statistics, initial_value, final_value){
+var update_portfolio_summary = function(statistics, portfolio_weights, initial_value, final_value){
     
     // Update basic 3 stats
     $('#portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
     $('#portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
     $('#portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
 
+
+    // Update initial/final portfolio values
     $('#portfolio-initial-value').html("$" + initial_value)
     $('#portfolio-final-value').html("$" + final_value)
 
 
+    // Update start/end dates
 
-    // row = """<tr> \
-    //                     <th scope="row"> \
-    //                         <div class="media align-items-center"> \
-    //                             <div class="media-body"> \
-    //                                 <span class="name mb-0  text-sm">Argon Design System</span> \
-    //                             </div> \
-    //                         </div> \
-    //                     </th> \
-    //                     <td class="budget"> \
-    //                         $2500 USD \
-    //                     </td> \
-    //                      \
-                    // </tr>""";
+    $('#portfolio-start-date').html($('#start-date').val());
+    $('#portfolio-end-date').html($('#end-date').val());
+
+    // Update ticker list constituents
+    $('#portfolio-ticker-list').html(""); // clear contents
+
+    for(var i = 0; i < portfolio_weights["data"].length; i++){
+
+        var row = "<tr>" + 
+                    '<th scope="row">' + 
+                        '<div class="media align-items-center">' +
+                            '<div class="media-body">' + 
+                                '<span class="name mb-0  text-sm">' + portfolio_weights["labels"][i] + '</span>' +
+                            '</div>' +
+                        '</div>' + 
+                    '</th>' + 
+                    '<td class="budget"> ' + 
+                     portfolio_weights["data"][i] + "%" + 
+                    '</td>' + 
+                '</tr>';
+
+        $('#portfolio-ticker-list').append(row);
+    
+    }
+    
 }
 
 
@@ -117,6 +132,8 @@ $(document).ready(function(){
 
     $('#custom-pie-chart-container').hide();
     $('#custom-portfolio-performance-chart-container').hide();
+    $('#portfolio-weights-container').hide();
+    $('#portfolio-statistics-container').hide();
 
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
@@ -143,16 +160,22 @@ $(document).ready(function(){
                 
                 console.log(response);
 
-                values = response["result"]["performance"]["data"]
-                labels = response["result"]["performance"]["labels"]
+               
 
                 // TODO: Better error handling here : priority (4)
                 if(response["is_finished"]){
 
-                    update_charts($portfolio_chart, $pie_chart, response["result"]["weights"], labels, data);
+                    performance_values = response["result"]["performance"]["data"]
+                    performance_labels = response["result"]["performance"]["labels"]
+
+                    portfolio_weights = response["result"]["weights"]
+                    weights_values = portfolio_weights["data"]
+                    weights_labels = portfolio_weights["labels"]
+
+                    update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values);
 
                     // Update portfolio summary
-                    update_portfolio_summary(response["result"]["statistics"], response["result"]["performance"]["data"][0].round(1), response["result"]["performance"]["data"][-1].round(1));
+                    update_portfolio_summary(response["result"]["statistics"], portfolio_weights, performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
 
                     enable_charts();
 
@@ -208,6 +231,8 @@ $(document).ready(function(){
             // Show chart containers
             $('#custom-pie-chart-container').show();
             $('#custom-portfolio-performance-chart-container').show();
+            $('#portfolio-weights-container').show();
+            $('#portfolio-statistics-container').show();
 
             // Create charts
             portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
