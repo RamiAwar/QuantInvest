@@ -32,28 +32,29 @@ class User(UserMixin, mongoengine.Document):
 
 class StockDailyPrice(mongoengine.Document):
 
-	ticker = mongoengine.StringField(required=True)
-	date = mongoengine.DateTimeField(required=True)
-	price = mongoengine.FloatField(required=True)
+    ticker = mongoengine.StringField(required=True)
+    date = mongoengine.DateTimeField(required=True)
+    price = mongoengine.FloatField(required=True)
 
-	def to_dict(self):
-		data = {
-            'stock_ticker': self.stock_ticker,
+    def to_dict(self):
+        data = {
+            'ticker': self.ticker,
             'date': self.date,
-			'price': self.price
+            'price': self.price
         }
-		return data
-	
-	def get_tasks_in_progress(self):
-		return Task.objects.get(job_id=self.stock_ticker, complete=False)
+        return data
 
-	def get_task_in_progress(self, name):
-		return Task.objects.get(name=name, job_id=self.stock_ticker, complete=False).first()
+    def get_tasks_in_progress(self):
+        return Task.objects.get(job_id=self.ticker, complete=False)
 
-	def __repr__(self):
-		return '< Price of {} at {} >'.format(self.stock_ticker, self.date);
-		
-class SnP500Tickers(mongoengine.Document):
+    def get_task_in_progress(self, name):
+        return Task.objects.get(name=name, job_id=self.ticker, complete=False).first()
+
+    def __repr__(self):
+        return '< Price of {} at {} >'.format(self.ticker, self.date)
+
+
+class snp500_tickers(mongoengine.Document):
 
     symbol = mongoengine.StringField(required=True)
     name = mongoengine.StringField()
@@ -61,32 +62,33 @@ class SnP500Tickers(mongoengine.Document):
 
     # Static function
     def initialize():
-
+        if snp500_tickers.objects.first() != None:  # if the snp 500 tickers already exist in the database
+            return
         snp_500_df = pd.read_csv('snp_500.csv')
         for index, row in snp_500_df.iterrows():
-            s = SnP500Tickers(symbol=row['Symbol'], name=row['Name'], sector=row['Sector'])
+            s = snp500_tickers(symbol=row['Symbol'], name=row['Name'], sector=row['Sector'])
             s.save()
 
     def __repr__(self):
-        return '< SnP500 : {} - object >'.format(self.symbol);
-
+        return '< SnP500 : {} - object >'.format(self.symbol)
 
 
 class Task(mongoengine.Document):
-	job_id = mongoengine.StringField(required=True)
-	complete = mongoengine.BooleanField(required=True, default=False)
-	name = mongoengine.StringField(required=True)
+    job_id = mongoengine.StringField(required=True)
+    complete = mongoengine.BooleanField(required=True, default=False)
+    name = mongoengine.StringField(required=True)
 
-	def get_rq_job(self):
-		try:
-			rq_job = rq.job.Job.fetch(self.id, connection=app.redis)
-		except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
-			return None
-		return rq_job
+    def get_rq_job(self):
+        try:
+            rq_job = rq.job.Job.fetch(self.id, connection=app.redis)
+        except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
+            return None
+        return rq_job
 
-	def get_progress(self):
-		job = self.get_rq_job()
-		return job.meta.get('progress', 0) if job is not None else 100
+    def get_progress(self):
+        job = self.get_rq_job()
+        return job.meta.get('progress', 0) if job is not None else 100
+
 
 @login.user_loader
 def load_user(id):

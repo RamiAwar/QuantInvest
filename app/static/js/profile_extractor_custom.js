@@ -22,6 +22,7 @@ function addInput(divName){
 }
 
 
+
 OPTIMIZATION_CONSTRAINTS = {
 
     "max-sharpe": '<input class="d-none" id="target-return">'+
@@ -52,11 +53,78 @@ var validate_inputs = function(ticker_list){
     
     // Check stocks list greater than or equal to 2
     if(ticker_list.length < 2){
+        show_error("Invalid request: More than 1 stock is required to build a portfolio.")
         return false;
     }
 
+    // Check time span range start > 01/01/2015
+    start_moment = moment($('#start-date').val(), "YYYY-MM-DD");
+    end_moment = moment($('#end-date').val(), "YYYY-MM-DD");
+
+    if(!end_moment.isAfter(start_moment)){
+        show_error("Invalid request: End date is before start date.");
+        return false;
+    }
+
+    if(moment("2014-12-31").isAfter(start_moment)){
+        show_error("Invalid request: Please select a starting date after 2015")
+        return false;
+    }
+
+    // Check optimization parameters non empty
+    
+    
+
+
+
     return true;
 
+}
+
+Number.prototype.round = function(places) {
+  return +(Math.round(this + "e+" + places)  + "e-" + places);
+}
+
+var update_portfolio_summary = function(statistics, portfolio_weights, initial_value, final_value){
+    
+    // Update basic 3 stats
+    $('#portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
+    $('#portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
+    $('#portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
+
+
+    // Update initial/final portfolio values
+    $('#portfolio-initial-value').html("$" + initial_value)
+    $('#portfolio-final-value').html("$" + final_value)
+
+
+    // Update start/end dates
+
+    $('#portfolio-start-date').html($('#start-date').val());
+    $('#portfolio-end-date').html($('#end-date').val());
+
+    // Update ticker list constituents
+    $('#portfolio-ticker-list').html(""); // clear contents
+
+    for(var i = 0; i < portfolio_weights["data"].length; i++){
+
+        var row = "<tr>" + 
+                    '<th scope="row">' + 
+                        '<div class="media align-items-center">' +
+                            '<div class="media-body">' + 
+                                '<span class="name mb-0  text-sm">' + portfolio_weights["labels"][i] + '</span>' +
+                            '</div>' +
+                        '</div>' + 
+                    '</th>' + 
+                    '<td class="budget"> ' + 
+                     portfolio_weights["data"][i] + "%" + 
+                    '</td>' + 
+                '</tr>';
+
+        $('#portfolio-ticker-list').append(row);
+    
+    }
+    
 }
 
 
@@ -76,13 +144,13 @@ $(document).ready(function(){
 
     $('#custom-pie-chart-container').hide();
     $('#custom-portfolio-performance-chart-container').hide();
+    $('#portfolio-weights-container').hide();
+    $('#portfolio-statistics-container').hide();
 
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
     var portfolio_chart = null
-    
-    
-    console.log($portfolio_chart.data())
+
 
     // Function to check requested job status by polling API endpoint.
     var check_job = function(job_id){
@@ -104,10 +172,22 @@ $(document).ready(function(){
                 
                 console.log(response);
 
+               
+
                 // TODO: Better error handling here : priority (4)
                 if(response["is_finished"]){
 
-                    update_charts($portfolio_chart,  $pie_chart, response["result"]["weights"], response["result"]["performance"]);
+                    performance_values = response["result"]["performance"]["data"]
+                    performance_labels = response["result"]["performance"]["labels"]
+
+                    portfolio_weights = response["result"]["weights"]
+                    weights_values = portfolio_weights["data"]
+                    weights_labels = portfolio_weights["labels"]
+
+                    update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values);
+
+                    // Update portfolio summary
+                    update_portfolio_summary(response["result"]["statistics"], portfolio_weights, performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
 
                     enable_charts();
 
@@ -141,9 +221,14 @@ $(document).ready(function(){
 
         var ticker_list = []
         $("#dynamic-ticker-list :input").each(function(){
-            var val = $(this).val();
-            ticker_list.push(val)
+            var val = $(this).val().toUpperCase().trim();
+            if (val !== ""){
+                ticker_list.push(val);    
+            }
+            
         })
+
+
         
         if(!validate_inputs(ticker_list)) return false;
 
@@ -160,6 +245,8 @@ $(document).ready(function(){
             // Show chart containers
             $('#custom-pie-chart-container').show();
             $('#custom-portfolio-performance-chart-container').show();
+            $('#portfolio-weights-container').show();
+            $('#portfolio-statistics-container').show();
 
             // Create charts
             portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
@@ -174,16 +261,11 @@ $(document).ready(function(){
         }else{
             disable_charts();    
         }
-        
 
-        // Compile ticker list
-        var ticker_list = []
-        $("#dynamic-ticker-list :input").each(function(){
-        	var val = $(this).val();
-        	ticker_list.push(val)
-        })
 
         console.log(ticker_list)
+
+
 
         // Get time range
         var start_date = $start_date.val();
