@@ -1,0 +1,34 @@
+{
+  "addons": [
+    "mongolab",
+    "redistogo"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "APP_SETTINGS": {
+      "required": true
+    },
+    "MONGODB_URI": {
+      "required": true
+    },
+    "REDISTOGO_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "QuantInvest",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
