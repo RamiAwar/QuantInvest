@@ -28,6 +28,9 @@ var show_error = function(error_message){
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
     </div>');
 
+    window.scrollTo(0, 0);
+
+
 }
 
 function get_random(length) { return Math.floor(Math.random()*(length)); }
@@ -58,13 +61,6 @@ var generate_random_colors_array = function(n){
 
 // Simple interface for updating pie and line chart data
 var update_chart = function(chart, labels, data, pie=false) {
-    
-    // if(labels.length != data.length){
-    //     console.log("ERROR: data length and labels length provided are different, cannot update charts.")
-    //     return false;
-    // }
-    
-    console.log(labels)
 
     if(pie){
 
@@ -73,16 +69,14 @@ var update_chart = function(chart, labels, data, pie=false) {
 
         chart.data().data.content.data.datasets[0].backgroundColor = generate_random_colors_array(labels.length);
         chart.data().data.content.chart.update();
+
     }else{
 
         chart.data().data.chart.data.datasets[0].data = data;
         chart.data().data.chart.data.labels = labels;
 
-        // console.log("min")
-        // console.log(data)
-        // console.log(Math.min(data))
-        chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math,data);
-        chart.data().data.chart.options.scales.yAxes[0].ticks.max = Math.max.apply(Math,data);
+        chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math, data);
+        chart.data().data.chart.options.scales.yAxes[0].ticks.max = Math.max.apply(Math, data);
 
         chart.data().data.chart.update();
 
@@ -95,13 +89,11 @@ var update_chart = function(chart, labels, data, pie=false) {
 }
 
 
-var update_charts = function($portfolio_chart, $pie_chart, portfolio_weights, portfolio_performance){
+var update_charts = function($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values){
 
     // Enable portfolio performance updates after integration with backtesting api
-    // console.log($portfolio_chart)
-
-    update_chart($portfolio_chart, portfolio_performance['labels'], portfolio_performance['data']);
-    update_chart($pie_chart, portfolio_weights['labels'], portfolio_weights['data'], true);
+    update_chart($portfolio_chart, performance_labels, performance_values);
+    update_chart($pie_chart, weights_labels, weights_values, true);
 
 }
 
