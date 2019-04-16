@@ -39,7 +39,8 @@ def optimize():
 
     # Create queue object
     queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
-
+    job = None 
+    
     # Check type of optimization
     optimization_method = parameters["optimization_method"]
 
@@ -51,8 +52,11 @@ def optimize():
         job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility_target", parameters)
     elif optimization_method == "max-return-target":
         job = queue.enqueue("app.api.optimizer.optimization_handlers.max_return_target", parameters)
+    elif optimization_method == "target-return-volatility":
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.target_return_volatility", parameters)
 
     return jsonify({"job_id": job._id})
+
 
 
 @bp.route('/checkstatus', methods=["POST"])

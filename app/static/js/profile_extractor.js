@@ -87,9 +87,11 @@ $(document).ready(function(){
 
         // Get slider data and submit to optimizer as a job        
         var data = {
-            "expected_returns": expected_returns_slider.noUiSlider.get(),
-            "expected_risk": expected_risk_slider.noUiSlider.get(),
-            "time_range": time_range_slider.noUiSlider.get()
+            "optimization_method":"target-return-volatility",
+            "target_return": expected_returns_slider.noUiSlider.get(),
+            "target_risk": expected_risk_slider.noUiSlider.get(),
+            "start_date": (parseInt(time_range_slider.noUiSlider.get()[0]))+"-01-01",
+            "end_date": (parseInt(time_range_slider.noUiSlider.get()[1]))+"-01-01"
         };
 
         
