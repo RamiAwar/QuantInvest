@@ -75,27 +75,30 @@ def get_data(stock_tickers, start_date, end_date):
     """
 
     # Split ticker list into snp500 tickers and non-snp500 tickers
-    # snp_500_objects = snp500_tickers.objects()
-    # snp_500_tickers = [obj["symbol"] for obj in snp_500_objects];
+    snp_500_objects = snp500_tickers.objects()
+    snp_500_tickers = [obj["symbol"] for obj in snp_500_objects]
 
-    # is_in_snp_500 = [ticker for ticker in stock_tickers if ticker in snp_500_tickers] # this list contains all the snp_500 tickers from the input
-    # not_in_snp_500 = [ticker for ticker in stock_tickers if ticker not in
-    # snp_500_tickers] # this list contains all the other tickers
+    is_in_snp_500 = [ticker for ticker in stock_tickers if ticker in snp_500_tickers] # this list contains all the snp_500 tickers from the input
+    not_in_snp_500 = [ticker for ticker in stock_tickers if ticker not in snp_500_tickers] # this list contains all the other tickers
 
-    # stock_data = pd.DataFrame(columns=["open"],
-    # index=is_in_snp_500+not_in_snp_500) # this dict will contain all the
-    # retrieved data
+    data_df = pd.DataFrame()
 
-    # for stock_ticker in is_in_snp_500:
-    #     data = StockDailyPrice.objects(ticker=stock_ticker, date__lte=end_date, date__gte=start_date)
+    data_df['date'] = pd.date_range(start_date, end_date)
+    data_df = data_df.set_index(['date'])
 
-    #     stock_data.loc[stock_ticker] = pd.Series()
-    #     stock_data[stock_ticker] = [ {"price": x["price"], "date":x["date"]} for x in data ]
+    snp500_prices = []
 
-    # not_snp_500 = fetch_missing_data(not_in_snp_500, start_date, end_date)
+    for stock_ticker in is_in_snp_500:
+        snp500_prices = snp500_prices + list(StockDailyPrice.objects(ticker=stock_ticker, date__lte=end_date, date__gte=start_date))
+        data_df[stock_ticker] = np.nan
+    
+    for quote in snp500_prices: # fill the dataframe with the prices of the snp 500 stocks
+        data_df.at[quote.date, quote.ticker] = quote.price
 
-    stock_data = fetch_missing_data(stock_tickers, start_date, end_date)
+    not_snp500_prices = fetch_missing_data(not_in_snp_500, start_date, end_date) # get the rest of the data
+    stock_data = pd.concat([data_df, not_snp500_prices], axis=1, sort=False) # combine the two dataframes
 
-    # stock_data.update(not_snp_500) # combines the two dictionaries
+    stock_data.dropna(how='all', axis=1, inplace=True) # remove stocks which have no data
+    stock_data.dropna(how='any', inplace=True) # remove dates that have no data
 
     return stock_data
