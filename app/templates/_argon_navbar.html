@@ -4,6 +4,10 @@
 
     <div class="container fluid col-sm-12">
 
+        <a class="navbar-brand mr-0 ml-2 ml-md-0 mr-md-4" href="{{url_for('index')}}" aria-label="QuantInvest">
+          <img src="{{ url_for('static', filename='images/logo.png') }}">
+        </a>
+
         <a class="navbar-brand text-lg text-secondary" href="{{ url_for('index') }}">QuantInvest</a>
        
 
@@ -14,6 +18,7 @@
         <div class="collapse navbar-collapse" id="navbar-default">
             <div class="navbar-collapse-header">
                 <div class="row">
+                    
                     <div class="col-6 collapse-brand">
                         <a href="{{ url_for('index') }}">QuantInvest</a>
                     </div>
