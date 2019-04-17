@@ -76,13 +76,23 @@ var update_chart = function(chart, labels, data, pie=false, upper=[], lower=[]) 
 
         chart.data().data.chart.data.datasets.push({
             'data': upper,
-            'label': "Upper limit"});
+            'label': "Upper limit",
+            'borderColor': "#2dce89",
+            'borderWidth': "2"
+        });
+
+        chart.data().data.chart.data.datasets.push({
+            'data': lower, 
+            'label': "Lower limit",
+            'borderColor': "#f5365c",
+            'borderWidth': "2"
+        })
         // chart.data().data.chart.data.datasets[2].data = lower;
 
         chart.data().data.chart.data.labels = labels;
 
-        chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math, data);
-        chart.data().data.chart.options.scales.yAxes[0].ticks.max = Math.max.apply(Math, data);
+        chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math, lower);
+        chart.data().data.chart.options.scales.yAxes[0].ticks.max = Math.max.apply(Math, upper);
 
         chart.data().data.chart.update();
 
@@ -130,7 +140,6 @@ class PieChart{
                 text: chart_label
               },
               tooltips: {
-
                     backgroundColor: "#fff",
                     bodyFontColor: "#444",
                     titleFontColor: "#eee",
@@ -159,6 +168,14 @@ class PortfolioChart{
         this.chart = new Chart($chart, {
             type: 'line',
             options: {
+                layout:{
+                    padding:{
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom:0
+                    }
+                },
                 scales: {
                     xAxes: [{
                         type: 'time',
@@ -177,6 +194,8 @@ class PortfolioChart{
                             zeroLineColor: Charts.colors.gray[900]
                         },
                         ticks: {
+                            beginAtZero:false,
+                            padding:0,
                             callback: function(value) {
                                 if (!(value % 10)) {
                                     return '$' + value;
@@ -186,6 +205,7 @@ class PortfolioChart{
                     }]
                 },
                 tooltips: {
+                    displayColors: false,
                     backgroundColor: "#fff",
                     bodyFontColor: "#444",
                     titleFontColor: "#444",
@@ -196,9 +216,10 @@ class PortfolioChart{
                             var content = '';
 
                             console.log(label)
+                            console.log(yLabel)
 
                             if (data.datasets.length > 1) {
-                                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+                                content += label + "   " ;
                             }
 
                             content += '$' + Math.round(yLabel);
@@ -211,8 +232,10 @@ class PortfolioChart{
             data: {
                 labels: [''],
                 datasets: [{
-                    label: 'Performance',
-                    data: [0]
+                    label: 'Total Value',
+                    data: [0],
+                    borderWidth: 2
+                    // hoverBackgroundColor: "rgba(232,105,90,0.8)",
                 }]
             }
         });
