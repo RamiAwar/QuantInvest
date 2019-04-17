@@ -68,7 +68,7 @@ $(document).ready(function(){
         expected_risk_slider.noUiSlider.set(quiz_expected_risk)
 
         // Display info message to user
-        // show_info("Your generated expected return and risk values have been set as the slider values. Click optimize to generate your optimal portfolio.")
+        show_info("Your generated expected return and risk values have been set as the slider values. Click optimize to generate your optimal portfolio using the provided time range.")
     }
 
 
