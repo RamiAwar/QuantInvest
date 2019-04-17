@@ -25,23 +25,29 @@ def createprofile():
     # 	user.set_password(registration_form.password.data)
     # 	user.save()
 
-	# 	flash("User created successfully", category="success")
-	# 	return redirect(url_for('auth.login'))
- 
-    basic = False;
-    expected_return = 0;
-    expected_volatility = 0;
+        # 	flash("User created successfully", category="success")
+        # 	return redirect(url_for('auth.login'))
+
+    basic = False
+    expected_return = 0
+    expected_volatility = 0
 
     if request.method == "POST":
 
         # Received request from risk assesser
         basic = True
 
-        # TODO: Convert risk score to expected return, expected volatility
-        
+        # Get risk score
+        risk_score = request.form.get('score')
 
-        # TODO: Render template with basic optimization page active, with expected return and volatility 
+        # Convert risk score to expected return, expected volatility
+        expected_return = 1.591 * int(risk_score) + 30
 
+        # Render template with basic optimization page active, with expected return and volatility
+        # expected_risk = 0.091 * risk_score + 3
+        expected_volatility = 100 - expected_return
+
+        print("Expected returns: ", expected_return)
 
     return render_template('profile_extractor/profile_extractor.html', basic=basic, expected_return=expected_return, expected_volatility=expected_volatility)
 

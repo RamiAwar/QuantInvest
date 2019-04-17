@@ -1,4 +1,4 @@
-` {% extends "base.html" %}
+{% extends "base.html" %}
 {% set active_page = "profile_extractor" %}
 {% block content %}
 
@@ -12,6 +12,9 @@
   var quiz_expected_return = {{expected_return|tojson }};
   var quiz_expected_risk = {{expected_volatility|tojson}};
   var basic = {{basic|tojson}}; 
+
+  console.log(quiz_expected_return)
+  console.log(quiz_expected_risk)
 
 </script>
 

@@ -60,11 +60,12 @@ $(document).ready(function(){
     // Check initialization (from risk assesser quiz)
     if(basic == true){
 
+
         // Set expected returns and expected volatility sliders to their respective generated Values
+        // These variables are defined in another script inside the HTML, so that they can have access 
+        // to the flask variables 
         expected_returns_slider.noUiSlider.set(quiz_expected_return)
         expected_risk_slider.noUiSlider.set(quiz_expected_risk)
-
-        
 
         // Display info message to user
         // show_info("Your generated expected return and risk values have been set as the slider values. Click optimize to generate your optimal portfolio.")
@@ -155,18 +156,13 @@ $(document).ready(function(){
 
 
                 // TODO: Better error handling here : priority (4)
-
                 if(response["is_finished"]){
 
                    
-                    // Update charts and re-enable everything 
-                    // TODO: Pipe portfolio performance here : priority (1)
+                    // Update charts and re-enable everything
+
+                    // Update portfolio performance
                     update_charts($pie_chart, $portfolio_chart, response["weights"], response["performance"]);
-
-
-
-                    // TODO: Create pie chart and display received portfolio on pie chart
-
 
                     enable_charts();
                     $('#submit').prop('disabled', false);
