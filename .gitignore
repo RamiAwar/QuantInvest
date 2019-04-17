@@ -119,4 +119,4 @@ dmypy.json
 
 gui/
 
-\.DS_Store
+.DS_Store
