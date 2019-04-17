@@ -281,6 +281,12 @@ $(document).ready(function(){
         var target_risk = $('#target-volatility')
         var target_return = $('#target-return')
 
+        var optimization_parameters = {
+            'target_volatility': target_risk.val(),
+            'target_return': target_return.val()
+        } 
+
+
         // Compile form data into an object
         data = {
             "ticker_list": ticker_list,
@@ -288,7 +294,7 @@ $(document).ready(function(){
             "start_date": start_date,
             "end_date": end_date,
             "optimization_method": optimization_method,
-            "optimization_parameters": {}
+            "optimization_parameters": optimization_parameters
         }
 
         // Send ajax request to server to begin optimization job
