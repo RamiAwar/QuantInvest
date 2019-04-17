@@ -20,7 +20,7 @@ def max_sharpe(parameters):
     stocks_df = get_data(parameters["ticker_list"], datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
                          datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
 
-    print(stocks_df.head())
+    # print(stocks_df.head())
 
     mu = expected_returns.mean_historical_return(stocks_df)
 
@@ -38,11 +38,16 @@ def max_sharpe(parameters):
     # get tuple of 3 values: (return, vol, sharpe)
     performance = ef.portfolio_performance()
 
-    backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights, initial_amount=int(parameters[
-        "initial_amount"]), start_date=parameters["start_date"], end_date=parameters["end_date"])
+    backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights,
+                                          initial_amount=int(parameters["initial_amount"]), window=50)
 
-    labels = (list(backtest_results.index))
-    values = (list(backtest_results.values))
+    print(backtest_results.columns)
+
+    labels = (list(backtest_results["total"].index))
+
+    total_values = (list(backtest_results["total"].values))
+    upper_values = (list(backtest_results["upper"].values))
+    lower_values = (list(backtest_results["lower"].values))
 
     # print(backtest_results.iloc[:][0])
 
@@ -61,7 +66,9 @@ def max_sharpe(parameters):
 
         "performance": {
             "labels": labels,
-            "data": values
+            "total": total_values,
+            "upper": upper_values,
+            "lower": lower_values
         },
 
         # TODO: Add more portfolio statistics : priority (3)

@@ -60,7 +60,7 @@ var generate_random_colors_array = function(n){
 
 
 // Simple interface for updating pie and line chart data
-var update_chart = function(chart, labels, data, pie=false) {
+var update_chart = function(chart, labels, data, pie=false, upper=[], lower=[]) {
 
     if(pie){
 
@@ -73,6 +73,12 @@ var update_chart = function(chart, labels, data, pie=false) {
     }else{
 
         chart.data().data.chart.data.datasets[0].data = data;
+
+        chart.data().data.chart.data.datasets.push({
+            'data': upper,
+            'label': "Upper limit"});
+        // chart.data().data.chart.data.datasets[2].data = lower;
+
         chart.data().data.chart.data.labels = labels;
 
         chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math, data);
@@ -89,10 +95,10 @@ var update_chart = function(chart, labels, data, pie=false) {
 }
 
 
-var update_charts = function($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values){
+var update_charts = function($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower){
 
     // Enable portfolio performance updates after integration with backtesting api
-    update_chart($portfolio_chart, performance_labels, performance_values);
+    update_chart($portfolio_chart, performance_labels, performance_values, false, performance_upper, performance_lower);
     update_chart($pie_chart, weights_labels, weights_values, true);
 
 }
@@ -188,6 +194,8 @@ class PortfolioChart{
                             var label = data.datasets[item.datasetIndex].label || '';
                             var yLabel = item.yLabel;
                             var content = '';
+
+                            console.log(label)
 
                             if (data.datasets.length > 1) {
                                 content += '<span class="popover-body-label mr-auto">' + label + '</span>';
