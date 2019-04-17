@@ -28,6 +28,9 @@ var show_error = function(error_message){
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
     </div>');
 
+    window.scrollTo(0, 0);
+
+
 }
 
 function get_random(length) { return Math.floor(Math.random()*(length)); }
@@ -57,14 +60,7 @@ var generate_random_colors_array = function(n){
 
 
 // Simple interface for updating pie and line chart data
-var update_chart = function(chart, labels, data, pie=false) {
-    
-    // if(labels.length != data.length){
-    //     console.log("ERROR: data length and labels length provided are different, cannot update charts.")
-    //     return false;
-    // }
-    
-    console.log(labels)
+var update_chart = function(chart, labels, data, pie=false, upper=[], lower=[]) {
 
     if(pie){
 
@@ -73,16 +69,30 @@ var update_chart = function(chart, labels, data, pie=false) {
 
         chart.data().data.content.data.datasets[0].backgroundColor = generate_random_colors_array(labels.length);
         chart.data().data.content.chart.update();
+
     }else{
 
         chart.data().data.chart.data.datasets[0].data = data;
+
+        chart.data().data.chart.data.datasets.push({
+            'data': upper,
+            'label': "Upper limit",
+            'borderColor': "#2dce89",
+            'borderWidth': "2"
+        });
+
+        chart.data().data.chart.data.datasets.push({
+            'data': lower, 
+            'label': "Lower limit",
+            'borderColor': "#f5365c",
+            'borderWidth': "2"
+        })
+        // chart.data().data.chart.data.datasets[2].data = lower;
+
         chart.data().data.chart.data.labels = labels;
 
-        // console.log("min")
-        // console.log(data)
-        // console.log(Math.min(data))
-        chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math,data);
-        chart.data().data.chart.options.scales.yAxes[0].ticks.max = Math.max.apply(Math,data);
+        chart.data().data.chart.options.scales.yAxes[0].ticks.min = Math.min.apply(Math, lower);
+        chart.data().data.chart.options.scales.yAxes[0].ticks.max = Math.max.apply(Math, upper);
 
         chart.data().data.chart.update();
 
@@ -95,13 +105,11 @@ var update_chart = function(chart, labels, data, pie=false) {
 }
 
 
-var update_charts = function($portfolio_chart, $pie_chart, portfolio_weights, portfolio_performance){
+var update_charts = function($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower){
 
     // Enable portfolio performance updates after integration with backtesting api
-    // console.log($portfolio_chart)
-
-    update_chart($portfolio_chart, portfolio_performance['labels'], portfolio_performance['data']);
-    update_chart($pie_chart, portfolio_weights['labels'], portfolio_weights['data'], true);
+    update_chart($portfolio_chart, performance_labels, performance_values, false, performance_upper, performance_lower);
+    update_chart($pie_chart, weights_labels, weights_values, true);
 
 }
 
@@ -132,7 +140,6 @@ class PieChart{
                 text: chart_label
               },
               tooltips: {
-
                     backgroundColor: "#fff",
                     bodyFontColor: "#444",
                     titleFontColor: "#eee",
@@ -161,6 +168,14 @@ class PortfolioChart{
         this.chart = new Chart($chart, {
             type: 'line',
             options: {
+                layout:{
+                    padding:{
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom:0
+                    }
+                },
                 scales: {
                     xAxes: [{
                         type: 'time',
@@ -179,6 +194,8 @@ class PortfolioChart{
                             zeroLineColor: Charts.colors.gray[900]
                         },
                         ticks: {
+                            beginAtZero:false,
+                            padding:0,
                             callback: function(value) {
                                 if (!(value % 10)) {
                                     return '$' + value;
@@ -188,6 +205,7 @@ class PortfolioChart{
                     }]
                 },
                 tooltips: {
+                    displayColors: false,
                     backgroundColor: "#fff",
                     bodyFontColor: "#444",
                     titleFontColor: "#444",
@@ -197,8 +215,11 @@ class PortfolioChart{
                             var yLabel = item.yLabel;
                             var content = '';
 
+                            console.log(label)
+                            console.log(yLabel)
+
                             if (data.datasets.length > 1) {
-                                content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+                                content += label + "   " ;
                             }
 
                             content += '$' + Math.round(yLabel);
@@ -211,8 +232,10 @@ class PortfolioChart{
             data: {
                 labels: [''],
                 datasets: [{
-                    label: 'Performance',
-                    data: [0]
+                    label: 'Total Value',
+                    data: [0],
+                    borderWidth: 2
+                    // hoverBackgroundColor: "rgba(232,105,90,0.8)",
                 }]
             }
         });
