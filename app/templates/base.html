@@ -34,12 +34,34 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
-
+<!-- Keep track of active page for highlighting purposes -->
+{% set active_page = active_page|default('index') -%}
 
 <div class="main-content" style="flex:1;">
 
 	{% include "_argon_navbar.html" %}
 
+
+	{% if current_user.is_anonymous %}
+	<div class="header bg-gradient-primary py-7 py-lg-8">
+      <div class="container">
+        <div class="header-body text-center mb-7">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6">
+              <h1 class="text-white">Welcome!</h1>
+              <p class="text-lead text-light">Use these awesome forms to login or create new account in your project for free.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    {% endif %}
+	
 	<!-- Display flashed messages (notifications, errors, etc.) -->
 	<div id="error-container" class="container pt-2">
 	{% with messages = get_flashed_messages(with_categories=true) %}
@@ -57,9 +79,9 @@
 
 
 
-	<!-- Keep track of active page for highlighting purposes -->
-	{% set active_page = active_page|default('index') -%}
+	
 
+	
 
 	<!-- Body content -->
 	<div class="container pt-3">
