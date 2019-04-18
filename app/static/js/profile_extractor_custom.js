@@ -51,6 +51,8 @@ var change_opt_constraints = function(event){
 // TODO: Validate inputs using javascript : priority (2)
 var validate_inputs = function(ticker_list){
     
+    clear_errors();
+
     // Check stocks list greater than or equal to 2
     if(ticker_list.length < 2){
         show_error("Invalid request: More than 1 stock is required to build a portfolio.")
@@ -72,11 +74,21 @@ var validate_inputs = function(ticker_list){
     }
 
     // Check optimization parameters non empty
-    
-    
+    if($('#optimization-select').val() == "min-volatility-target"){
+        // Check that target-return is nonempty and between 0-1
+        if(parseFloat($("#target-return").val()) > 1 || parseFloat($("#target-return").val()) < 0){
+            show_error("Invalid request: Make sure target return is between 0.0 and 1.0")
+            return false;
+        }   
+    }else if($('#optimization-select').val() == "max-return-target"){
+        // Check that target-volatility is nonempty and between 0-1
+        if(parseFloat($("#target-volatility").val()) > 1 || parseFloat($("#target-volatility").val()) < 0){
+            show_error("Invalid request: Make sure target volatility is between 0.0 and 1.0")
+            return false;
+        }
+    }
 
-
-
+    clear_errors();
     return true;
 
 }
@@ -232,7 +244,10 @@ $(document).ready(function(){
 
 
         
-        if(!validate_inputs(ticker_list)) return false;
+        if(!validate_inputs(ticker_list)) {
+            console.log("Validation failed.");
+            return false;
+        }
 
 
         // Disable page navigation and submit button until job is finished
@@ -264,11 +279,6 @@ $(document).ready(function(){
             disable_charts();    
         }
 
-
-        console.log(ticker_list)
-
-
-
         // Get time range
         var start_date = $start_date.val();
         var end_date = $end_date.val();
@@ -283,6 +293,11 @@ $(document).ready(function(){
         var target_risk = $('#target-volatility')
         var target_return = $('#target-return')
 
+        var optimization_parameters = {
+            'target_volatility': target_risk.val(),
+            'target_return': target_return.val()
+        } 
+
         // Compile form data into an object
         data = {
             "ticker_list": ticker_list,
@@ -290,11 +305,12 @@ $(document).ready(function(){
             "start_date": start_date,
             "end_date": end_date,
             "optimization_method": optimization_method,
-            "optimization_parameters": {}
+            "optimization_parameters": optimization_parameters
         }
 
         // Send ajax request to server to begin optimization job
         $.ajax({
+
             type: 'POST',
             url: OPTIMIZER_ENDPOINT,
             dataType: 'json',
@@ -302,8 +318,6 @@ $(document).ready(function(){
             data: JSON.stringify(data),  
             context: $(this),
             success: function(response) {
-                
-
 
                 console.log(response);
 
