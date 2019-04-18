@@ -97,48 +97,6 @@ Number.prototype.round = function(places) {
   return +(Math.round(this + "e+" + places)  + "e-" + places);
 }
 
-var update_portfolio_summary = function(statistics, portfolio_weights, initial_value, final_value){
-    
-    // Update basic 3 stats
-    $('#portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
-    $('#portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
-    $('#portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
-
-
-    // Update initial/final portfolio values
-    $('#portfolio-initial-value').html("$" + initial_value)
-    $('#portfolio-final-value').html("$" + final_value)
-
-
-    // Update start/end dates
-
-    $('#portfolio-start-date').html($('#start-date').val());
-    $('#portfolio-end-date').html($('#end-date').val());
-
-    // Update ticker list constituents
-    $('#portfolio-ticker-list').html(""); // clear contents
-
-    for(var i = 0; i < portfolio_weights["data"].length; i++){
-
-        var row = "<tr>" + 
-                    '<th scope="row">' + 
-                        '<div class="media align-items-center">' +
-                            '<div class="media-body">' + 
-                                '<span class="name mb-0  text-sm">' + portfolio_weights["labels"][i] + '</span>' +
-                            '</div>' +
-                        '</div>' + 
-                    '</th>' + 
-                    '<td class="budget"> ' + 
-                     portfolio_weights["data"][i] + "%" + 
-                    '</td>' + 
-                '</tr>';
-
-        $('#portfolio-ticker-list').append(row);
-    
-    }
-    
-}
-
 
 $(document).ready(function(){
 
@@ -201,8 +159,10 @@ $(document).ready(function(){
                     update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower);
 
                     // Update portfolio summary
-                    update_portfolio_summary(response["result"]["statistics"], portfolio_weights, performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
-
+                    update_portfolio_summary("portfolio-summary-custom", response["result"]["statistics"], performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
+                    
+                    update_ticker_list('portfolio-ticker-list-custom', portfolio_weights)
+                    
                     enable_charts();
 
                     $('#submit-custom').prop("disabled", false);

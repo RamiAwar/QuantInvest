@@ -267,3 +267,47 @@ class PortfolioChart{
     }
 
 }
+
+var update_portfolio_summary = function(container, statistics, initial_value, final_value){
+    
+    // Update basic 3 stats
+    $("#" + container + ' .portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
+    $("#" + container + ' .portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
+    $("#" + container + ' .portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
+
+
+    // Update initial/final portfolio values
+    $("#" + container + ' .portfolio-initial-value').html("$" + initial_value)
+    $("#" + container + ' .portfolio-final-value').html("$" + final_value)
+
+
+    // Update start/end dates
+    $("#" + container + ' .portfolio-start-date').html($('#start-date').val());
+    $("#" + container + ' .portfolio-end-date').html($('#end-date').val());
+    
+}
+
+var update_ticker_list = function(container, portfolio_weights){
+    
+    // Update ticker list constituents
+    $("#" + container).html(""); // clear contents
+
+    for(var i = 0; i < portfolio_weights["data"].length; i++){
+
+        var row = "<tr>" + 
+                    '<th scope="row">' + 
+                        '<div class="media align-items-center">' +
+                            '<div class="media-body">' + 
+                                '<span class="name mb-0  text-sm">' + portfolio_weights["labels"][i] + '</span>' +
+                            '</div>' +
+                        '</div>' + 
+                    '</th>' + 
+                    '<td class="budget"> ' + 
+                     portfolio_weights["data"][i] + "%" + 
+                    '</td>' + 
+                '</tr>';
+
+        $('#' + container).append(row);
+    
+    }
+}

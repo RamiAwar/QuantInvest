@@ -2,7 +2,7 @@
 
 <div class="row mr-0 ml-0">
   
-  <div class="col pl-0 pr-0">
+  <div class="col">
     
     <div class="card bg-gradient-success">
       <div class="card-header bg-transparent">
@@ -12,11 +12,11 @@
       <div class="card-body">
         <h5 class="h3 text-white">What is this?</h5>
         <span class="text-md text-white"> This is a simplified version of the custom optimizer.
-        This interface helps new investors explore the relationship between expected returns and volatility of portfolios. When a time range, expected returns percentage, and volatility percentage are chosen, the optimizer attempts to find a portfolio that has these statistics. The stocks considered are all current S&P500 stocks, and thus the generated portfolio will contain a subset of those.
+        This interface helps new investors explore the relationship between expected returns and volatility of a portfolio. Behind the scenes, the optimizer attempts to find a portfolio that satisfies the expected returns and volatility specified by the user within a certain time range. The stocks considered are all current S&P500 stocks so the generated portfolio will contain a subset of those.
         </span>
 
         <h5 class="h3 pt-4 text-white">How does it work?</h5>
-        <span class="text-md text-white">Behind the scenes, the optimizer first attempts to find a portfolio that matches the expected returns requested, while minimizing volatility. Then the optimizer attempts to find a portfolio that matches the requested volatility while maximizing returns. The portfolio with statistics closer to those requested by the user is returned. </span>
+        <span class="text-md text-white">Behind the scenes, the optimizer first searches for a portfolio that matches the expected returns requested, while minimizing volatility. Then the optimizer searches for another portfolio that matches the requested volatility while maximizing returns. Of the two generated portfolios, the one that matches the user's preferences more closely is selected. For more customized optimization, checkout the custom optimization tab above. </span>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
 
 <div class="row mr-0 ml-0">
   
-  <div class="col-md-6 pr-0">
+  <div class="col-md-6">
     <div class="card">
 
       <div class="card-header">
@@ -71,43 +71,51 @@
             </div>
           </div>
         
-        <button id="submit" type="button" class="btn btn-block btn-primary" style="max-height:50px;">Optimize</button>
 
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-md-6 pr-0">
+  <div class="col-md-6">
     <div class="card">
 
       <div class="card-header">
-        <h5 class="h3 mb-0">?</h5>
+        <h5 class="h3 mb-0">Portfolio Details</h5>
       </div>
 
       <div class="card-body">
-      
+
+        <div class="form-group">
+
+          <label class="form-control-label">Initial Amount</label>
+
+          <input class="form-control form-control-alternative" type="number" value="100000" id="initial-amount-input-basic">
+
+        </div>
+
+   
       </div>
+
 
     </div>
   </div>
 
-
-
 </div>
 
 
-<!-- Portfolio performance chart -->
-<div class="row justify-content-center">
+
+<div class="row ml-0 mr-0 mb-5">
+  <div class="container">
+    <button id="submit" type="button" class="btn btn-block btn-primary" style="max-height:50px;">Optimize</button>
+  </div>  
+</div>
 
 
-  <h1 style="width:100%;" class="pl-5 pr-5 mt-3 mb-5 ">Optimization Result </h1>
-  <hr>
-
-  <!-- Chart container -->
-  <div class="col-xs-12 col-md-10 col-xl-8  mb-5 mb-xl-4">
-   
-    <button type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
+  
+  
+<div class="row ml-0 mr-0">
+  <div class="col-md-6">
     <div id="performance-chart-container" class="chart-container card bg-gradient-default shadow">  
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
@@ -128,12 +136,12 @@
       
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Pie chart -->
-<div class="row justify-content-center">
-  <div class="col-xs-12 col-md-10 col-xl-8 mb-5 mb-xl-0">
+  <button type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
+
+  </div>
+
+  <div class="col-md-6">
     <div id="portfolio-chart-container" class="chart-container card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
@@ -152,7 +160,8 @@
       </div>
     </div>
   </div>
-</div>  
+</div>
+
 
 
 

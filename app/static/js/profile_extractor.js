@@ -101,9 +101,10 @@ $(document).ready(function(){
         var data = {
             "optimization_method":"target-return-volatility",
             "target_return": expected_returns_slider.noUiSlider.get(),
-            "target_risk": expected_risk_slider.noUiSlider.get(),
+            "target_volatility": expected_risk_slider.noUiSlider.get(),
             "start_date": (parseInt(time_range_slider.noUiSlider.get()[0]))+"-01-01",
-            "end_date": (parseInt(time_range_slider.noUiSlider.get()[1]))+"-01-01"
+            "end_date": (parseInt(time_range_slider.noUiSlider.get()[1]))+"-01-01",
+            "initial_amount": parseInt($("#initial-amount-input-basic").val())
         };
 
         
@@ -116,9 +117,6 @@ $(document).ready(function(){
             data: JSON.stringify(data),  
             context: $(this),
             success: function(response) {
-                
-                console.log("Success: received: ")
-                console.log(response);
                 
                 job_id = response["job_id"];
 
@@ -159,12 +157,22 @@ $(document).ready(function(){
                 if(response["is_finished"]){
 
                    
-                    // Update charts and re-enable everything
+                    performance_values = response["result"]["performance"]["total"]
+                    performance_upper = response["result"]["performance"]["upper"]
+                    performance_lower = response["result"]["performance"]["lower"]
+                    performance_labels = response["result"]["performance"]["labels"]
 
-                    // Update portfolio performance
-                    update_charts($pie_chart, $portfolio_chart, response["weights"], response["performance"]);
+                    portfolio_weights = response["result"]["weights"]
+                    weights_values = portfolio_weights["data"]
+                    weights_labels = portfolio_weights["labels"]
 
+                    update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower);
+
+                    // Update portfolio summary
+                    update_portfolio_summary("#portfolio-summary-basic", response["result"]["statistics"], portfolio_weights, performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
+                    
                     enable_charts();
+                    
                     $('#submit').prop('disabled', false);
 
                 }else if(response["is_failed"]){
