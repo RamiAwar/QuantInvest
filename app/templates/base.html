@@ -8,8 +8,15 @@
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="QuantInvest: An investor's playground.">
+	<meta name="description" content="QuantInvest: An investor's playground">
 	<meta name="author" content="Rami Awar">
+
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#5e72e4">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#5e72e4">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#5e72e4">
 
 	<!-- Fonts -->
   	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -34,12 +41,34 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
-
+<!-- Keep track of active page for highlighting purposes -->
+{% set active_page = active_page|default('index') -%}
 
 <div class="main-content" style="flex:1;">
 
 	{% include "_argon_navbar.html" %}
 
+
+	{% if current_user.is_anonymous and (active_page == url_for("landing")) %}
+	<div class="header bg-gradient-primary py-7 py-lg-8">
+      <div class="container">
+        <div class="header-body text-center mb-7">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-6">
+              <h1 class="text-white">QuantInvest</h1>
+              <p class="text-lead text-light">An investor's playground</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    {% endif %}
+	
 	<!-- Display flashed messages (notifications, errors, etc.) -->
 	<div id="error-container" class="container pt-2">
 	{% with messages = get_flashed_messages(with_categories=true) %}
@@ -57,9 +86,9 @@
 
 
 
-	<!-- Keep track of active page for highlighting purposes -->
-	{% set active_page = active_page|default('index') -%}
+	
 
+	
 
 	<!-- Body content -->
 	<div class="container pt-3">
