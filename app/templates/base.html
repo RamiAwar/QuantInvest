@@ -8,8 +8,15 @@
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="QuantInvest: An investor's playground.">
+	<meta name="description" content="QuantInvest: An investor's playground">
 	<meta name="author" content="Rami Awar">
+
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#5e72e4">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#5e72e4">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#5e72e4">
 
 	<!-- Fonts -->
   	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
@@ -42,14 +49,14 @@
 	{% include "_argon_navbar.html" %}
 
 
-	{% if current_user.is_anonymous and active_page == url_for("auth.register") %}
+	{% if current_user.is_anonymous and (active_page == url_for("landing")) %}
 	<div class="header bg-gradient-primary py-7 py-lg-8">
       <div class="container">
         <div class="header-body text-center mb-7">
           <div class="row justify-content-center">
             <div class="col-lg-5 col-md-6">
-              <h1 class="text-white">Welcome!</h1>
-              <p class="text-lead text-light">Use these awesome forms to login or create new account in your project for free.</p>
+              <h1 class="text-white">QuantInvest</h1>
+              <p class="text-lead text-light">An investor's playground</p>
             </div>
           </div>
         </div>

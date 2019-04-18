@@ -4,7 +4,9 @@
 
     <div class="container fluid col-sm-12">
 
-        <a class="navbar-brand text-lg text-secondary" href="{{ url_for('index') }}">QuantInvest</a>
+        <a class="navbar-brand text-lg text-secondary" href="
+        {% if current_user.is_anonymous %}{{ url_for('landing') }}
+        {% else %}{{ url_for('index') }}{% endif %}">QuantInvest</a>
        
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
