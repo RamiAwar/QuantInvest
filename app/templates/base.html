@@ -42,7 +42,7 @@
 	{% include "_argon_navbar.html" %}
 
 
-	{% if current_user.is_anonymous %}
+	{% if current_user.is_anonymous and active_page == url_for("auth.register") %}
 	<div class="header bg-gradient-primary py-7 py-lg-8">
       <div class="container">
         <div class="header-body text-center mb-7">
