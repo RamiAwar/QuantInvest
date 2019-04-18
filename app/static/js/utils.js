@@ -33,6 +33,10 @@ var show_error = function(error_message){
 
 }
 
+var clear_errors = function(){
+    $('#error-container').html("");
+}
+
 function get_random(length) { return Math.floor(Math.random()*(length)); }
 
 function get_random_sample(array, size) {
