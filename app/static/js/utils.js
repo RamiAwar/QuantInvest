@@ -74,19 +74,20 @@ var update_chart = function(chart, labels, data, pie=false, upper=[], lower=[]) 
 
         chart.data().data.chart.data.datasets[0].data = data;
 
-        chart.data().data.chart.data.datasets.push({
+        chart.data().data.chart.data.datasets[1] = {
             'data': upper,
             'label': "Upper limit",
             'borderColor': "#2dce89",
             'borderWidth': "2"
-        });
+        };
 
-        chart.data().data.chart.data.datasets.push({
+        chart.data().data.chart.data.datasets[2] = {
             'data': lower, 
             'label': "Lower limit",
             'borderColor': "#f5365c",
             'borderWidth': "2"
-        })
+        }
+
         // chart.data().data.chart.data.datasets[2].data = lower;
 
         chart.data().data.chart.data.labels = labels;
@@ -236,6 +237,15 @@ class PortfolioChart{
                     data: [0],
                     borderWidth: 2
                     // hoverBackgroundColor: "rgba(232,105,90,0.8)",
+                },
+                {
+                    label: "Upper Limit",
+                    data: [0],
+                    borderWidth:2
+                },{
+                    label: "Lower Limit",
+                    data: [0],
+                    borderWidth:2
                 }]
             }
         });
