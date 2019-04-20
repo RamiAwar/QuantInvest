@@ -115,7 +115,7 @@ $(document).ready(function(){
     $('#custom-pie-chart-container').hide();
     $('#custom-portfolio-performance-chart-container').hide();
     $('#portfolio-weights-container').hide();
-    $('#portfolio-statistics-container').hide();
+    $('#portfolio-summary-custom').hide();
 
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
@@ -223,7 +223,7 @@ $(document).ready(function(){
             $('#custom-pie-chart-container').show();
             $('#custom-portfolio-performance-chart-container').show();
             $('#portfolio-weights-container').show();
-            $('#portfolio-statistics-container').show();
+            $('#portfolio-summary-custom').show();
 
             // Create charts
             portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");

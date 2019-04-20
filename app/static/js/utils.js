@@ -231,8 +231,8 @@ class PortfolioChart{
                             var yLabel = item.yLabel;
                             var content = '';
 
-                            console.log(label)
-                            console.log(yLabel)
+                            // console.log(label)
+                            // console.log(yLabel)
 
                             if (data.datasets.length > 1) {
                                 content += label + "   " ;

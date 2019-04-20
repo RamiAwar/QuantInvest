@@ -37,10 +37,10 @@
 
         <div class="container pl-5 pr-5">
           <h3> Time Range </h3>
-          <div id="time-range-slider" class="mb-5" data-range-value-min="2014" data-range-value-max="2019"></div>
+          <div id="time-range-slider" class="mb-5" data-range-value-min="2015" data-range-value-max="2019"></div>
           <div class="row d-none">
             <div class="col-6">
-                <span class="range-slider-value value-low" data-range-value-low="2014" id="time-range-slider-value-low"></span>
+                <span class="range-slider-value value-low" data-range-value-low="2015" id="time-range-slider-value-low"></span>
             </div>
             <div class="col-6 text-right">
                 <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
@@ -115,8 +115,8 @@
   
   
 <div class="row ml-0 mr-0">
-  <div class="col-md-6">
-    <div id="performance-chart-container" class="chart-container card bg-gradient-default shadow">  
+  <div id="basic-portfolio-performance-chart-container" class="col-md-6">
+    <div class="chart-container card bg-gradient-default shadow">  
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
           <div class="col">
@@ -131,18 +131,18 @@
         <!-- Chart -->
         <div class="chart">
           <!-- Chart wrapper -->
-          <canvas id="portfolio-performance-chart" class="chart-canvas"></canvas>
+          <canvas id="basic-portfolio-performance-chart" class="chart-canvas"></canvas>
         </div>
       
       </div>
     </div>
 
-  <button type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
+  <button id="explore-basic" type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
 
   </div>
 
   <div class="col-md-6">
-    <div id="portfolio-chart-container" class="chart-container card bg-gradient-default shadow">
+    <div id="basic-pie-chart-container" class="chart-container card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
           <div class="col">
@@ -155,12 +155,153 @@
         <!-- Chart -->
         <div class="chart mb-5">
           <!-- Chart wrapper -->
-          <canvas id="chart-pie" class="chart-canvas"></canvas>
+          <canvas id="basic-pie-chart" class="chart-canvas"></canvas>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="row ml-0 mr-0">
+  
+  <div id="basic-portfolio-summary" class="col-md-6">
+    <div class="container">
+
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Statistics</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="row mb-3">
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Expected Returns</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-expected-return">-</span>
+            </div>
+
+            
+            
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-chart-bar-32"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Volatility</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-volatility">-</span>
+            </div>
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Sharpe Ratio</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-sharpe-ratio">-</span>
+            </div>
+
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Initial Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-initial-value">-</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-briefcase-24"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Final Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-final-value">-</span>
+            </div>
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Start Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-start-date">-</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-calendar-grid-58"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">End Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-end-date">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="basic-portfolio-weights-container" class="col-md-6">
+    <div class="container">
+      
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="table-responsive">
+            <div>
+            <table class="table align-items-center table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="sort" data-sort="name">Ticker</th>
+                        <th scope="col" class="sort" data-sort="budget">Percentage</th>
+                      
+                    </tr>
+                </thead>
+                <tbody id="portfolio-ticker-list-basic" class="list">
+                    
+                    <tr>
+                        <th scope="row">
+                            <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="name mb-0 text-sm">-</span>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="budget">
+                            -
+                        </td>
+                        
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
 
 

@@ -46,7 +46,7 @@ $(document).ready(function(){
         step: 1,
         pips: {
             mode: 'range',
-            density: 20
+            density: 25
         },
         tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 
@@ -76,26 +76,52 @@ $(document).ready(function(){
     // ------------------- CHARTS -----------------------------
 
     // Initialize pie chart 
-    var $pie_chart = $('#chart-pie')
-    var pie_chart = new PieChart($pie_chart, "Portfolio", ["tesla", "msft", "googl", "amzn", "plx", "ret"], [25,10, 5, 20, 13, 27])
-    // Save to jQuery object
-    $pie_chart.data('data', pie_chart)
-
-
+    var $pie_chart = $('#basic-pie-chart');
+    var pie_chart = null;
+    
     // Initialize portfolio chart
-    var $portfolio_chart = $('#portfolio-performance-chart');
-    var portfolio_chart = new PortfolioChart($portfolio_chart);
-    // Save to jQuery object
-    $portfolio_chart.data('chart', portfolio_chart);
+    var $portfolio_chart = $('#basic-portfolio-performance-chart');
+    var portfolio_chart = null;
+
+    var firsttime = true;
+
+    $('#basic-pie-chart-container').hide();
+    $('#basic-portfolio-performance-chart-container').hide();
+    $('#basic-portfolio-weights-container').hide();
+    $('#basic-portfolio-summary').hide();
 
 
     $('#submit').click(function() {
         
         // Disable submit button until job is finished
         $('#submit').prop("disabled", true);
+        $('#explore-basic').prop('disabled', true);
 
         // Display loading sign on charts
-        disable_charts();
+        if(firsttime){
+
+            // Chart hiding has to be in this convoluted way due to chartjs bugs
+            firsttime = false;
+
+            // Show chart containers
+            $('#basic-pie-chart-container').show();
+            $('#basic-portfolio-performance-chart-container').show();
+            $('#basic-portfolio-weights-container').show();
+            $('#basic-portfolio-summary').show();
+
+            // Create charts
+            portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
+            pie_chart = new PieChart($pie_chart, "Portfolio");
+
+            // Save to jQuery objects
+            $pie_chart.data('data', pie_chart)
+            $portfolio_chart.data('data', portfolio_chart);
+
+            disable_charts(); 
+
+        }else{
+            disable_charts();    
+        }
 
         // Get slider data and submit to optimizer as a job        
         var data = {
@@ -169,11 +195,12 @@ $(document).ready(function(){
                     update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower);
 
                     // Update portfolio summary
-                    update_portfolio_summary("#portfolio-summary-basic", response["result"]["statistics"], portfolio_weights, performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
-                    
+                    update_portfolio_summary("basic-portfolio-summary", response["result"]["statistics"], performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
+                    update_ticker_list('portfolio-ticker-list-basic', portfolio_weights)
                     enable_charts();
                     
                     $('#submit').prop('disabled', false);
+                    $('#explore-basic').prop('disabled', false);
 
                 }else if(response["is_failed"]){
 
