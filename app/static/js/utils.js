@@ -37,6 +37,17 @@ var clear_errors = function(){
     $('#error-container').html("");
 }
 
+var show_info = function(error_message){
+
+    $('#error-container').append('<div class="alert alert-info alert-info alert-dismissible fade show" role="alert">\
+                <span class="alert-inner--text">' + error_message + '</span>\
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+    </div>');
+
+    window.scrollTo(0, 0);
+
+}
+
 function get_random(length) { return Math.floor(Math.random()*(length)); }
 
 function get_random_sample(array, size) {
@@ -220,8 +231,8 @@ class PortfolioChart{
                             var yLabel = item.yLabel;
                             var content = '';
 
-                            console.log(label)
-                            console.log(yLabel)
+                            // console.log(label)
+                            // console.log(yLabel)
 
                             if (data.datasets.length > 1) {
                                 content += label + "   " ;
@@ -255,4 +266,48 @@ class PortfolioChart{
         });
     }
 
+}
+
+var update_portfolio_summary = function(container, statistics, initial_value, final_value){
+    
+    // Update basic 3 stats
+    $("#" + container + ' .portfolio-expected-return').html((statistics["expected_return"]*100).round(2) + "%")
+    $("#" + container + ' .portfolio-volatility').html((statistics["volatility"]*100).round(2) + "%")
+    $("#" + container + ' .portfolio-sharpe-ratio').html((statistics["sharpe_ratio"]).round(3))
+
+
+    // Update initial/final portfolio values
+    $("#" + container + ' .portfolio-initial-value').html("$" + initial_value)
+    $("#" + container + ' .portfolio-final-value').html("$" + final_value)
+
+
+    // Update start/end dates
+    $("#" + container + ' .portfolio-start-date').html($('#start-date').val());
+    $("#" + container + ' .portfolio-end-date').html($('#end-date').val());
+    
+}
+
+var update_ticker_list = function(container, portfolio_weights){
+    
+    // Update ticker list constituents
+    $("#" + container).html(""); // clear contents
+
+    for(var i = 0; i < portfolio_weights["data"].length; i++){
+
+        var row = "<tr>" + 
+                    '<th scope="row">' + 
+                        '<div class="media align-items-center">' +
+                            '<div class="media-body">' + 
+                                '<span class="name mb-0  text-sm">' + portfolio_weights["labels"][i] + '</span>' +
+                            '</div>' +
+                        '</div>' + 
+                    '</th>' + 
+                    '<td class="budget"> ' + 
+                     portfolio_weights["data"][i] + "%" + 
+                    '</td>' + 
+                '</tr>';
+
+        $('#' + container).append(row);
+    
+    }
 }
