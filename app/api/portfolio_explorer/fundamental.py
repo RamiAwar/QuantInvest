@@ -8,8 +8,8 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 
 class Fundamental():
 
-    def __init__(self):
-        pass
+    def __init__(self, stock, period):
+        self.company_data = CompanyData(stock, period, False) # get the data for the company withint the period ('quarterly' or 'annually')
 
     # find peers of a company (either asks the db or gets them itself)
     def peers(self, companyData, criterion):
