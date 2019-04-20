@@ -11,6 +11,10 @@ class Fundamental():
     def __init__(self, stock, period):
         self.company_data = CompanyData(stock, period, False) # get the data for the company withint the period ('quarterly' or 'annually')
 
+    def get_all_data(self):
+        # Make it return a dictionary of all the data we need. Add calls to all the other methods to fill the dictionary 
+        pass
+
     # find peers of a company (either asks the db or gets them itself)
     def peers(self, companyData, criterion):
         pass
