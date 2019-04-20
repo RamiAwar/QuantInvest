@@ -1,74 +1,122 @@
-<!-- Sliders, buttons interface -->
 
-<div class="row justify-content-center mt-5 mb-5">
 
- 
- <h1 style="width:100%;" class="pl-5 pr-5 mb-5"> Modify Portfolio Characteristics </h1>
-  <hr>
-
-  <!-- ALL THREE SLIDERS CONTAINER -->
-  <div id="configuration-container" class="col-xs-12 col-md-10 col-xl-4 ml-5 mr-5 mt-auto mb-md-5">  
+<div class="row mr-0 ml-0">
+  
+  <div class="col">
     
-    
+    <div class="card bg-gradient-success">
+      <div class="card-header bg-transparent">
+        <h5 class="h2 mb-0 text-white">Basic Optimizer</h5>
+      </div>
 
-    <!-- Time range slider -->
-    <h3> Time Range </h3>
-    <div id="time-range-slider" class="mb-5" data-range-value-min="2014" data-range-value-max="2019"></div>
-    <div class="row d-none">
-        <div class="col-6">
-            <span class="range-slider-value value-low" data-range-value-low="2014" id="time-range-slider-value-low"></span>
-        </div>
-        <div class="col-6 text-right">
-            <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
-        </div>
-    </div>
+      <div class="card-body">
+        <h5 class="h3 text-white">What is this?</h5>
+        <span class="text-md text-white"> This is a simplified version of the custom optimizer.
+        This interface helps new investors explore the relationship between expected returns and volatility of a portfolio. Behind the scenes, the optimizer attempts to find a portfolio that satisfies the expected returns and volatility specified by the user within a certain time range. The stocks considered are all current S&P500 stocks so the generated portfolio will contain a subset of those.
+        </span>
 
-
-    <!-- Expected returns slider -->
-    <h3> Expected Returns </h3>
-    <div class="input-slider-container mb-5">
-      <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
-      <div class="row mt-3 d-none">
-        <div>
-          <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
-        </div>
+        <h5 class="h3 pt-4 text-white">How does it work?</h5>
+        <span class="text-md text-white">Behind the scenes, the optimizer first searches for a portfolio that matches the expected returns requested, while minimizing volatility. Then the optimizer searches for another portfolio that matches the requested volatility while maximizing returns. Of the two generated portfolios, the one that matches the user's preferences more closely is selected. For more customized optimization, checkout the custom optimization tab above. </span>
       </div>
     </div>
 
-
-    <!-- Expected risk slider -->
-    <h3> Volatility </h3>
-    <div class="input-slider-container mb-5 mr-auto">
-      <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
-      <div class="row mt-3 d-none">
-        <div class="col-6">
-          <span id="expected-risk-slider-value" class="range-slider-value" data-range-value-low="100"></span>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <!-- Action buttons container -->
-  <div class="row col-md-10 col-xl-2 align-items-center">
-    <div class="container">
-      
-      <button id="submit" type="button" class="btn btn-block btn-primary" style="max-height:50px;">Optimize</button>
-    </div>
-  </div>
 </div>
 
-<!-- Portfolio performance chart -->
-<div class="row justify-content-center">
+<div class="row mr-0 ml-0">
+  
+  <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Optimization Parameters</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="container pl-5 pr-5">
+          <h3> Time Range </h3>
+          <div id="time-range-slider" class="mb-5" data-range-value-min="2015" data-range-value-max="2019"></div>
+          <div class="row d-none">
+            <div class="col-6">
+                <span class="range-slider-value value-low" data-range-value-low="2015" id="time-range-slider-value-low"></span>
+            </div>
+            <div class="col-6 text-right">
+                <span class="range-slider-value value-high" data-range-value-high="2019" id="time-range-slider-value-high"></span>
+            </div>
+          </div>
 
 
-  <h1 style="width:100%;" class="pl-5 pr-5 mt-3 mb-5 ">Optimization Result </h1>
-  <hr>
+          <!-- Expected returns slider -->
+          <h3> Expected Returns </h3>
+          <div class="input-slider-container mb-5">
+            <div id="expected-returns-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+            <div class="row mt-3 d-none">
+              <div>
+                <span id="expected-return-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+              </div>
+            </div>
+          </div>
 
-  <!-- Chart container -->
-  <div class="col-xs-12 col-md-10 col-xl-8  mb-5 mb-xl-4">
+
+          <!-- Expected risk slider -->
+          <h3> Volatility </h3>
+          <div class="input-slider-container mb-6 mr-auto">
+            <div id="expected-risk-slider" class="input-slider" data-range-value-min="100" data-range-value-max="500"></div>
+            <div class="row mt-3 d-none">
+              <div class="col-6">
+                <span id="expected-risk-slider-value" class="range-slider-value" data-range-value-low="100"></span>
+              </div>
+            </div>
+          </div>
+        
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Portfolio Details</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label">Initial Amount</label>
+
+          <input class="form-control form-control-alternative" type="number" value="100000" id="initial-amount-input-basic">
+
+        </div>
+
    
-    <button type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
-    <div id="performance-chart-container" class="chart-container card bg-gradient-default shadow">  
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="row ml-0 mr-0 mb-5">
+  <div class="container">
+    <button id="submit" type="button" class="btn btn-block btn-primary" style="max-height:50px;">Optimize</button>
+  </div>  
+</div>
+
+
+  
+  
+<div class="row ml-0 mr-0">
+  <div id="basic-portfolio-performance-chart-container" class="col-md-6">
+    <div class="chart-container card bg-gradient-default shadow">  
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
           <div class="col">
@@ -83,18 +131,18 @@
         <!-- Chart -->
         <div class="chart">
           <!-- Chart wrapper -->
-          <canvas id="portfolio-performance-chart" class="chart-canvas"></canvas>
+          <canvas id="basic-portfolio-performance-chart" class="chart-canvas"></canvas>
         </div>
       
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Pie chart -->
-<div class="row justify-content-center">
-  <div class="col-xs-12 col-md-10 col-xl-8 mb-5 mb-xl-0">
-    <div id="portfolio-chart-container" class="chart-container card bg-gradient-default shadow">
+  <button id="explore-basic" type="button" class="btn btn-block btn-primary mb-3" style="max-height:50px;">Explore</button>
+
+  </div>
+
+  <div class="col-md-6">
+    <div id="basic-pie-chart-container" class="chart-container card bg-gradient-default shadow">
       <div class="card-header bg-transparent">
         <div class="row align-items-center">
           <div class="col">
@@ -107,12 +155,154 @@
         <!-- Chart -->
         <div class="chart mb-5">
           <!-- Chart wrapper -->
-          <canvas id="chart-pie" class="chart-canvas"></canvas>
+          <canvas id="basic-pie-chart" class="chart-canvas"></canvas>
         </div>
       </div>
     </div>
   </div>
-</div>  
+</div>
+
+<div class="row ml-0 mr-0">
+  
+  <div id="basic-portfolio-summary" class="col-md-6">
+    <div class="container">
+
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Statistics</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="row mb-3">
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Expected Returns</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-expected-return">-</span>
+            </div>
+
+            
+            
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-chart-bar-32"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Volatility</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-volatility">-</span>
+            </div>
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Sharpe Ratio</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-sharpe-ratio">-</span>
+            </div>
+
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Initial Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-initial-value">-</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-briefcase-24"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Final Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-final-value">-</span>
+            </div>
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Start Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-start-date">-</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-calendar-grid-58"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">End Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-end-date">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="basic-portfolio-weights-container" class="col-md-6">
+    <div class="container">
+      
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="table-responsive">
+            <div>
+            <table class="table align-items-center table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="sort" data-sort="name">Ticker</th>
+                        <th scope="col" class="sort" data-sort="budget">Percentage</th>
+                      
+                    </tr>
+                </thead>
+                <tbody id="portfolio-ticker-list-basic" class="list">
+                    
+                    <tr>
+                        <th scope="row">
+                            <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="name mb-0 text-sm">-</span>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="budget">
+                            -
+                        </td>
+                        
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
 
 

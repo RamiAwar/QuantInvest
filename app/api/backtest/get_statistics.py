@@ -91,6 +91,7 @@ def compute_statistics(prices_df, initial_amount, portfolio, window):
     df['upper'] = df['ma'] + (df['mstd'] * 2)
     df['lower'] = df['ma'] - (df['mstd'] * 2)
 
-    df.dropna(inplace=True)
+    # df.dropna(inplace=True)
+    df = df.bfill();    
 
     return df
