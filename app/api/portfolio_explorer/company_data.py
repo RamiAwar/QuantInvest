@@ -8,6 +8,7 @@ class CompanyData():
         self.peers = stock.get_peers()
         self.__key_stats = stock.get_key_stats(period=period)
         self.__financials = stock.get_financials(period=period) # set the period. default is quarterly
+        self.__dividends = stock.get_dividends('5y')
 
         if self.__cloud == True:
             self.__income_statements = stock.get_income_statement(period=period)['income']
@@ -17,7 +18,7 @@ class CompanyData():
         for financial in self.__financials:
             current_period = financial['reportDate']
             self.financials_over_time[current_period] = CompanyFinancial(current_period, self.__cloud)
-        
+
     def __init__(self, ticker, period, cloud):
         # period is 'quarter' or 'annual'
         # cloud is True or False
@@ -35,6 +36,7 @@ class CompanyData():
         self.shares_outstanding = self.__key_stats['sharesOutstanding']
         self.market_cap = self.__key_stats['marketcap']
         self.market_price = self.market_cap / self.shares_outstanding
+        self.dividends = [self.__dividends[i]['amount'] for i in range(len(divs))]
 
         for other_financial in self.__financials:
             current_period = other_financial['reportDate']
@@ -54,11 +56,11 @@ class CompanyData():
                 if current_period not in self.financials_over_time.items():
                     self.financials_over_time[current_period] = CompanyFinancial(current_period)
                 self.financials_over_time[current_period].add_income_data(income_statement)
-        
+
         self.earnings_per_share = self.__key_stats['ttmEPS'] # directly from IEX
-        self.pe_ratio_high = self.__key_stats['peRatioHigh'] 
-        self.pe_ratio_low = self.__key_stats['peRatioLow'] 
-    
+        self.pe_ratio_high = self.__key_stats['peRatioHigh']
+        self.pe_ratio_low = self.__key_stats['peRatioLow']
+
     def to_dict(self):
         for key, value in self.financials_over_time.items():
             self.financials_over_time[key] = value.to_dict()
@@ -75,17 +77,17 @@ class CompanyData():
             'pe_ratio_low': self.pe_ratio_low
         }
         return to_return
-        
+
 class CompanyFinancial:
 
     def __init__(self, period, cloud):
         self.period = period
         self.__cloud = cloud
-    
+
     def add_cash_flow_data(self, cash_flow_statement):
         self.investing_cash_flow = cash_flow_statement['totalInvestingCashFlows']
         self.financing_cash_flow = cash_flow_statement['cashFlowFinancing']
-        
+
     def add_income_data(self, income_statement):
         self.net_income = income_statement['netIncome']
         self.operating_income = income_statement['operatingIncome']
@@ -97,11 +99,11 @@ class CompanyFinancial:
         self.total_liabilities = other_financials['totalLiabilities'] # or should we get total liabilities
         self.debt_equity_ratio = self.total_liabilities / self.equity # online definition, you wrote it as debt/equity
         self.book_value = self.equity / shares_outstanding # your definition
-        self.pbv_ratio = market_price / self.book_value 
-        self.risk = market_price - self.book_value 
-        self.margin_of_safety = self.equity / market_price 
+        self.pbv_ratio = market_price / self.book_value
+        self.risk = market_price - self.book_value
+        self.margin_of_safety = self.equity / market_price
         self.current_ratio = self.total_assets / self.total_liabilities
-    
+
     def to_dict(self):
         to_return = {
             'equity': self.equity,
@@ -113,6 +115,7 @@ class CompanyFinancial:
             'pbv_ratio': self.pbv_ratio,
             'risk': self.risk,
             'margin_of_safety': self.margin_of_safety,
-            'current_ratio': self.current_ratio
+            'current_ratio': self.current_ratio,
+            'dividends': self.dividends
         }
         return to_return
