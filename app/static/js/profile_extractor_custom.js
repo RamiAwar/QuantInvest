@@ -177,14 +177,16 @@ $(document).ready(function(){
                 // TODO: Better error handling here : priority (4)
                 if(response["is_finished"]){
 
-                    performance_values = response["result"]["performance"]["data"]
+                    performance_values = response["result"]["performance"]["total"]
+                    performance_upper = response["result"]["performance"]["upper"]
+                    performance_lower = response["result"]["performance"]["lower"]
                     performance_labels = response["result"]["performance"]["labels"]
 
                     portfolio_weights = response["result"]["weights"]
                     weights_values = portfolio_weights["data"]
                     weights_labels = portfolio_weights["labels"]
 
-                    update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values);
+                    update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower);
 
                     // Update portfolio summary
                     update_portfolio_summary(response["result"]["statistics"], portfolio_weights, performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
@@ -281,6 +283,12 @@ $(document).ready(function(){
         var target_risk = $('#target-volatility')
         var target_return = $('#target-return')
 
+        var optimization_parameters = {
+            'target_volatility': target_risk.val(),
+            'target_return': target_return.val()
+        } 
+
+
         // Compile form data into an object
         data = {
             "ticker_list": ticker_list,
@@ -288,7 +296,7 @@ $(document).ready(function(){
             "start_date": start_date,
             "end_date": end_date,
             "optimization_method": optimization_method,
-            "optimization_parameters": {}
+            "optimization_parameters": optimization_parameters
         }
 
         // Send ajax request to server to begin optimization job

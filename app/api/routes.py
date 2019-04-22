@@ -8,7 +8,6 @@ from app import app
 from app.api import bp
 
 
-
 @bp.route('/optimize', methods=["POST"])
 @login_required
 def optimize():
@@ -39,8 +38,8 @@ def optimize():
 
     # Create queue object
     queue = Queue(app.config["OPTIMIZER_QUEUE"], connection=from_url(app.config["REDIS_URL"]))
-    job = None 
-    
+    job = None
+
     # Check type of optimization
     optimization_method = parameters["optimization_method"]
 
@@ -56,7 +55,6 @@ def optimize():
         job = queue.enqueue("app.api.optimizer.optimization_handlers.target_return_volatility", parameters)
 
     return jsonify({"job_id": job._id})
-
 
 
 @bp.route('/checkstatus', methods=["POST"])
