@@ -23,7 +23,7 @@ var enable_charts = function(){
 // Add error to #error-container defined in base.html, which also displays flashed messages from flask
 var show_error = function(error_message){
 
-    $('#error-container').append('<div class="alert alert-info alert-danger alert-dismissible fade show" role="alert">\
+    $('#error-container').append('<div class="mt-2 alert alert-info alert-danger alert-dismissible fade show" role="alert">\
                 <span class="alert-inner--text">' + error_message + '</span>\
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
     </div>');
@@ -39,7 +39,7 @@ var clear_errors = function(){
 
 var show_info = function(error_message){
 
-    $('#error-container').append('<div class="alert alert-info alert-info alert-dismissible fade show" role="alert">\
+    $('#error-container').append('<div class="mt-2 alert alert-info alert-info alert-dismissible fade show" role="alert">\
                 <span class="alert-inner--text">' + error_message + '</span>\
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
     </div>');
