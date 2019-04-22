@@ -16,10 +16,11 @@ from dateutil.relativedelta import relativedelta
 def max_sharpe(parameters):
 
     print("Optimizer received: ", parameters)
-
+    print("Fetching stocks ... ")
     stocks_df = get_data(parameters["ticker_list"], datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
                          datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
 
+    print("Performing optimization ...")
     mu = expected_returns.mean_historical_return(stocks_df)
     S = risk_models.sample_cov(stocks_df)
     ef = EfficientFrontier(mu, S, weight_bounds=(0, 1))
@@ -28,6 +29,7 @@ def max_sharpe(parameters):
     cleaned_weights = ef.clean_weights()
 
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
+    print("Starting backtest ...")
 
     # get tuple of 3 values: (return, vol, sharpe)
     performance = ef.portfolio_performance()
@@ -71,10 +73,11 @@ def max_sharpe(parameters):
 def min_volatility(parameters):
 
     print("Optimizer received: ", parameters)
-
+    print("Fetching stocks ... ")
     stocks_df = get_data(parameters["ticker_list"], datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
                          datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
 
+    print("Performing optimization ...")
     mu = expected_returns.mean_historical_return(stocks_df)
     S = risk_models.sample_cov(stocks_df)
     ef = EfficientFrontier(mu, S, weight_bounds=(0, 1))
@@ -83,6 +86,7 @@ def min_volatility(parameters):
     cleaned_weights = ef.clean_weights()
 
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
+    print("Starting backtest ...")
 
     # get tuple of 3 values: (return, vol, sharpe)
     performance = ef.portfolio_performance()
@@ -126,12 +130,13 @@ def min_volatility(parameters):
 def min_volatility_target(parameters):
 
     print("Optimizer received: ", parameters)
-
+    print("Fetching stocks ... ")
     target_return = float(parameters["optimization_parameters"]["target_return"])
 
     stocks_df = get_data(parameters["ticker_list"], datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
                          datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
 
+    print("Performing optimization ...")
     mu = expected_returns.mean_historical_return(stocks_df)
     S = risk_models.sample_cov(stocks_df)
     ef = EfficientFrontier(mu, S, weight_bounds=(0, 1))
@@ -141,6 +146,7 @@ def min_volatility_target(parameters):
     cleaned_weights = ef.clean_weights()
 
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
+    print("Starting backtest ...")
 
     # get tuple of 3 values: (return, vol, sharpe)
     performance = ef.portfolio_performance()
@@ -184,12 +190,13 @@ def min_volatility_target(parameters):
 def max_return_target(parameters):
 
     print("Optimizer received: ", parameters)
-
+    print("Fetching stocks ... ")
     target_volatility = float(parameters["optimization_parameters"]["target_volatility"])
 
     stocks_df = get_data(parameters["ticker_list"], datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
                          datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
 
+    print("Performing optimization ...")
     mu = expected_returns.mean_historical_return(stocks_df)
     S = risk_models.sample_cov(stocks_df)
     ef = EfficientFrontier(mu, S, weight_bounds=(0, 1))
@@ -199,6 +206,7 @@ def max_return_target(parameters):
     cleaned_weights = ef.clean_weights()
 
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
+    print("Starting backtest ...")
 
     # get tuple of 3 values: (return, vol, sharpe)
     performance = ef.portfolio_performance()
@@ -251,48 +259,74 @@ def target_return_volatility(parameters):
         [type] -- [description]
     """
 
-    print("From optimizer: ", parameters)
+    print("Optimizer received: ", parameters)
+    print("Fetching stocks ... ")
+
+    target_return = float(parameters["target_return"])
+    target_volatility = float(parameters["target_volatility"])
 
     stocks_df = get_all_snp500_data(datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
                                     datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
-    print("Stocks df")
-    print(stocks_df.head())
 
+    # stocks_df = get_data(parameters["ticker_list"], datetime.strptime(parameters["start_date"], '%Y-%m-%d'),
+    #                      datetime.strptime(parameters["end_date"], '%Y-%m-%d'))
+
+    print("Performing optimization ...")
     mu = expected_returns.mean_historical_return(stocks_df)
-
     S = risk_models.sample_cov(stocks_df)
+    ef_1 = EfficientFrontier(mu, S, weight_bounds=(0, 1))
+    ef_2 = EfficientFrontier(mu, S, weight_bounds=(0, 1))
 
-    ef = EfficientFrontier(mu, S, weight_bounds=(0, 1))
+    raw_1 = ef_1.efficient_risk(target_volatility, risk_free_rate=0.02, market_neutral=False)
+    error_1 = abs(ef_1.portfolio_performance()[1] - target_volatility)
 
-    raw_weights = ef.max_sharpe()
+    raw_2 = ef_2.efficient_return(target_return, market_neutral=False)
+    error_2 = abs(ef_2.portfolio_performance()[0] - target_return)
+
+    ef = ef_1 if error_1 < error_2 else ef_2
+    s = "volatility" if error_1 < error_2 else "return"
+
+    print("Target " + s + " chosen.");
 
     cleaned_weights = ef.clean_weights()
 
-    # cleaned_weights = {k: round(v * 100, 3) for k, v in cleaned_weights.items() if v != 0}
     cleaned_weights = {k: v for k, v in cleaned_weights.items() if v != 0}
 
-    # print(cleaned_weights)
+    print("Starting backtest ...")
 
-    # backtest_results = get_daily_returns(cleaned_weights, parameters["start_date"], parameters["end_date"])
+    # get tuple of 3 values: (return, vol, sharpe)
+    performance = ef.portfolio_performance()
 
-    backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights, initial_amount=1000, start_date=parameters[
-                                          "start_date"], end_date=parameters["end_date"])
+    backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=cleaned_weights,
+                                          initial_amount=int(parameters["initial_amount"]), window=50)
 
-    # print(backtest_results.describe())
+    labels = (list(backtest_results["total"].index))
 
-    backtest_results_dict = backtest_results.to_dict()
+    total_values = (list(backtest_results["total"].values))
+    upper_values = (list(backtest_results["upper"].values))
+    lower_values = (list(backtest_results["lower"].values))
 
     output = {
 
         "weights": {
+
             "labels": list(cleaned_weights.keys()),
             # Convert into percentages instead of proportions
             "data": [round(x * 100, 2) for x in list(cleaned_weights.values())]
         },
 
         "performance": {
-            "labels": list(backtest_results_dict.keys()),
-            "data": list(backtest_results_dict.values())
+            "labels": labels,
+            "total": total_values,
+            "upper": upper_values,
+            "lower": lower_values
+        },
+
+        # TODO: Add more portfolio statistics : priority (3)
+        "statistics": {
+            "expected_return": performance[0],
+            "volatility": performance[1],
+            "sharpe_ratio": performance[2]
         }
     }
 

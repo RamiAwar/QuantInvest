@@ -2,24 +2,53 @@
 {% set active_page = "index" %}
 
 {% block content %}
+    
 
+<div class="row">
 
-    <div id='container'>
-      <div id='title'>
-        <!-- TODO: Decide on sophisticated or simple title -->
-        <h1>Risk and Return Assessment</h1>
-      </div>
-        <br/>
-        <div id='quiz'></div>
-        <div class='button' id='next'><a href='#'>Next</a></div>
-        <div class='button' id='prev'><a href='#'>Prev</a></div>
-        <div class='button' id='start'> <a href='#'>Start Over</a></div>
-        <!-- <button class='' id='next'>Next</a></button>
-        <button class='' id='prev'>Prev</a></button>
-        <button class='' id='start'> Start Over</a></button> -->
+  <div class="col-xs-12 col-md-12">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Risk Assessment</h5>
       </div>
 
-    <script type="text/javascript" src="{{ url_for('static', filename='js/risk_assesser.js')}}"></script>
+      <div class="card-body">
 
+        <div class="form-group">
+
+          <div id='quiz'>
+            <div id='list' class="form-check">
+              
+            </div>
+          </div>          
+
+        </div>
+
+        <div class="form-group justify-content-between">
+
+          <div class="d-flex justify-content-between">
+            <div class='btn btn-primary mb-3 pr-6 pl-6' id='prev'>Prev</div>
+            <div class='btn btn-primary mb-3 pr-6 pl-6' id='next'>Next</div>
+          </div>
+
+          <div class='btn btn-primary btn-block mb-3' id='end'>Continue</div>   
+          <div class='btn btn-secondary btn-block' id='start-over'>Start Over</div>   
+
+        </div>
+      
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var CREATE_PROFILE_URL = "{{ url_for('profile_extractor.createprofile') }}"
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/utils.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/risk_assesser.js')}}"></script>
 
 {% endblock %}
