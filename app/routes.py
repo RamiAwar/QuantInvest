@@ -5,13 +5,13 @@ from app import app
 from app.forms import EditProfileForm
 
 
-@app.route('/')
 @app.route('/index')
 @login_required
 def index():
     return render_template('index.html')
 
 
+@app.route('/')
 @app.route('/landing')
 def landing():
     return render_template('landing.html')
@@ -36,13 +36,16 @@ def profile():
 
     return render_template('profile.html', user=current_user, form=edit_profile_form)
 
+
 @app.route('/legal')
 def legal():
-    return render_template('errors/under_construction.html')
+    return render_template('legal.html')
+
 
 @app.route('/about')
 def about():
     return render_template('errors/under_construction.html')
+
 
 @app.route('/blog')
 def blog():
