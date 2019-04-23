@@ -1,3 +1,38 @@
 
 <!-- TODO: Design and create footer content : priority (1) -->
-<p> Footer </p>
+<footer class="pt-0 pb-3 {% if active_page == url_for('landing') %}bg-white{% endif %}">
+
+    {% if active_page == url_for('landing') %}
+       <div class="zindex-100 bg-gradient-success">
+            <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+              <polygon class="fill-white" points="2560 100 0 100 0 0"></polygon>
+            </svg>
+        </div>
+    {% endif %}
+
+    <div class="row align-items-center justify-content-md-between pb-2 pt-3">
+        <div class="col-md-6">
+          <div class="copyright text-center">
+            © QuantInvest 2019
+          </div>
+        </div>
+        <div class="col-md-6 pr-md-5">
+          <ul class="nav nav-footer justify-content-center justify-content-md-end ">
+            <!-- <li class="nav-item">
+              <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+            </li> -->
+            <li class="nav-item">
+              <a href="{{url_for('about')}}" class="nav-link">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{url_for('blog')}}" class="nav-link">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{url_for('legal')}}" class="nav-link" >Legal</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+</footer>

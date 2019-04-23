@@ -35,3 +35,15 @@ def profile():
             return redirect(url_for('profile'))
 
     return render_template('profile.html', user=current_user, form=edit_profile_form)
+
+@app.route('/legal')
+def legal():
+    return render_template('errors/under_construction.html')
+
+@app.route('/about')
+def about():
+    return render_template('errors/under_construction.html')
+
+@app.route('/blog')
+def blog():
+    return render_template('errors/under_construction.html')
