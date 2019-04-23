@@ -37,6 +37,16 @@ def profile():
     return render_template('profile.html', user=current_user, form=edit_profile_form)
 
 
+@app.route('/portfolios', methods=["GET", "POST"])
+@login_required
+def portfolios():
+
+    if request.method == "POST":
+        pass
+
+    return render_template('portfolios.html', user=current_user)
+
+
 @app.route('/legal')
 def legal():
     return render_template('legal.html')

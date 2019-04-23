@@ -2,12 +2,100 @@
 {% set active_page = "index" %}
 {% block content %}
 
-	<h1> Hello, {{ current_user.username }}! </h1>
-
 	{% if posts %}
 		{% for post in posts %}
 		<div><p>{{post.author.username}} says: <b>{{post.body}} </b></p></div>
 		{% endfor %}
 	{% endif %}
+
+	<div class="row mt-4 mb-4">
+	    <div class="col-lg-12">
+		    <a href="{{url_for('portfolios')}}">
+		      <div class="card bg-gradient-default">
+		        <!-- Card body -->
+		        <div class="card-body">
+		          <div class="row align-items-center">
+		            <div class="col">
+		              <!-- <h5 class="card-title text-uppercase text-muted mb-0 text-white">My Portfolios</h5> -->
+		              <span class="h2 font-weight-bold text-white">My Portfolios</span>
+		            </div>
+		            <div class="col-auto">
+		              <div class="icon icon-shape bg-white text-dark rounded-circle shadow">
+		                <i class="ni ni-archive-2"></i>
+		              </div>
+		            </div>
+		          </div>
+		          
+		        </div>
+		      </div>
+		    </div>
+		</a>
+	</div>
+
+	        <div class="card-columns">
+			      <div class="card">
+			        <img class="card-img-top" src="../../assets/img/theme/img-1-1000x600.jpg" alt="Card image cap">
+			        <div class="card-body">
+			          <h5 class="card-title">Card title that wraps to a new line</h5>
+			          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+			        </div>
+			      </div>
+			      <div class="card p-3">
+			        <blockquote class="blockquote mb-0 card-body">
+			          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+			          <footer class="blockquote-footer">
+			            <small class="text-muted">
+			              Someone famous in <cite title="Source Title">Source Title</cite>
+			            </small>
+			          </footer>
+			        </blockquote>
+			      </div>
+			      <div class="card">
+			        <img class="card-img-top" src="../../assets/img/theme/img-1-1000x600.jpg" alt="Card image cap">
+			        <div class="card-body">
+			          <h5 class="card-title">Card title</h5>
+			          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+			          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+			        </div>
+			      </div>
+			      <div class="card bg-primary text-white text-center p-3">
+			        <blockquote class="blockquote mb-0">
+			          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+			          <footer class="blockquote-footer">
+			            <small>
+			              Someone famous in <cite title="Source Title">Source Title</cite>
+			            </small>
+			          </footer>
+			        </blockquote>
+			      </div>
+			      <div class="card text-center">
+			        <div class="card-body">
+			          <h5 class="card-title">Card title</h5>
+			          <p class="card-text">This card has a regular title and short paragraphy of text below it.</p>
+			          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+			        </div>
+			      </div>
+			      <div class="card">
+			        <img class="card-img" src="../../assets/img/theme/img-1-1000x600.jpg" alt="Card image">
+			      </div>
+			      <div class="card p-3 text-right">
+			        <blockquote class="blockquote mb-0">
+			          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+			          <footer class="blockquote-footer">
+			            <small class="text-muted">
+			              Someone famous in <cite title="Source Title">Source Title</cite>
+			            </small>
+			          </footer>
+			        </blockquote>
+			      </div>
+			      <div class="card">
+			        <div class="card-body">
+			          <h5 class="card-title">Card title</h5>
+			          <p class="card-text">This is another card with title and supporting text below. This card has some additional content to make it slightly taller overall.</p>
+			          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+			        </div>
+			      </div>
+			    </div>
+	    
 
 {% endblock %}
