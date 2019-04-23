@@ -18999,7 +18999,7 @@ textarea[resize='horizontal']
 */}
 .navbar-horizontal .navbar-brand img
 {
-    height: 30px;
+    height: 40px;
 }
 
 .navbar-horizontal .navbar-dark .navbar-brand
@@ -20135,7 +20135,7 @@ textarea[resize='horizontal']
     }
     .navbar-collapse .collapse-brand img
     {
-        height: 36px;
+        height: 45px;
     }
     .navbar-collapse .collapse-close
     {
