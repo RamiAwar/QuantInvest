@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-horizontal navbar-expand-lg navbar-dark bg-gradient-primary">
 
 
@@ -8,9 +7,9 @@
           <img src="{{ url_for('static', filename='images/logo.png') }}">
         </a>
         
-        <a class="navbar-brand text-lg text-secondary" href="
-        {% if current_user.is_anonymous %}{{ url_for('landing') }}
+        <a class="navbar-brand text-lg text-secondary" href="{% if current_user.is_anonymous %}{{ url_for('landing') }}
         {% else %}{{ url_for('index') }}{% endif %}">QuantInvest</a>
+        
        
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">

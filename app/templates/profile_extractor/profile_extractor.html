@@ -2,6 +2,22 @@
 {% set active_page = "profile_extractor" %}
 {% block content %}
 
+
+<script type="text/javascript">
+  
+  var OPTIMIZER_ENDPOINT = "{{ url_for('api.optimize') }}";
+  var GET_JOB_ENDPOINT = "{{ url_for('api.check_job_status') }}";
+
+  // Fetch flask variables and serialize them to json
+  var quiz_expected_return = {{expected_return|tojson }};
+  var quiz_expected_risk = {{expected_volatility|tojson}};
+  var basic = {{basic|tojson}}; 
+
+  console.log(quiz_expected_return)
+  console.log(quiz_expected_risk)
+
+</script>
+
 <div class="nav-wrapper">
     <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
         <li class="nav-item">
@@ -33,13 +49,7 @@
 
 
 
-<script type="text/javascript">
-  
-  OPTIMIZER_ENDPOINT = "{{ url_for('api.optimize') }}"
-  GET_JOB_ENDPOINT = "{{ url_for('api.check_job_status') }}"
 
-
-</script>
 
 <script src="{{url_for('static', filename='js/wnumb.js') }}"></script>
 <script src="{{url_for('static', filename='js/nouislider.min.js') }}"></script>

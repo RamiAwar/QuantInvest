@@ -46,7 +46,7 @@ $(document).ready(function(){
         step: 1,
         pips: {
             mode: 'range',
-            density: 20
+            density: 25
         },
         tooltips: [wNumb({decimals: 0}), wNumb({decimals: 0})],
 
@@ -57,41 +57,80 @@ $(document).ready(function(){
     })
 
 
+    // Check initialization (from risk assesser quiz)
+    if(basic == true){
 
+
+        // Set expected returns and expected volatility sliders to their respective generated Values
+        // These variables are defined in another script inside the HTML, so that they can have access 
+        // to the flask variables 
+        expected_returns_slider.noUiSlider.set(quiz_expected_return)
+        expected_risk_slider.noUiSlider.set(quiz_expected_risk)
+
+        // Display info message to user
+        show_info("Your generated expected return and risk values have been set as the slider values. Click optimize to generate your optimal portfolio using the provided time range.")
+    }
 
 
         
     // ------------------- CHARTS -----------------------------
 
     // Initialize pie chart 
-    var $pie_chart = $('#chart-pie')
-    var pie_chart = new PieChart($pie_chart, "Portfolio", ["tesla", "msft", "googl", "amzn", "plx", "ret"], [25,10, 5, 20, 13, 27])
-    // Save to jQuery object
-    $pie_chart.data('data', pie_chart)
-
-
+    var $pie_chart = $('#basic-pie-chart');
+    var pie_chart = null;
+    
     // Initialize portfolio chart
-    var $portfolio_chart = $('#portfolio-performance-chart');
-    var portfolio_chart = new PortfolioChart($portfolio_chart);
-    // Save to jQuery object
-    $portfolio_chart.data('chart', portfolio_chart);
+    var $portfolio_chart = $('#basic-portfolio-performance-chart');
+    var portfolio_chart = null;
+
+    var firsttime = true;
+
+    $('#basic-pie-chart-container').hide();
+    $('#basic-portfolio-performance-chart-container').hide();
+    $('#basic-portfolio-weights-container').hide();
+    $('#basic-portfolio-summary').hide();
 
 
     $('#submit').click(function() {
         
         // Disable submit button until job is finished
         $('#submit').prop("disabled", true);
+        $('#explore-basic').prop('disabled', true);
 
         // Display loading sign on charts
-        disable_charts();
+        if(firsttime){
+
+            // Chart hiding has to be in this convoluted way due to chartjs bugs
+            firsttime = false;
+
+            // Show chart containers
+            $('#basic-pie-chart-container').show();
+            $('#basic-portfolio-performance-chart-container').show();
+            $('#basic-portfolio-weights-container').show();
+            $('#basic-portfolio-summary').show();
+
+            // Create charts
+            portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
+            pie_chart = new PieChart($pie_chart, "Portfolio");
+
+            // Save to jQuery objects
+            $pie_chart.data('data', pie_chart)
+            $portfolio_chart.data('data', portfolio_chart);
+
+            disable_charts(); 
+
+        }else{
+            disable_charts();    
+        }
 
         // Get slider data and submit to optimizer as a job        
         var data = {
             "optimization_method":"target-return-volatility",
             "target_return": expected_returns_slider.noUiSlider.get(),
-            "target_risk": expected_risk_slider.noUiSlider.get(),
+            "target_volatility": expected_risk_slider.noUiSlider.get(),
             "start_date": (parseInt(time_range_slider.noUiSlider.get()[0]))+"-01-01",
-            "end_date": (parseInt(time_range_slider.noUiSlider.get()[1]))+"-01-01"
+            "end_date": (parseInt(time_range_slider.noUiSlider.get()[1]))+"-01-01",
+            "initial_amount": parseInt($("#initial-amount-input-basic").val())
         };
 
         
@@ -104,9 +143,6 @@ $(document).ready(function(){
             data: JSON.stringify(data),  
             context: $(this),
             success: function(response) {
-                
-                console.log("Success: received: ")
-                console.log(response);
                 
                 job_id = response["job_id"];
 
@@ -144,21 +180,27 @@ $(document).ready(function(){
 
 
                 // TODO: Better error handling here : priority (4)
-
                 if(response["is_finished"]){
 
                    
-                    // Update charts and re-enable everything 
-                    // TODO: Pipe portfolio performance here : priority (1)
-                    update_charts($pie_chart, $portfolio_chart, response["weights"], response["performance"]);
+                    performance_values = response["result"]["performance"]["total"]
+                    performance_upper = response["result"]["performance"]["upper"]
+                    performance_lower = response["result"]["performance"]["lower"]
+                    performance_labels = response["result"]["performance"]["labels"]
 
+                    portfolio_weights = response["result"]["weights"]
+                    weights_values = portfolio_weights["data"]
+                    weights_labels = portfolio_weights["labels"]
 
+                    update_charts($portfolio_chart, $pie_chart, weights_labels, weights_values, performance_labels, performance_values, performance_upper, performance_lower);
 
-                    // TODO: Create pie chart and display received portfolio on pie chart
-
-
+                    // Update portfolio summary
+                    update_portfolio_summary("basic-portfolio-summary", response["result"]["statistics"], performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
+                    update_ticker_list('portfolio-ticker-list-basic', portfolio_weights)
                     enable_charts();
+                    
                     $('#submit').prop('disabled', false);
+                    $('#explore-basic').prop('disabled', false);
 
                 }else if(response["is_failed"]){
 
