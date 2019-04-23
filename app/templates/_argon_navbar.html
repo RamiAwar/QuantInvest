@@ -6,9 +6,10 @@
         <a class="navbar-brand mr-0 ml-2 ml-md-0 mr-md-4" href="{{url_for('index')}}" aria-label="QuantInvest">
           <img src="{{ url_for('static', filename='images/logo.png') }}">
         </a>
-        {% if current_user.is_anonymous %}{{ url_for('landing') }}
+        
+        <a class="navbar-brand text-lg text-secondary" href="{% if current_user.is_anonymous %}{{ url_for('landing') }}
         {% else %}{{ url_for('index') }}{% endif %}">QuantInvest</a>
-        <a class="navbar-brand text-lg text-secondary" href="
+        
        
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
