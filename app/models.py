@@ -10,26 +10,6 @@ import pandas as pd
 import datetime
 
 
-# TODO: separate auth models from others : priority (4)
-class User(UserMixin, mongoengine.Document):
-
-    username = mongoengine.StringField(required=True)
-    email = mongoengine.StringField(required=True)
-    password_hash = mongoengine.StringField(required=True)
-
-    def __repr__(self):
-        return '< User {} >'.format(self.username)
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    # TODO: Change into something customizable?
-    def get_profile_picture(self):
-        return url_for('static', filename="example_user.png")
-
 
 class StockDailyPrice(mongoengine.Document):
 
@@ -60,10 +40,10 @@ class StockDailyPrice(mongoengine.Document):
 class PortfolioDailyValue(mongoengine.EmbeddedDocument):
 
     date = mongoengine.DateTimeField(required=True)
-    price = mongoengine.FloatField(required=True)
+    value = mongoengine.FloatField(required=True)
 
     def __repr__(self):
-        return '< Portfolio Value on {} : {} >'.format(self.date, self.price)
+        return '< Portfolio Value on {} : {} >'.format(self.date, self.value)
 
 
 class snp500_tickers(mongoengine.Document):
@@ -128,6 +108,8 @@ class Portfolio(mongoengine.Document):
 
     sharpe_ratio = mongoengine.FloatField(required=True)
 
+    profit = mongoengine.FloatField()
+
 
 @login.user_loader
 def load_user(id):
@@ -139,3 +121,55 @@ def load_user(id):
         pass
 
     return user
+
+
+# Imports here to prevent circular import issue - will be refactored later.
+from app.api.stock_fetcher.get_data import get_data, get_all_snp500_data
+from app.api.backtest import backtest_portfolio
+
+# TODO: separate auth models from others : priority (4)
+class User(UserMixin, mongoengine.Document):
+
+    username = mongoengine.StringField(required=True)
+    email = mongoengine.StringField(required=True)
+    password_hash = mongoengine.StringField(required=True)
+
+    def __repr__(self):
+        return '< User {} >'.format(self.username)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    # TODO: Change into something customizable?
+    def get_profile_picture(self):
+        return url_for('static', filename="example_user.png")
+
+    def get_portfolios(self):
+
+        portfolios = Portfolio.objects(user_id=self.pk);
+
+        for portfolio in portfolios:
+
+            # Perform extra backtest
+            portfolio_dict = {x.ticker:(x.weight/100.0) for x in portfolio.allocations}
+
+
+            stocks_df = get_data(list(portfolio_dict.keys()), portfolio.end_date,
+                         datetime.datetime.now())
+
+            backtest_results = backtest_portfolio(prices_df=stocks_df, portfolio=portfolio_dict,
+                                                  initial_amount=portfolio.performance[0].value, window=50)
+
+            labels = (list(backtest_results["total"].index))
+
+            total_values = (list(backtest_results["total"].values))
+            upper_values = (list(backtest_results["upper"].values))
+            lower_values = (list(backtest_results["lower"].values))
+
+            portfolio.profit = total_values[-1] - total_values[0]
+
+        return portfolios;
+

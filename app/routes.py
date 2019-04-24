@@ -40,7 +40,7 @@ def profile():
 @app.route('/portfolios', methods=["GET"])
 @login_required
 def portfolios():
-
+    
     return render_template('portfolios.html', user=current_user)
 
 
