@@ -6,6 +6,9 @@ from redis import from_url
 
 from app import app
 from app.api import bp
+from app.models import Allocation, Portfolio, PortfolioDailyValue
+
+import datetime
 
 
 @bp.route('/optimize', methods=["POST"])
@@ -78,3 +81,42 @@ def check_job_status():
 
     # print(job.result);
     return jsonify(result)
+
+
+@bp.route('/saveportfolio', methods=["POST"])
+@login_required
+def save_portfolio():
+
+    parameters = request.get_json()
+
+    # Create portfolio object from received parameters
+    print("PARAMS")
+    # print(parameters)
+
+    if parameters["failed"]:
+        flash("Invalid portfolio cannot be saved. Please try again.", category="danger")
+        return render_template("portfolios.html", user=current_user)
+
+    expected_return = parameters["data"]["statistics"]["expected_return"]
+    volatility = parameters["data"]["statistics"]["volatility"]
+    sharpe_ratio = parameters["data"]["statistics"]["sharpe_ratio"]
+
+    print(expected_return)
+    print(volatility)
+    print(sharpe_ratio)
+
+    weights_data = parameters["data"]["weights"]["data"]
+    weights_tickers = parameters["data"]["weights"]["labels"]
+
+    value_data_total = parameters["data"]["performance"]["total"]
+    value_data_lower = parameters["data"]["performance"]["lower"]
+    value_data_upper = parameters["data"]["performance"]["upper"]
+    value_labels = parameters["data"]["performance"]["labels"]
+
+    # Turn labels into datetime objects
+    # September 18, 2017, 22:19:55 -> %B %d, %Y, %H:%M:%S
+    # Mon, 21 March, 2015 -> %a, %d %B, %Y
+    # Fri, 05 Oct 2018 00:00:00 GMT
+    value_dates = [datetime.datetime.strptime(label, "%a, %d %b %Y %H:%M:%S %Z") for label in value_labels]
+
+    # portfolio = Portfolio();

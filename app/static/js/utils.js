@@ -1,5 +1,18 @@
 //-------- Helper functions -----------
 
+
+var disable_element = function(el){
+    el.busyLoad("show", {
+        background: "rgba(0, 0, 0, 0.6)"
+    });
+    el.prop("disabled", true);
+}
+
+var enable_element = function(el){
+    el.busyLoad("hide");
+    el.prop("disabled", false);   
+}
+
 // Enable busy loader on all .chart-container DOM 
 var disable_charts = function(){
     
