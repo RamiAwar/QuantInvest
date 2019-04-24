@@ -7,6 +7,7 @@ from app import app
 import redis
 import rq
 import pandas as pd
+import datetime
 
 
 # TODO: separate auth models from others : priority (4)
@@ -43,7 +44,7 @@ class StockDailyPrice(mongoengine.Document):
             'date': self.date,
             'price': self.price
         }
-        
+
         return data
 
     def get_tasks_in_progress(self):
@@ -54,6 +55,15 @@ class StockDailyPrice(mongoengine.Document):
 
     def __repr__(self):
         return '< Price of {} at {} >'.format(self.ticker, self.date)
+
+
+class PortfolioDailyValue(mongoengine.EmbeddedDocument):
+
+    date = mongoengine.DateTimeField(required=True)
+    price = mongoengine.FloatField(required=True)
+
+    def __repr__(self):
+        return '< Portfolio Value on {} : {} >'.format(self.date, self.price)
 
 
 class snp500_tickers(mongoengine.Document):
@@ -76,6 +86,7 @@ class snp500_tickers(mongoengine.Document):
 
 
 class Task(mongoengine.Document):
+
     job_id = mongoengine.StringField(required=True)
     complete = mongoengine.BooleanField(required=True, default=False)
     name = mongoengine.StringField(required=True)
@@ -90,6 +101,32 @@ class Task(mongoengine.Document):
     def get_progress(self):
         job = self.get_rq_job()
         return job.meta.get('progress', 0) if job is not None else 100
+
+
+class Allocation(mongoengine.EmbeddedDocument):
+
+    ticker = mongoengine.StringField(required=True)
+    weight = mongoengine.FloatField(required=True)
+
+    def __repr__(self):
+        return '<Allocation ' + self.ticker + ' : ' + self.weight + ' >'
+
+
+class Portfolio(mongoengine.Document):
+
+    user_id = mongoengine.ObjectIdField(required=True)
+    timestamp = mongoengine.DateTimeField(required=True)
+
+    expected_return = mongoengine.FloatField(required=True)
+    volatility = mongoengine.FloatField(required=True)
+
+    start_date = mongoengine.DateTimeField(required=True)
+    end_date = mongoengine.DateTimeField(required=True)
+
+    allocations = mongoengine.EmbeddedDocumentListField(Allocation, required=True)
+    performance = mongoengine.EmbeddedDocumentListField(PortfolioDailyValue, required=True)
+
+    sharpe_ratio = mongoengine.FloatField(required=True)
 
 
 @login.user_loader

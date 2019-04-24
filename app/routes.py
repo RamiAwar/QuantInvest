@@ -37,12 +37,9 @@ def profile():
     return render_template('profile.html', user=current_user, form=edit_profile_form)
 
 
-@app.route('/portfolios', methods=["GET", "POST"])
+@app.route('/portfolios', methods=["GET"])
 @login_required
 def portfolios():
-
-    if request.method == "POST":
-        pass
 
     return render_template('portfolios.html', user=current_user)
 
