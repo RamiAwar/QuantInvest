@@ -7,6 +7,7 @@ from app import app
 import redis
 import rq
 import pandas as pd
+import datetime
 
 
 # TODO: separate auth models from others : priority (4)
@@ -62,7 +63,7 @@ class PortfolioDailyValue(mongoengine.EmbeddedDocument):
     price = mongoengine.FloatField(required=True)
 
     def __repr__(self):
-        return '< Portfolio Value on ' + date + ' : ' + price + ' >'
+        return '< Portfolio Value on {} : {} >'.format(self.date, self.price)
 
 
 class snp500_tickers(mongoengine.Document):
@@ -108,7 +109,7 @@ class Allocation(mongoengine.EmbeddedDocument):
     weight = mongoengine.FloatField(required=True)
 
     def __repr__(self):
-        return '<Allocation ' + ticker + ' : ' + weight + ' >'
+        return '<Allocation ' + self.ticker + ' : ' + self.weight + ' >'
 
 
 class Portfolio(mongoengine.Document):
@@ -116,13 +117,13 @@ class Portfolio(mongoengine.Document):
     user_id = mongoengine.ObjectIdField(required=True)
     timestamp = mongoengine.DateTimeField(required=True)
 
-    expected_returns = mongoengine.FloatField(required=True)
+    expected_return = mongoengine.FloatField(required=True)
     volatility = mongoengine.FloatField(required=True)
 
     start_date = mongoengine.DateTimeField(required=True)
     end_date = mongoengine.DateTimeField(required=True)
 
-    weights = mongoengine.EmbeddedDocumentListField(Allocation, required=True)
+    allocations = mongoengine.EmbeddedDocumentListField(Allocation, required=True)
     performance = mongoengine.EmbeddedDocumentListField(PortfolioDailyValue, required=True)
 
     sharpe_ratio = mongoengine.FloatField(required=True)

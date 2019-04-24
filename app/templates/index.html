@@ -2,12 +2,6 @@
 {% set active_page = "index" %}
 {% block content %}
 
-	{% if posts %}
-		{% for post in posts %}
-		<div><p>{{post.author.username}} says: <b>{{post.body}} </b></p></div>
-		{% endfor %}
-	{% endif %}
-
 	<div class="row mt-4 mb-4">
 	    <div class="col-lg-6">
 		    <a href="{{url_for('profile_extractor.createprofile')}}">

@@ -119,4 +119,26 @@ def save_portfolio():
     # Fri, 05 Oct 2018 00:00:00 GMT
     value_dates = [datetime.datetime.strptime(label, "%a, %d %b %Y %H:%M:%S %Z") for label in value_labels]
 
-    # portfolio = Portfolio();
+    portfolio_daily_values = [PortfolioDailyValue(date=date, price=price)
+                              for (date, price) in zip(value_dates, value_data_total)]
+
+    allocations = [Allocation(ticker=ticker, weight=weight) for (ticker, weight) in zip(weights_tickers, weights_data)]
+
+    # print(portfolio_daily_values)
+
+    start_date = value_dates[0]
+    end_date = value_dates[-1]
+
+    portfolio = Portfolio(user_id=current_user.get_id(),
+                          timestamp=datetime.datetime.now(),
+                          expected_return=expected_return,
+                          volatility=volatility,
+                          start_date=start_date,
+                          end_date=end_date,
+                          allocations=allocations,
+                          performance=portfolio_daily_values,
+                          sharpe_ratio=sharpe_ratio
+                          )
+    portfolio.save()
+
+    return jsonify(True)
