@@ -1,13 +1,68 @@
 {% extends "base.html" %}
-{% set active_page = "index" %}
+{% set active_page = url_for("index") %}
 {% block content %}
 
-	<h1> Hello, {{ current_user.username }}! </h1>
+	<div class="row mt-4 mb-4">
+	    <div class="col-lg-6">
+		    <a href="{{url_for('profile_extractor.createprofile')}}">
+		      <div class="card bg-gradient-success">
+		        <!-- Card body -->
+		        <div class="card-body">
+		          <div class="row align-items-center">
+		            <div class="col">
+		              <!-- <h5 class="card-title text-uppercase text-muted mb-0 text-white">My Portfolios</h5> -->
+		              <span class="h2 font-weight-bold text-white">Optimizer</span>
+		            </div>
+		            <div class="col-auto">
+		              <div class="icon icon-shape bg-white text-dark rounded-circle shadow">
+		                <i class="ni ni-archive-2"></i>
+		              </div>
+		            </div>
+		          </div>
+		          
+		        </div>
+		      </div>
+			</a>
+		</div>
 
-	{% if posts %}
-		{% for post in posts %}
-		<div><p>{{post.author.username}} says: <b>{{post.body}} </b></p></div>
-		{% endfor %}
-	{% endif %}
+		<div class="col-lg-6">
+		    <a href="{{url_for('profile_extractor.createprofile')}}">
+		      <div class="card bg-gradient-info">
+		        <!-- Card body -->
+		        <div class="card-body">
+		          <div class="row align-items-center">
+		            <div class="col">
+		              <!-- <h5 class="card-title text-uppercase text-muted mb-0 text-white">My Portfolios</h5> -->
+		              <span class="h2 font-weight-bold text-white">Stock Explorer</span>
+		            </div>
+		            <div class="col-auto">
+		              <div class="icon icon-shape bg-white text-dark rounded-circle shadow">
+		                <i class="ni ni-archive-2"></i>
+		              </div>
+		            </div>
+		          </div>
+		          
+		        </div>
+		      </div>
+			</a>
+		</div>
+	</div>
+
+    <!-- <div class="card-columns">
+
+      {% for portfolio in portfolios %}
+      <div class="card">
+        <img class="card-img-top" src="../../assets/img/theme/img-1-1000x600.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Card title that wraps to a new line</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+      {% endfor %}
+	      
+	</div> -->
+      
+			
+	    
 
 {% endblock %}

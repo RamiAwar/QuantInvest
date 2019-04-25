@@ -118,9 +118,13 @@ $(document).ready(function(){
             $portfolio_chart.data('data', portfolio_chart);
 
             disable_charts(); 
+            disable_element($('#save-portfolio-basic'));
 
         }else{
+
             disable_charts();    
+            disable_element($('#save-portfolio-basic'));
+        
         }
 
         // Get slider data and submit to optimizer as a job        
@@ -198,15 +202,17 @@ $(document).ready(function(){
                     update_portfolio_summary("basic-portfolio-summary", response["result"]["statistics"], performance_values[0].round(0), performance_values.slice(-1)[0].round(0));
                     update_ticker_list('portfolio-ticker-list-basic', portfolio_weights)
                     enable_charts();
-                    
+                    enable_element($('#save-portfolio-basic'));
+
                     $('#submit').prop('disabled', false);
                     $('#explore-basic').prop('disabled', false);
 
                 }else if(response["is_failed"]){
 
                     // Display error
-
                     enable_charts();
+                    enable_element($('#save-portfolio-basic'));
+
                     $('#submit').prop('disabled', false);
                     show_error("Unknown server error occured. Try again later.")
 

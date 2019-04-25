@@ -1,0 +1,100 @@
+
+{% extends "base.html" %}
+{% set active_page = url_for("portfolios") %}
+{% block content %}
+
+<div class="card-columns">
+
+  {% for portfolio in user.get_portfolios() %}
+  <div class="card bg-white">
+    <div class="card-header bg-transparent">
+      <h5 class="h3 mb-0">Portfolio Statistics</h5>
+    </div>
+
+    <div class="card-body">
+          
+          <div class="row mb-3">
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Expected Returns</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-expected-return">{{portfolio.expected_return|round(3)}}</span>
+            </div>
+
+            
+            
+            <div class="col-auto">
+              <div class="icon icon-shape bg-green text-white rounded-circle shadow">
+                  <i class="ni ni-chart-bar-32"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Volatility</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-volatility">{{portfolio.volatility|round(4)}}</span>
+            </div>
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Sharpe Ratio</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-sharpe-ratio">{{portfolio.sharpe_ratio|round(3)}}</span>
+            </div>
+
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Start Date</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-start-date">{{portfolio.start_date.strftime('%Y-%m-%d')}}</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-green text-white rounded-circle shadow">
+                  <i class="ni ni-calendar-grid-58"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">End Date</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-end-date">{{portfolio.end_date.strftime('%Y-%m-%d')}}</span>
+            </div>
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Initial Value</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-final-value">${{portfolio.performance[0].value|int}}</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-green text-white rounded-circle shadow">
+                  <i class="ni ni-briefcase-24"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Returns since end date</h5>
+                <span class="h2 font-weight-bold mb-0 portfolio-final-value">{{portfolio.profit|int * 100 / portfolio.performance[0].value|int}}%</span>
+                <span class="h2 font-weight-bold text-muted mb-0 portfolio-initial-value"> ( ${{portfolio.profit|round|int}} )</span>
+            </div>
+
+            
+          </div>
+
+          
+        </div>
+    </div>
+  {% endfor %}
+    
+
+</div>
+
+{% endblock %}

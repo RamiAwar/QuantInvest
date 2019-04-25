@@ -7,12 +7,14 @@
   
   var OPTIMIZER_ENDPOINT = "{{ url_for('api.optimize') }}";
   var GET_JOB_ENDPOINT = "{{ url_for('api.check_job_status') }}";
+  var SAVE_PORTFOLIO_ENDPOINT = "{{url_for('api.save_portfolio')}}";
 
   // Fetch flask variables and serialize them to json
   var quiz_expected_return = {{expected_return|tojson }};
   var quiz_expected_risk = {{expected_volatility|tojson}};
   var basic = {{basic|tojson}}; 
 
+  console.log("Quiz feedback");
   console.log(quiz_expected_return)
   console.log(quiz_expected_risk)
 

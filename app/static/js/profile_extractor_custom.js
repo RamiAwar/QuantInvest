@@ -1,6 +1,28 @@
 var counter = 1;
 var limit = 100;
 
+var portfolio_data_custom = {};
+
+var save_custom_portfolio = function(){
+
+    // Send portfolio_data_custom to server to be saved, via ajax request
+    $.ajax({
+
+        type: 'POST',
+        url: SAVE_PORTFOLIO_ENDPOINT,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(portfolio_data_custom),  
+        context: $(this),
+        success: function(response) {
+
+            alert("Successfully sent post request to add portfolio.")
+        }   
+    });
+
+}
+
+
 function addInput(divName){
     if (counter == limit)  {
 		
@@ -116,6 +138,7 @@ $(document).ready(function(){
     $('#custom-portfolio-performance-chart-container').hide();
     $('#portfolio-weights-container').hide();
     $('#portfolio-summary-custom').hide();
+    $('#save-portfolio-custom').hide();
 
     // Initialize portfolio performance chart
     var $portfolio_chart = $('#portfolio-performance-chart-custom');
@@ -142,8 +165,6 @@ $(document).ready(function(){
                 
                 console.log(response);
 
-               
-
                 // TODO: Better error handling here : priority (4)
                 if(response["is_finished"]){
 
@@ -164,6 +185,13 @@ $(document).ready(function(){
                     update_ticker_list('portfolio-ticker-list-custom', portfolio_weights)
                     
                     enable_charts();
+                    enable_element($('#save-portfolio-custom'));
+
+                    portfolio_data_custom["failed"] = false;
+                    portfolio_data_custom["data"] = {};
+                    portfolio_data_custom["data"]["weights"] = portfolio_weights
+                    portfolio_data_custom["data"]["performance"] = response["result"]["performance"]
+                    portfolio_data_custom["data"]["statistics"] = response["result"]["statistics"]
 
                     $('#submit-custom').prop("disabled", false);
                     $('#tabs-icons-text-2-tab').removeClass("disabledTab");
@@ -172,7 +200,9 @@ $(document).ready(function(){
 
                     // Display error
 
-                    enable_charts();                    
+                    enable_charts(); 
+                    enable_element($('#save-portfolio-custom'));
+                   
                     $('#submit-custom').prop("disabled", false);
                     $('#tabs-icons-text-2-tab').removeClass("disabledTab");
 
@@ -224,6 +254,7 @@ $(document).ready(function(){
             $('#custom-portfolio-performance-chart-container').show();
             $('#portfolio-weights-container').show();
             $('#portfolio-summary-custom').show();
+            $('#save-portfolio-custom').show();
 
             // Create charts
             portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
@@ -233,9 +264,13 @@ $(document).ready(function(){
             $pie_chart.data('data', pie_chart)
             $portfolio_chart.data('data', portfolio_chart);
 
+            disable_element($('#save-portfolio-custom'));
             disable_charts(); 
+            
 
         }else{
+
+            disable_element($('#save-portfolio-custom'));
             disable_charts();    
         }
 
