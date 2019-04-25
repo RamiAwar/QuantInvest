@@ -119,8 +119,8 @@ def save_portfolio():
     # Fri, 05 Oct 2018 00:00:00 GMT
     value_dates = [datetime.datetime.strptime(label, "%a, %d %b %Y %H:%M:%S %Z") for label in value_labels]
 
-    portfolio_daily_values = [PortfolioDailyValue(date=date, price=price)
-                              for (date, price) in zip(value_dates, value_data_total)]
+    portfolio_daily_values = [PortfolioDailyValue(date=date, value=value)
+                              for (date, value) in zip(value_dates, value_data_total)]
 
     allocations = [Allocation(ticker=ticker, weight=weight) for (ticker, weight) in zip(weights_tickers, weights_data)]
 
