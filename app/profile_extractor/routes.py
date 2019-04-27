@@ -49,6 +49,6 @@ def createprofile():
 
         print("Expected returns: ", expected_return)
 
-    return render_template('profile_extractor/profile_extractor.html', basic=basic, expected_return=expected_return, expected_volatility=expected_volatility)
+    return render_template('errors/under_construction.html', basic=basic, expected_return=expected_return, expected_volatility=expected_volatility)
 
 # @bp.route('/')

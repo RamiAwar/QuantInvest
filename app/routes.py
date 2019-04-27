@@ -41,7 +41,7 @@ def profile():
 @login_required
 def portfolios():
     
-    return render_template('portfolios.html', user=current_user)
+    return render_template('errors/under_construction.html', user=current_user)
 
 
 @app.route('/legal')
