@@ -1,3 +1,25 @@
+
+var portfolio_data_basic = {};
+
+var save_basic_portfolio = function(){
+
+    // Send portfolio_data_custom to server to be saved, via ajax request
+    $.ajax({
+
+        type: 'POST',
+        url: SAVE_PORTFOLIO_ENDPOINT,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(portfolio_data_basic),  
+        context: $(this),
+        success: function(response) {
+
+            alert("Successfully sent post request to add portfolio.")
+        }   
+    });
+
+}
+
 $(document).ready(function(){
 
 // -------- SLIDERS ---------------
@@ -89,6 +111,8 @@ $(document).ready(function(){
     $('#basic-portfolio-performance-chart-container').hide();
     $('#basic-portfolio-weights-container').hide();
     $('#basic-portfolio-summary').hide();
+    $('#save-portfolio-basic').hide();
+
 
 
     $('#submit').click(function() {
@@ -108,6 +132,7 @@ $(document).ready(function(){
             $('#basic-portfolio-performance-chart-container').show();
             $('#basic-portfolio-weights-container').show();
             $('#basic-portfolio-summary').show();
+            $('#save-portfolio-basic').show();
 
             // Create charts
             portfolio_chart = new PortfolioChart($portfolio_chart, "Portfolio");
@@ -203,6 +228,12 @@ $(document).ready(function(){
                     update_ticker_list('portfolio-ticker-list-basic', portfolio_weights)
                     enable_charts();
                     enable_element($('#save-portfolio-basic'));
+
+                    portfolio_data_basic["failed"] = false;
+                    portfolio_data_basic["data"] = {};
+                    portfolio_data_basic["data"]["weights"] = portfolio_weights
+                    portfolio_data_basic["data"]["performance"] = response["result"]["performance"]
+                    portfolio_data_basic["data"]["statistics"] = response["result"]["statistics"]
 
                     $('#submit').prop('disabled', false);
                     $('#explore-basic').prop('disabled', false);
