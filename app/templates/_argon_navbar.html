@@ -65,6 +65,12 @@
                         <span class="nav-link-inner--text">My Portfolios</span>
                     </a>
                   </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link nav-link-icon {% if active_page == url_for('explorer.stockexplorer') %}active{% endif %}" href=" {{ url_for('explorer.stockexplorer') }}">
+                        <span class="nav-link-inner--text">Explorer</span>
+                    </a>
+                  </li>
                   
                   <li class="nav-item d-lg-none">
                     <a class="nav-link nav-link-icon {% if active_page == url_for('profile') %}active{% endif %}" href="{{ url_for('profile') }}">
