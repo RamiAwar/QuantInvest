@@ -7,18 +7,20 @@
 <div class="header pb-6">
   <div class="container-fluid">
     <div class="header-body">
-      <div class="row align-items-center py-4">
-        <div class="col-lg-6 d-flex col-7">
+      <div class="row mr-0 ml-0 pr-0 pl-0 d-flex align-items-center py-4">
+        
+          
           <div class="col">
             <h6 class="h2 d-inline-block mb-0">{{ticker}}</h6>
-            <h3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
           </div>
+
           <form action="{{url_for('explorer.stockexplorer')}}" method="GET">
 
           <div class="d-inline-block form-group">
 
             <div class="input-group input-group-alternative" >
- mv class="input-group-prepend">
+
+              <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-search"></i></span>
               </div>
                 <input name="ticker" autocomplete="off" onkeyup="liveSearch(this.value)" class="form-control form-control-lg" type="text" placeholder="Stock symbol"> 
@@ -29,21 +31,20 @@
 
             <table class="table align-items-center table-flush mt-2">
                 
-                <tbody class="list table-flush" id="stocks-list" style="position:fixed;">
+                <tbody class="list table-flush" id="stocks-list" style="position:absolute;z-index:100;">
 
                 </tbody>
               </table>
             
           </div>
         </form>
-        </div>
        
       </div>
     </div>
   </div>
 </div>
 
-<div class="row mr-0 ml-0">
+<div class="row mr-0 ml-0 mt--7">
 
   <div class="col-md-6 ">
     <div class="card">

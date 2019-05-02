@@ -11,15 +11,19 @@ from app.explorer import bp
 @login_required
 def stockexplorer():
     
-    ticker = request.args.get("ticker").upper();
+    ticker = request.args.get("ticker")
+    if ticker:
+        ticker = ticker.upper();
+
     print(ticker)
     return render_template('explorer/stock_explorer.html', ticker=ticker)
 
 
-@bp.route("/search")
+@bp.route("/search", methods=["POST"])
 def search():
 
-    text = request.args['searchText'] # get the text to search for
+    text = request.get_json()
+    text = text['searchText'] # get the text to search for
 
     # create an array with the elements of BRAZIL_STATES that contains the string
     # the case is ignored
