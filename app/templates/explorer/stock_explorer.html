@@ -1,0 +1,422 @@
+{% extends "base.html" %}
+{% set active_page = url_for("explorer.stockexplorer") %}
+{% block content %}
+
+{% if ticker %}
+
+<div class="header pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row mr-0 ml-0 pr-0 pl-0 d-flex align-items-center py-4">
+        
+          
+          <div class="col">
+            <h6 class="h2 d-inline-block mb-0">{{ticker}}</h6>
+          </div>
+
+          <form action="{{url_for('explorer.stockexplorer')}}" method="GET">
+
+          <div class="d-inline-block form-group">
+
+            <div class="input-group input-group-alternative" >
+
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+              </div>
+                <input name="ticker" autocomplete="off" onkeyup="liveSearch(this.value)" class="form-control form-control-lg" type="text" placeholder="Stock symbol"> 
+
+            </div>
+
+            {# <ul class="select-container form-control" id="results"></ul> #}
+
+            <table class="table align-items-center table-flush mt-2">
+                
+                <tbody class="list table-flush" id="stocks-list" style="position:absolute;z-index:100;">
+
+                </tbody>
+              </table>
+            
+          </div>
+        </form>
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mr-0 ml-0 mt--7">
+
+  <div class="col-md-6 ">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Stocks</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <script src="{{url_for('static', filename='js/moment.js')}}" language="Javascript" type="text/javascript"></script>
+          <script src="{{url_for('static', filename='js/profile_extractor_custom.js')}}" language="Javascript" type="text/javascript"></script>
+          
+          <div id="dynamic-ticker-list" class="container">  
+            <div class="form-group">
+          
+              <label class="form-control-label">Ticker 1</label>
+              <input class="form-control form-control-alternative" type="text">
+          
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <div class="container">
+            <input type="button" class="btn btn-primary" value="Add stock ticker" onClick="addInput('dynamic-ticker-list');">
+          </div>
+
+        </div>      
+      </div>
+
+
+    </div>
+  </div>
+
+  
+  <div class="col-md-6 ">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Portfolio Details</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label">Initial Amount</label>
+
+          <input class="form-control form-control-alternative" type="number" value="100000" id="initial-amount-input">
+
+        </div>
+
+   
+      </div>
+
+
+    </div>
+  </div>
+  
+
+
+</div>
+
+<div class="row mr-0 ml-0">
+
+
+  <div class="col-md-6 ">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Optimization</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label">Optimization goal</label>
+
+          <select class="form-control" id="optimization-select" onchange="change_opt_constraints(event)">
+            <option value="max-sharpe">Maximize sharpe ratio</option>
+            <option value="min-volatility">Minimize volatility</option>
+            <option value="min-volatility-target">Minimize volatility subject to ...</option>
+            <option value="max-return-target">Maximize return subject to ...</option>
+          </select>
+
+        </div>
+
+        <div class="form-group " id="constraints-container">
+          <input class="d-none" id="target-return">
+          <input class="d-none" id="target-volatility">
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div>
+  
+
+  <div class="col-md-6">
+    <div class="card">
+
+      <div class="card-header">
+        <h5 class="h3 mb-0">Time Span</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div class="form-group">
+
+          <label class="form-control-label"> Start date</label>
+          <input class="form-control" type="date" value="2015-01-01" id="start-date">
+
+        </div>
+
+        <div class="form-group">
+
+          <label class="form-control-label"> End date</label>
+          <input class="form-control" type="date" value="2019-01-01" id="end-date">
+
+        </div>
+   
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+<div class="row ml-0 mr-0">
+  <div class="container">
+    <button style="margin-bottom:30px;" type="button" id="submit-custom" class="btn btn-primary btn-lg btn-block">Optimize</button>
+  </div>
+</div>
+
+<div id="custom-pie-chart-container" class="row ml-0 mr-0">
+  <div class="container">
+    <div class="card bg-gradient-default shadow chart-container">
+        
+      <div class="card-header bg-transparent">
+        <h5 class="h3 mb-0 text-white">Portfolio Constituents Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <canvas id="chart-pie-custom" style="min-height: 40vh;" class="chart-canvas"></canvas>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div id="custom-portfolio-performance-chart-container" class="row ml-0 mr-0">
+  <div class="container">
+    <div class="card bg-gradient-default shadow chart-container">
+        
+      <div class="card-header bg-transparent">
+        <h5 class="h3 mb-0 text-white">Backtested Portfolio Performance</h5>
+      </div>
+
+      <div class="card-body">
+        <canvas id="portfolio-performance-chart-custom" style="min-height: 40vh;" class="chart-canvas"></canvas>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div class="row ml-0 mr-0">
+  
+  <div id="portfolio-summary-custom" class="col-md-6">
+    <div class="container">
+
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Statistics</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="row mb-3">
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Expected Returns</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-expected-return">-</span>
+            </div>
+
+            
+            
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-chart-bar-32"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Volatility</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-volatility">-</span>
+            </div>
+            
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Sharpe Ratio</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-sharpe-ratio">-</span>
+            </div>
+
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Initial Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-initial-value">-</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-briefcase-24"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Final Value</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-final-value">-</span>
+            </div>
+          </div>
+
+          <hr class="alert-white">
+
+          <div class="row mb-3">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">Start Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-start-date">-</span>
+            </div>
+
+            <div class="col-auto">
+              <div class="icon icon-shape bg-orange text-white rounded-circle shadow">
+                  <i class="ni ni-calendar-grid-58"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">End Date</h5>
+                <span class="h2 font-weight-bold mb-0 text-white portfolio-end-date">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="portfolio-weights-container" class="col-md-6">
+    <div class="container">
+      
+      <div class="card bg-gradient-default shadow chart-container">
+          
+        <div class="card-header bg-transparent">
+          <h5 class="h3 mb-0 text-white">Portfolio Constituents</h5>
+        </div>
+
+        <div class="card-body">
+          
+          <div class="table-responsive">
+            <div>
+            <table class="table align-items-center table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="sort" data-sort="name">Ticker</th>
+                        <th scope="col" class="sort" data-sort="budget">Percentage</th>
+                      
+                    </tr>
+                </thead>
+                <tbody id="portfolio-ticker-list-custom" class="list">
+                    
+                    <tr>
+                        <th scope="row">
+                            <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="name mb-0 text-sm">-</span>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="budget">
+                            -
+                        </td>
+                        
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="row ml-0 mr-0">
+  <div class="container">
+    <button onclick="save_custom_portfolio()" id="save-portfolio-custom" style="margin-bottom:30px;" type="button" id="submit-custom" class="btn btn-primary btn-lg btn-block">Save Portfolio</button>
+  </div>
+</div>
+
+
+
+
+
+
+{% else %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height:75vh;">
+  
+    <div class="card-body">
+          
+        <form action="{{url_for('explorer.stockexplorer')}}" method="GET">
+
+          <div class="form-group">
+
+            <div class="input-group input-group-alternative" >
+
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+              </div>
+                <input name="ticker" autocomplete="off" onkeyup="liveSearch(this.value)" class="form-control form-control-lg" type="text" placeholder="Stock symbol"> 
+
+
+            </div>
+
+            {# <ul class="select-container form-control" id="results"></ul> #}
+
+            <table class="table align-items-center table-flush mt-2">
+                
+                <tbody class="list table-flush" id="stocks-list" style="position:fixed;">
+
+                </tbody>
+              </table>
+            
+          </div>
+        </form>
+
+
+
+          
+        </div>
+    </div>
+</div>
+{% endif %}
+<script>
+  SEARCH_ENDPOINT = "{{url_for('explorer.search')}}";
+</script>
+<script src="{{url_for('static', filename='js/stock_explorer.js')}}" type="text/javascript"></script>
+
+
+{% endblock %}

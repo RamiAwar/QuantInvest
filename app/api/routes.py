@@ -47,15 +47,15 @@ def optimize():
     optimization_method = parameters["optimization_method"]
 
     if optimization_method == "max-sharpe":
-        job = queue.enqueue("app.api.optimizer.optimization_handlers.max_sharpe", parameters)
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.max_sharpe", parameters, job_timeout=300)
     elif optimization_method == "min-volatility":
-        job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility", parameters)
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility", parameters, job_timeout=300)
     elif optimization_method == "min-volatility-target":
-        job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility_target", parameters)
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.min_volatility_target", parameters, job_timeout=300)
     elif optimization_method == "max-return-target":
-        job = queue.enqueue("app.api.optimizer.optimization_handlers.max_return_target", parameters)
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.max_return_target", parameters, job_timeout=300)
     elif optimization_method == "target-return-volatility":
-        job = queue.enqueue("app.api.optimizer.optimization_handlers.target_return_volatility", parameters)
+        job = queue.enqueue("app.api.optimizer.optimization_handlers.target_return_volatility", parameters, job_timeout=300)
 
     return jsonify({"job_id": job._id})
 

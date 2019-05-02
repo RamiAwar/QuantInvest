@@ -23,6 +23,7 @@ from app.profile_extractor import bp as extractor_bp
 from app.api import bp as api_bp
 from app.api.stock_fetcher import bp as stock_fetcher_bp
 from app.api.backtest import bp as backtest_bp
+from app.explorer import bp as explorer_bp
 
 app.register_blueprint(errors_bp, url_prefix='/error')
 app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -30,6 +31,7 @@ app.register_blueprint(extractor_bp)
 app.register_blueprint(api_bp, url_prefix='/api')
 app.register_blueprint(stock_fetcher_bp, url_prefix='/api/stock_fetcher')
 app.register_blueprint(backtest_bp, url_prefix='/api/backtest')
+app.register_blueprint(explorer_bp, url_prefix='/explorer')
 
 # Assuming mongodb running on localhost 27017 (typical containerized version, port mapped 27017:27017)
 mongoengine.connect(app.config['DB_NAME'], host=app.config['MONGODB_URI'], port=27017)

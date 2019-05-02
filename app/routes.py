@@ -14,7 +14,11 @@ def index():
 @app.route('/')
 @app.route('/landing')
 def landing():
-    return render_template('landing.html')
+
+    if current_user.is_anonymous:
+        return render_template('landing.html')
+    else:
+        return render_template('index.html')
 
 
 @app.route('/profile', methods=["GET", "POST"])

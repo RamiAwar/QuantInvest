@@ -198,7 +198,7 @@ $(document).ready(function(){
 
                 }else if(response["is_failed"]){
 
-                    // Display error
+                    portfolio_data_custom["failed"] = true;
 
                     enable_charts(); 
                     enable_element($('#save-portfolio-custom'));
