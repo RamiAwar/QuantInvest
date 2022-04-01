@@ -1,6 +1,8 @@
 # QuantInvest
 Quantitative Investment Software 
 
+This is an old school full-stack project that isn't in a functional state right now. Might work on it in the future. 
+
 ## Running QuantInvest
 
 To run QuantInvest on a local machine, the following is needed:
